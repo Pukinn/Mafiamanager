@@ -16,12 +16,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class mafiamanager {
+import java.util.ArrayList;
 
-	
+class Mafiamanager {
+
+	// player
+	//public static ArrayList<Player> playerlist;
 	
 	public static void main(String args[])
 	{
+		// declare
+		ArrayList<Player> playerlist = new ArrayList<Player>();
+		
+		// create player
+		Createplayer myPlayers = new Createplayer(playerlist);
+		myPlayers.namePlayers();
+		
+	// START GAME
+		
+		// create log
+		Log myLog = new Log();
+		myLog.create();
+		
 		
 	}
 	
