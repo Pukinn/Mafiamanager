@@ -16,13 +16,44 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class mafiamanager {
+public class player {
+	
+	// player values
+	private String name;
+	private int figure;
+	private boolean alive;
+	private boolean isprotected;
+	
+	//
+	private boolean flag_daynight;
 
-	
-	
-	public static void main(String args[])
-	{
+	public player(String _name, int _figure){
 		
+		// create player
+		name = _name;
+		figure = _figure;
+		alive = true;
+		isprotected = false;
+		
+		//
+		flag_daynight = false;
 	}
 	
+	public void nextRound(){
+		if (!flag_daynight){
+		// night
+			
+			
+		
+			// invert flag
+			flag_daynight = !flag_daynight;
+		}
+		else {
+		// day
+			
+			
+			// invert flag
+			flag_daynight = !flag_daynight;
+		}
+	}
 }
