@@ -23,18 +23,15 @@ import java.util.Date;
 
 public class Log {
 
-	private SimpleDateFormat formatter;
-	private Date currentTime;
+	private static SimpleDateFormat formatter;
 	
-	private String pathlog;
+	private static String pathlog;
 	
-	public Log(){
-		formatter = new SimpleDateFormat("yyyy.MM.dd-HH:mm");
-		currentTime = new Date();
-	}
-	
-	public void create(){
+	public static void create(){
 
+		formatter = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
+		Date currentTime = new Date();
+		
 		String time = formatter.format(currentTime);
 		pathlog = "./Logs/"+time+".txt";
 		
@@ -48,11 +45,38 @@ public class Log {
 		}
 	}
 	
-	public void newLine(String _s){
+	public static void newLine(String _s){
 		
 		try{
 			FileWriter log = new FileWriter(pathlog, true);
-			log.write(_s+"\n");
+			log.write("\n"+_s);
+			log.close();
+			}
+			catch(IOException e){
+			System.err.println(e);
+			}
+	}
+	
+	public static void addLine(String _s){
+		
+		try{
+			FileWriter log = new FileWriter(pathlog, true);
+			log.write(_s);
+			log.close();
+			}
+			catch(IOException e){
+			System.err.println(e);
+			}
+	}
+	
+	public static void timestamp(){
+		
+		Date currentTime = new Date();
+		String time = formatter.format(currentTime);
+		
+		try{
+			FileWriter log = new FileWriter(pathlog, true);
+			log.write(time+" ");
 			log.close();
 			}
 			catch(IOException e){

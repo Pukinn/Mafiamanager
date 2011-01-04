@@ -27,39 +27,58 @@ public class Player {
 		 * 	3 = detective
 		 *	4 = soulsaver
 		 */
-	private boolean alive;
-	private boolean isprotected;
+	private int alive;
+	
+	private String officialFigure;
 
 	public Player(String _name){
 		
 		// create player
-		figure = 0;
 		name = _name;
-		alive = true;
-		isprotected = false;
+		figure = 0;
+		alive = 1;
 	}
 	
-	public void kill(){
-		if (alive && !isprotected){
-			alive = false;
-		}
-	}
-	
-	public String getName(){
+	public String name(){
 		return name;
 	}
 	
-	public String getFigure(){
-		String strFigure = "err";
+	public void setFigure(int _fig){
+		figure = _fig;
+	}
+	
+	public int getFigure(){
+		return figure;
+	}
+	
+	public void setOfficialFigure(String _fig){
+		officialFigure = _fig;
+	}
+	
+	public String getOfficialFigure(){
+		return officialFigure;
+	}
+	
+	public int alive(){
+		return alive;
+	}
+	
+	public void kill(){
+		alive -= 1;
 		
-		switch (figure){
-		case 0: strFigure = "unknown"; break;
-		case 1: strFigure = "citizen"; break;
-		case 2: strFigure = "mafia"; break;
-		case 3: strFigure = "detective"; break;
-		case 4: strFigure = "soulsaver"; break;
+		if (alive == 0){
+			switch (figure){
+			case 1: Keys.citizen -= 1; break;
+			case 2: Keys.mafia -= 1; break;
+			case 3: Keys.detective -= 1; break;
+			case 4: Keys.soulsaver -= 1; break;
+			}
+			
+			Keys.killed.add(this);
 		}
-		
-		return strFigure;
+	}
+	
+	public void protect(){
+		alive += 1;
 	}
 }

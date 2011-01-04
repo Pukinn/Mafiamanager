@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /*
 	Mafiamanager - a tool to support the referee of the parlor game "Mafia"
     Copyright (C) 2011  Thomas Högner
@@ -19,12 +16,14 @@ import java.util.Scanner;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.util.Map;
+import java.util.Scanner;
 
 public class Createplayer {
 
-	private ArrayList<Player> playerlist;
+	private Map<String, Player> playerlist;
 	
-	public Createplayer(ArrayList<Player> _playerlist){
+	public Createplayer(Map<String, Player> _playerlist){
 		playerlist = _playerlist;		
 	}
 	
@@ -40,7 +39,7 @@ public class Createplayer {
 				break;
 			}
 			else {
-				playerlist.add(new Player(player));
+				playerlist.put(player, new Player(player));
 			}
 		}
 	}
