@@ -19,23 +19,36 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Createplayer extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 6208935351597319699L;
 	
 	private Map<String, Player> playerlist;
+
 	
 	// GUI
+	private JFrame frame;
+	
 	private JButton buttonAdd;
 	
-	public Createplayer(Map<String, Player> _playerlist){
+	private int counterPan;
+	private ArrayList<JPanel> panelx;
+		private ArrayList<JLabel> labelx;
+		private ArrayList<JTextField> fieldx;
+	
+	public Createplayer(Map<String, Player> _playerlist, JFrame _frame){
 		playerlist = _playerlist;
+		frame = _frame;
 		
 		this.setLayout(new GridLayout(0,1));
 	}
@@ -44,8 +57,29 @@ public class Createplayer extends JPanel implements ActionListener{
 		buttonAdd = new JButton(Messages.getString("gui.add"));
 		buttonAdd.addActionListener(this);
 		this.add(buttonAdd);
+		
+		panelx = new ArrayList<JPanel>();
+		labelx = new ArrayList<JLabel>();
+		fieldx = new ArrayList<JTextField>();
+		
+		counterPan = 0;
+		for (int i=0; i<5; i++){
+			addPlayer();
+		}
 	}
 	
+	public void addPlayer(){
+		int player = counterPan+1;
+		panelx.add(new JPanel(new GridLayout(1,2)));
+		labelx.add(new JLabel(Messages.getString("gui.player")+" "+player));
+		fieldx.add(new JTextField(15));
+		
+		panelx.get(counterPan).add(labelx.get(counterPan));
+		panelx.get(counterPan).add(fieldx.get(counterPan));
+		this.add(panelx.get(counterPan));
+		
+		counterPan++;
+	}
 	
 	public void namePlayers(){
 		
@@ -64,13 +98,14 @@ public class Createplayer extends JPanel implements ActionListener{
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+
+	public void actionPerformed(ActionEvent event) {
+		
+		if (event.getActionCommand().equals(Messages.getString("gui.add"))){
+			addPlayer();
+			frame.pack();
+			this.revalidate();
+		}
 		
 	}
-	
-	
-	
-	
 }

@@ -33,17 +33,15 @@ class Mafiamanager {
 		frame.setTitle("Mafiamanager");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		
-		
-		
-		
-		
-		
 	// BEFORE GAME
 		
 		// create player
-		Createplayer myPlayers = new Createplayer(playerlist);
-		myPlayers.namePlayers();
+		Createplayer myPlayers = new Createplayer(playerlist, frame);
+		myPlayers.create();
+		frame.add(myPlayers);
+		
+		frame.pack();
+		frame.setVisible(true);
 		
 		// create log
 		Log.create();
