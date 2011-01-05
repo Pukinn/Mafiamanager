@@ -18,13 +18,14 @@
 
 import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedMap;
 
 
 public class ConfigureFigures {
 
-	private Map<String, Player> playerlist;
+	private SortedMap<String, Player> playerlist;
 	
-	public ConfigureFigures(Map<String, Player> _playerlist){
+	public ConfigureFigures(SortedMap<String, Player> _playerlist){
 		playerlist = _playerlist;
 	}
 	

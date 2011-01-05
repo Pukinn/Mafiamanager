@@ -22,8 +22,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,53 +35,56 @@ public class Createplayer extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 6208935351597319699L;
 	
-	private Map<String, Player> playerlist;
+	// general
+	private SortedMap<String, Player> playerlist;
+	private int counterPlayer;
 
-	
-	// GUI
+	// gui
 	private GridBagConstraints con;
+	
 	private JFrame frame;
+		private JLabel labelTxt;
+		private JButton buttonAdd;
+		private JPanel panelPlayer;
+			private ArrayList<JPanel> panelx;
+				private ArrayList<JLabel> labelx;
+				private ArrayList<JTextField> fieldx;
+		private JButton buttonAcc;
 	
-	private JLabel labelTxt;
-	
-	private JButton buttonAdd;
-	
-	private JPanel panelPlayer;
-		private int counterPan;
-		private ArrayList<JPanel> panelx;
-			private ArrayList<JLabel> labelx;
-			private ArrayList<JTextField> fieldx;
 		
-	private JButton buttonAcc;
-	
-	public Createplayer(Map<String, Player> _playerlist, JFrame _frame){
+		
+	public Createplayer(SortedMap<String, Player> _playerlist, JFrame _frame){
+		// general
 		playerlist = _playerlist;
 		frame = _frame;
 		
+		// gui
 		this.setLayout(new GridBagLayout());
 		con = new GridBagConstraints();
-		con.fill = GridBagConstraints.VERTICAL;
 		con.gridx = 0;
-		con.gridy = 0;		
-		
+		con.gridy = 0;
 	}
 	
+	// create and show panel
 	public void create(){
+		// text
 		labelTxt = new JLabel(Messages.getString("gui.createTxt"));
 		this.add(labelTxt, con);
 		
+		// button 'add player'
 		buttonAdd = new JButton(Messages.getString("gui.add"));
 		buttonAdd.addActionListener(this);
 		con.gridy = 1;
 		this.add(buttonAdd, con);
 		
+		// labels and textfields for players
 		panelx = new ArrayList<JPanel>();
 		labelx = new ArrayList<JLabel>();
 		fieldx = new ArrayList<JTextField>();
 		
 		panelPlayer = new JPanel(new GridLayout(0,1));
 		
-		counterPan = 0;
+		counterPlayer = 0;
 		for (int i=0; i<5; i++){
 			addPlayer();
 		}
@@ -89,34 +92,41 @@ public class Createplayer extends JPanel implements ActionListener{
 		con.gridy = 2;
 		this.add(panelPlayer, con);
 		
+		// button accept
 		buttonAcc = new JButton(Messages.getString("gui.acc"));
 		buttonAcc.addActionListener(this);
 		con.gridy = 3;
 		this.add(buttonAcc, con);
 	}
 	
+	// add additional player
 	public void addPlayer(){
-		int player = counterPan+1;
+		int player = counterPlayer+1;
 		panelx.add(new JPanel(new GridLayout(1,2)));
 		labelx.add(new JLabel(Messages.getString("gui.player")+" "+player));
 		fieldx.add(new JTextField(15));
 		
-		panelx.get(counterPan).add(labelx.get(counterPan));
-		panelx.get(counterPan).add(fieldx.get(counterPan));
-		panelPlayer.add(panelx.get(counterPan));
+		panelx.get(counterPlayer).add(labelx.get(counterPlayer));
+		panelx.get(counterPlayer).add(fieldx.get(counterPlayer));
+		panelPlayer.add(panelx.get(counterPlayer));
 		
-		counterPan++;
+		counterPlayer++;
 	}
 
 
 	public void actionPerformed(ActionEvent event) {
 		
+		// 'add player' pressed
 		if (event.getActionCommand().equals(Messages.getString("gui.add"))){
+			
 			addPlayer();
 			frame.pack();
 			this.revalidate();
 		}
+		// 'accept' pressed
 		else if (event.getActionCommand().equals(Messages.getString("gui.acc"))){
+			
+			// generate players
 			int count = 1;
 			for (JTextField curField : fieldx){
 				String player = curField.getText();
@@ -128,10 +138,12 @@ public class Createplayer extends JPanel implements ActionListener{
 				}
 			}
 			
+			// write log
 			Log.newLine("");
 			Log.timestamp();
 			Log.addLine(Messages.getString("log.player")+" ");
 			
+			// write players in log
 			Set<String> playerset = playerlist.keySet();
 			int size = playerlist.size();
 			
@@ -146,6 +158,7 @@ public class Createplayer extends JPanel implements ActionListener{
 			}
 			Log.addLine("\n\n");
 			
+			// end creating players
 			this.setVisible(false);
 		}
 	}
