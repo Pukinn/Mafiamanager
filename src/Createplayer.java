@@ -16,32 +16,58 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Createplayer {
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
+public class Createplayer extends JPanel implements ActionListener{
+
+	private static final long serialVersionUID = 6208935351597319699L;
+	
 	private Map<String, Player> playerlist;
 	
+	// GUI
+	private JButton buttonAdd;
+	
 	public Createplayer(Map<String, Player> _playerlist){
-		playerlist = _playerlist;		
+		playerlist = _playerlist;
+		
+		this.setLayout(new GridLayout(0,1));
 	}
+	
+	public void create(){
+		buttonAdd = new JButton(Messages.getString("gui.add"));
+		buttonAdd.addActionListener(this);
+		this.add(buttonAdd);
+	}
+	
 	
 	public void namePlayers(){
 		
-		System.out.println("Bitte geben Sie die Spieler ein ('fertig' wenn Sie fertig sind):");
+		System.out.println(Messages.getString("typePlayer")); //$NON-NLS-1$
 		Scanner scanner = new Scanner(System.in);
 		
 		while(true){
 			String player = scanner.nextLine();
 			
-			if (player.equals("fertig")){
+			if (player.equals(Messages.getString("ready"))){ //$NON-NLS-1$
 				break;
 			}
 			else {
 				playerlist.put(player, new Player(player));
 			}
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

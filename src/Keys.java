@@ -37,26 +37,11 @@ public class Keys {
 		String strFigure = "err";
 		
 		switch (_num){
-		case 0: strFigure = "unknown"; break;
-		case 1: strFigure = "citizen"; break;
-		case 2: strFigure = "mafia"; break;
-		case 3: strFigure = "detective"; break;
-		case 4: strFigure = "soulsaver"; break;
-		}
-		
-		return strFigure;
-	}
-	
-	public static String IntToFigureGer(final int _num){
-		
-		String strFigure = "err";
-		
-		switch (_num){
-		case 0: strFigure = "unknown"; break;
-		case 1: strFigure = "Bürger"; break;
-		case 2: strFigure = "Mafia"; break;
-		case 3: strFigure = "Detektiv"; break;
-		case 4: strFigure = "Seelenretter"; break;
+		case 0: strFigure = Messages.getString("unknown"); break;
+		case 1: strFigure = Messages.getString("citizen"); break;
+		case 2: strFigure = Messages.getString("mafia"); break;
+		case 3: strFigure = Messages.getString("detective"); break;
+		case 4: strFigure = Messages.getString("soulsaver"); break;
 		}
 		
 		return strFigure;

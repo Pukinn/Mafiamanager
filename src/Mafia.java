@@ -92,7 +92,7 @@ public class Mafia {
 				try { Thread.sleep(10);}
 				catch (InterruptedException e) {}
 				
-				OutputToReferee.note("Wer ist "+Keys.IntToFigureGer(_fig)+"?");
+				OutputToReferee.note("Wer ist "+Keys.IntToFigure(_fig)+"?");
 			}
 			else if (player.getFigure() != 0){
 				System.err.println("Sie haben '"+name+"' schon festgelegt!");
@@ -100,7 +100,7 @@ public class Mafia {
 				try { Thread.sleep(10);}
 				catch (InterruptedException e) {}
 				
-				OutputToReferee.note("Wer ist noch "+Keys.IntToFigureGer(_fig)+"?");
+				OutputToReferee.note("Wer ist noch "+Keys.IntToFigure(_fig)+"?");
 			}
 			else {
 				playerlist.get(name).setFigure(_fig);

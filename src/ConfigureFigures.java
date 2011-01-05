@@ -30,13 +30,13 @@ public class ConfigureFigures {
 	
 	public void configure(){
 		
-		System.out.println("Wie viele von folgenden Figuren soll es geben?");
+		System.out.println(Messages.getString("howmuchFigures"));
 
 		Scanner scanner = new Scanner(System.in);
 		
 		int iPlayer = playerlist.size();
 		
-		System.out.println("Mafia: (von "+iPlayer+")");
+		System.out.println(Messages.getString("Mafia")+": ("+Messages.getString("of")+" "+iPlayer+")");
 		Keys.mafia = scanner.nextInt();
 		iPlayer -= Keys.mafia;
 		
@@ -50,13 +50,9 @@ public class ConfigureFigures {
 		
 		Keys.citizen = iPlayer;
 		
-		Log.newLine("Figures:");
+		Log.newLine(Messages.getString("figures")+":");
 		Log.newLine("citizens ("+Keys.citizen+"), mafia ("+Keys.mafia+"), soulsavers ("+Keys.soulsaver+"), detectives ("+Keys.detective+")");
 
-		System.out.println("\n"+"Karten zu verteilen:");
-		System.out.println("Bürger: "+Keys.citizen);
-		System.out.println("Mafiosi: "+Keys.mafia);
-		System.out.println("Detektive: "+Keys.detective);
-		System.out.println("Seelenretter: "+Keys.soulsaver);
+		//TODO Ausgabe wie viele Karten zu verteilen sind
 	}
 }

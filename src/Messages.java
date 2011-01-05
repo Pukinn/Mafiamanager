@@ -16,51 +16,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-import javax.swing.JFrame;
+public class Messages {
+	private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
 
-class Mafiamanager {
-	
-	public static void main(String args[])
-	{
-		// declare
-		Map<String, Player> playerlist = new HashMap<String, Player>();
-		
-		
-		JFrame frame = new JFrame();
-		frame.setTitle("Mafiamanager");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		
-		
-		
-		
-		
-	// BEFORE GAME
-		
-		// create player
-		Createplayer myPlayers = new Createplayer(playerlist);
-		myPlayers.namePlayers();
-		
-		// create log
-		Log.create();
-		
-		// configure figures
-		ConfigureFigures myConfigure = new ConfigureFigures(playerlist);
-		myConfigure.configure();
-		
-	// START GAME
-		
-		Game game = new Game(playerlist);
-		
-		game.nextNight();
-		
+	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
+			.getBundle(BUNDLE_NAME);
 
-		
-		
+	private Messages() {
 	}
-	
+
+	public static String getString(String key) {
+		try {
+			return RESOURCE_BUNDLE.getString(key);
+		} catch (MissingResourceException e) {
+			return '!' + key + '!';
+		}
+	}
 }
