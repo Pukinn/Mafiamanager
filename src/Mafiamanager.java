@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.swing.JFrame;
 
@@ -26,7 +26,7 @@ class Mafiamanager {
 	public static void main(String args[])
 	{
 		// declare
-		Map<String, Player> playerlist = new HashMap<String, Player>();
+		SortedMap<String, Player> playerlist = new TreeMap<String, Player>();
 		
 		
 		JFrame frame = new JFrame();
@@ -47,14 +47,14 @@ class Mafiamanager {
 		Log.create();
 		
 		// configure figures
-		ConfigureFigures myConfigure = new ConfigureFigures(playerlist);
-		myConfigure.configure();
+	//	ConfigureFigures myConfigure = new ConfigureFigures(playerlist);
+	//	myConfigure.configure();
 		
 	// START GAME
 		
-		Game game = new Game(playerlist);
+	//	Game game = new Game(playerlist);
 		
-		game.nextNight();
+	//	game.nextNight();
 		
 
 		

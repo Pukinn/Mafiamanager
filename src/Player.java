@@ -28,6 +28,7 @@ public class Player {
 		 *	4 = soulsaver
 		 */
 	private int alive;
+	private int number;
 	
 	private String officialFigure;
 
@@ -41,6 +42,14 @@ public class Player {
 	
 	public String name(){
 		return name;
+	}
+	
+	public void setNumber(int _num){
+		number = _num;
+	}
+	
+	public int getNumber(){
+		return number;
 	}
 	
 	public void setFigure(int _fig){

@@ -31,18 +31,12 @@ public class Log {
 
 		formatter = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
 		Date currentTime = new Date();
-		
 		String time = formatter.format(currentTime);
-		pathlog = "./Logs/"+time+".txt";
+		pathlog = "./Logs/"+time;
 		
-		try{
-		FileWriter log = new FileWriter(pathlog);
-		log.write("Beginning: "+time+"\n");
-		log.close();
-		}
-		catch(IOException e){
-		System.err.println(e);
-		}
+		timestamp();
+		addLine(Messages.getString("log.beginning"));
+		newLine("");
 	}
 	
 	public static void newLine(String _s){
