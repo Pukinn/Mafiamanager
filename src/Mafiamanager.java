@@ -87,25 +87,13 @@ class Mafiamanager {
 		
 		
 		// create player
-		Createplayer myPlayers = new Createplayer(mainframe);
+		DialogPlayer myPlayers = new DialogPlayer(mainframe);
 		playerlist.clear();
 		playerlist = myPlayers.getPlayer();
 		
 		drawPlayer();
 		
-		
-
-
-		
-	// START GAME
-		
-	//	Game game = new Game(playerlist);
-		
-	//	game.nextNight();
-		
-
-		
-		
+		DialogCharacters myFigures = new DialogCharacters(playerlist, mainframe);
 	}
 	
 	public static void drawPlayer(){

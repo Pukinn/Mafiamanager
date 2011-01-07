@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Createplayer extends JDialog implements ActionListener{
+public class DialogPlayer extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 6208935351597319699L;
 	
@@ -43,25 +43,23 @@ public class Createplayer extends JDialog implements ActionListener{
 
 	// gui
 	private GridBagConstraints con;
-	
-	private JFrame frame;
-		private JLabel labelTxt;
-		private JButton buttonAdd;
-		private JPanel panelPlayer;
-			private ArrayList<JPanel> panelx;
-				private ArrayList<JLabel> labelx;
-				private ArrayList<JTextField> fieldx;
-		private JButton buttonAcc;
+
+	private JLabel labelTxt;
+	private JButton buttonAdd;
+	private JPanel panelPlayer;
+		private ArrayList<JPanel> panelx;
+			private ArrayList<JLabel> labelx;
+			private ArrayList<JTextField> fieldx;
+	private JButton buttonAcc;
 	
 		
 	public SortedMap<String, Player> getPlayer(){ return playerlist; }
 		
-	public Createplayer(JFrame _frame){
+	public DialogPlayer(JFrame _frame){
 		super(_frame, true);
 		
 		// general
 		playerlist = new TreeMap<String, Player>();
-		frame = _frame;
 		Log.create();
 		
 		// gui
@@ -102,7 +100,7 @@ public class Createplayer extends JDialog implements ActionListener{
 		add(buttonAcc, con);
 		
 		pack();
-		setLocationRelativeTo(frame);
+		setLocationRelativeTo(_frame);
 		setVisible(true);
 	}
 	

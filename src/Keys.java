@@ -22,10 +22,10 @@ import java.util.ArrayList;
 public class Keys {
 
 	// figures
-	public static int citizen;
+	public static int villager;
 	public static int mafia;
 	public static int detective;
-	public static int soulsaver;
+	public static int doctor;
 	
 	// round informations
 	public static int round;
@@ -38,10 +38,10 @@ public class Keys {
 		
 		switch (_num){
 		case 0: strFigure = Messages.getString("unknown"); break;
-		case 1: strFigure = Messages.getString("citizen"); break;
+		case 1: strFigure = Messages.getString("villager"); break;
 		case 2: strFigure = Messages.getString("mafia"); break;
 		case 3: strFigure = Messages.getString("detective"); break;
-		case 4: strFigure = Messages.getString("soulsaver"); break;
+		case 4: strFigure = Messages.getString("doctor"); break;
 		}
 		
 		return strFigure;

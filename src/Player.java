@@ -20,23 +20,23 @@ public class Player {
 	
 	// player values
 	private String name;
-	private int figure;
+	private int character;
 		/*	0 = unknown
-		 *	1 = citizen
+		 *	1 = villager
 		 * 	2 = mafia
 		 * 	3 = detective
-		 *	4 = soulsaver
+		 *	4 = doctor
 		 */
 	private int alive;
 	private int number;
 	
-	private String officialFigure;
+	private String officialCharacter;
 
 	public Player(String _name){
 		
 		// create player
 		name = _name;
-		figure = 0;
+		character = 0;
 		alive = 1;
 	}
 	
@@ -52,20 +52,20 @@ public class Player {
 		return number;
 	}
 	
-	public void setFigure(int _fig){
-		figure = _fig;
+	public void setCharacter(int _fig){
+		character = _fig;
 	}
 	
-	public int getFigure(){
-		return figure;
+	public int getCharacter(){
+		return character;
 	}
 	
-	public void setOfficialFigure(String _fig){
-		officialFigure = _fig;
+	public void setOfficialCharacter(String _fig){
+		officialCharacter = _fig;
 	}
 	
-	public String getOfficialFigure(){
-		return officialFigure;
+	public String getOfficialCharacter(){
+		return officialCharacter;
 	}
 	
 	public int alive(){
@@ -76,11 +76,11 @@ public class Player {
 		alive -= 1;
 		
 		if (alive == 0){
-			switch (figure){
-			case 1: Keys.citizen -= 1; break;
+			switch (character){
+			case 1: Keys.villager -= 1; break;
 			case 2: Keys.mafia -= 1; break;
 			case 3: Keys.detective -= 1; break;
-			case 4: Keys.soulsaver -= 1; break;
+			case 4: Keys.doctor -= 1; break;
 			}
 			
 			Keys.killed.add(this);

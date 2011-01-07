@@ -38,14 +38,14 @@ public class Game {
 		Log.addLine("Round "+Keys.round+" (Night):"+"\n");
 		
 	// TASKLIST
-		Soulsaver soulsaver = new Soulsaver(playerlist);
-		soulsaver.night();
+	//	Doctor soulsaver = new Doctor(playerlist);
+	//	soulsaver.night();
 		
-		Mafia mafia = new Mafia(playerlist);
-		mafia.night();
+	//	Mafia mafia = new Mafia(playerlist);
+	//	mafia.night();
 		
-		Detective detective = new Detective(playerlist);
-		detective.night();	
+	//	Detective detective = new Detective(playerlist);
+	//	detective.night();	
 		
 		
 		OutputToReferee.command("Alle wachen auf.");
