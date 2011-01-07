@@ -24,14 +24,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Createplayer extends JPanel implements ActionListener{
+public class Createplayer extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 6208935351597319699L;
 	
@@ -52,30 +54,31 @@ public class Createplayer extends JPanel implements ActionListener{
 		private JButton buttonAcc;
 	
 		
+	public SortedMap<String, Player> getPlayer(){ return playerlist; }
 		
-	public Createplayer(SortedMap<String, Player> _playerlist, JFrame _frame){
+	public Createplayer(JFrame _frame){
+		super(_frame, true);
+		
 		// general
-		playerlist = _playerlist;
+		playerlist = new TreeMap<String, Player>();
 		frame = _frame;
+		Log.create();
 		
 		// gui
-		this.setLayout(new GridBagLayout());
+		setLayout(new GridBagLayout());
 		con = new GridBagConstraints();
 		con.gridx = 0;
-		con.gridy = 0;
-	}
-	
-	// create and show panel
-	public void create(){
+		
 		// text
 		labelTxt = new JLabel(Messages.getString("gui.createTxt"));
-		this.add(labelTxt, con);
+		con.gridy = 0;
+		add(labelTxt, con);
 		
 		// button 'add player'
 		buttonAdd = new JButton(Messages.getString("gui.add"));
 		buttonAdd.addActionListener(this);
 		con.gridy = 1;
-		this.add(buttonAdd, con);
+		add(buttonAdd, con);
 		
 		// labels and textfields for players
 		panelx = new ArrayList<JPanel>();
@@ -90,14 +93,19 @@ public class Createplayer extends JPanel implements ActionListener{
 		}
 
 		con.gridy = 2;
-		this.add(panelPlayer, con);
+		add(panelPlayer, con);
 		
 		// button accept
 		buttonAcc = new JButton(Messages.getString("gui.acc"));
 		buttonAcc.addActionListener(this);
 		con.gridy = 3;
-		this.add(buttonAcc, con);
+		add(buttonAcc, con);
+		
+		pack();
+		setLocationRelativeTo(frame);
+		setVisible(true);
 	}
+	
 	
 	// add additional player
 	public void addPlayer(){
@@ -117,14 +125,12 @@ public class Createplayer extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		
 		// 'add player' pressed
-		if (event.getActionCommand().equals(Messages.getString("gui.add"))){
-			
+		if (event.getSource() == buttonAdd){
 			addPlayer();
-			frame.pack();
-			this.revalidate();
+			pack();
 		}
 		// 'accept' pressed
-		else if (event.getActionCommand().equals(Messages.getString("gui.acc"))){
+		else if (event.getSource() == buttonAcc){
 			
 			// generate players
 			int count = 1;
@@ -153,13 +159,14 @@ public class Createplayer extends JPanel implements ActionListener{
 					
 					if (i == num){
 						Log.addLine(curPlayer+"("+num+"), ");
+						break;
 					}
 				}
 			}
 			Log.addLine("\n\n");
 			
 			// end creating players
-			this.setVisible(false);
+			setVisible(false);
 		}
 	}
 }
