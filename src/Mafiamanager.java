@@ -16,39 +16,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-class Mafiamanager implements ActionListener{
+class Mafiamanager{
 	
 	// general
 	private static SortedMap<String, Player> playerlist;
 	
 	// GUI
 	private static GridBagConstraints conFrame;
-	private static GridBagConstraints conPlayer;
 	
 	private static JFrame mainframe;
-		private static Controler panelControler;
-		private static JPanel panelPlayers;
-			private static ArrayList<JPanel> panelXplayer;
-				private static ArrayList<JLabel> labelXplayer;
-		private static JPanel panelInteract;
-			private static JButton buttonStartnight;
+		private static Controller panelControler;
 		private static Board board;
 	
 	public static void main(String args[])
@@ -60,49 +44,29 @@ class Mafiamanager implements ActionListener{
 		for (int i=1; i<=5; i++){
 			String player = Messages.getString("gui.player")+" "+i;
 			playerlist.put(player, new Player(player));
-			playerlist.get(player).setNumber(i);
+			playerlist.get(player).number = i;
 		}
 		
-		
-		
+
 		// GUI
+		mainframe = new JFrame();
+		board = new Board();
+		panelControler = new Controller(playerlist, board, mainframe);
 		
 		// frame
-		mainframe = new JFrame();
 		mainframe.setLayout(new GridBagLayout());
 		conFrame = new GridBagConstraints();
 		
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		panelControler = new Controler(playerlist);
+		// controler
 		conFrame.gridx = 0;
 		conFrame.gridy = 0;
 		mainframe.add(panelControler, conFrame);
 		panelControler.player();
 		
-		// panel players
-/*		panelPlayers = new JPanel(new GridBagLayout());
-		conFrame.gridx = 0;
-		conFrame.gridy = 0;
-		mainframe.add(panelPlayers, conFrame);
-		
-		panelXplayer = new ArrayList<JPanel>();
-		labelXplayer = new ArrayList<JLabel>();
-		
-		conPlayer = new GridBagConstraints();
-		conPlayer.insets = new Insets(0,10,0,10);
-
-		drawPlayer();
-		
-		// panel interact
-		
-		panelInteract = new JPanel(new GridLayout(1,0));
-		conFrame.gridy = 1;
-		mainframe.add(panelInteract, conFrame);
-*/		
 		// board
-		board = new Board();
 		conFrame.gridy = 1;
 		conFrame.anchor = GridBagConstraints.NORTHWEST;
 
@@ -113,99 +77,22 @@ class Mafiamanager implements ActionListener{
 		
 	// BEFORE GAME
 		// create player
-		DialogPlayer myPlayers = new DialogPlayer(mainframe);
-		playerlist.clear();
-		playerlist = myPlayers.getPlayer();
+		DialogPlayer myPlayers = new DialogPlayer(playerlist, mainframe);
 		panelControler.redrawPlayer(playerlist);
 		mainframe.pack();
 		
 		// create figures
-		DialogCharacters myFigures = new DialogCharacters(playerlist, mainframe);
+		DialogCharacters myCharacters = new DialogCharacters(playerlist, mainframe);
 		
 		//deal out
 		board.head(Messages.getString("board.n.dealout"));
-		board.note(Messages.getString("board.villager")+" "+Keys.villager);
-		board.note(Messages.getString("board.mafia")+" "+Keys.mafia);
-		board.note(Messages.getString("board.detective")+" "+Keys.detective);
-		board.note(Messages.getString("board.doctor")+" "+Keys.doctor);
-		
-		
-		
-		
-		buttonStartnight = new JButton(Messages.getString("gui.startnight"));
-	//	buttonStartnight.addActionListener();
-		
-		
-		mainframe.pack();
-		
-		// GAME
-		Keys.round = 1;
-		
-		nigth();
-		
-		
-	}
-	
-	public static void nigth(){
-		
-		board.command(Messages.getString("board.c.allsleep"));
-		
-		// first night
-		if (Keys.round == 1){
-			
-		}
-		
-		
-	}
-	
-	public static void day(){
-		
-		Keys.round++;
-	}
-	
-	public static void drawPlayer(){
-		
-		for (JPanel curPanel : panelXplayer){
-			curPanel.setVisible(false);
-			curPanel = null;
-		}
-		for (JLabel curLabel : labelXplayer){
-			curLabel.setVisible(false);
-			curLabel = null;
-		}
-		
-		panelXplayer.clear();
-		labelXplayer.clear();
-		
-		Set<String> playerset = playerlist.keySet();
-		int size = playerlist.size();
-		
-		for (int i=1; i<=size; i++){
-			for (String player : playerset){
-				int num = playerlist.get(player).getNumber();
-				
-				if (i == num){
-					panelXplayer.add(new JPanel(new GridLayout(0,1)));
-					JPanel curPanel = panelXplayer.get(num-1);
-					
-					conPlayer.gridy = 0;
-					conPlayer.gridx = num-1;
-					panelPlayers.add(curPanel, conPlayer);
-					
-					labelXplayer.add(new JLabel(playerlist.get(player).name()));
-					curPanel.add(labelXplayer.get(num-1));
-					break;
-				}
-			}
-		}
-		
-		mainframe.pack();
-	}
+		board.note(Messages.getString("board.n.villager"), Integer.toString(Keys.villager));
+		board.note(Messages.getString("board.n.mafia"), Integer.toString(Keys.mafia));
+		board.note(Messages.getString("board.n.detective"), Integer.toString(Keys.detective));
+		board.note(Messages.getString("board.n.doctor"), Integer.toString(Keys.doctor));
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+		panelControler.interact();
 		
+		mainframe.pack();
 	}
-	
 }

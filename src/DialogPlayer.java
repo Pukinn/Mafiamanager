@@ -51,15 +51,12 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			private ArrayList<JLabel> labelx;
 			private ArrayList<JTextField> fieldx;
 	private JButton buttonAcc;
-	
-		
-	public SortedMap<String, Player> getPlayer(){ return playerlist; }
-		
-	public DialogPlayer(JFrame _frame){
+
+	public DialogPlayer(SortedMap<String, Player> _playerlist, JFrame _frame){
 		super(_frame, true);
 		
 		// general
-		playerlist = new TreeMap<String, Player>();
+		playerlist = _playerlist;
 		Log.create();
 		
 		// gui
@@ -129,6 +126,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 		}
 		// 'accept' pressed
 		else if (event.getSource() == buttonAcc){
+			playerlist.clear();
 			
 			// generate players
 			int count = 1;
@@ -137,7 +135,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 				
 				if (!player.equals("")){
 					playerlist.put(player, new Player(player));
-					playerlist.get(player).setNumber(count);
+					playerlist.get(player).number = count;
 					count++;
 				}
 			}
@@ -152,7 +150,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			
 			for (int i=1; i<=size; i++){
 				for (String curPlayer : playerset){
-					int num = playerlist.get(curPlayer).getNumber();
+					int num = playerlist.get(curPlayer).number;
 					
 					if (i == num){
 						Log.addLine(curPlayer+"("+num+"), ");
@@ -161,7 +159,6 @@ public class DialogPlayer extends JDialog implements ActionListener{
 				}
 			}
 			Log.newLine("");
-			
 			// end creating players
 			setVisible(false);
 		}

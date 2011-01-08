@@ -19,75 +19,39 @@
 public class Player {
 	
 	// player values
-	private String name;
-	private int character;
+	public String name;
+	public int character;
 		/*	0 = unknown
 		 *	1 = villager
 		 * 	2 = mafia
 		 * 	3 = detective
 		 *	4 = doctor
 		 */
-	private int alive;
-	private int number;
+	public boolean alive;
+	public boolean isprotected;
+	public int number;
 	
-	private String officialCharacter;
+	public String officialCharacter;
 
 	public Player(String _name){
 		
 		// create player
 		name = _name;
+		System.out.println(name);
 		character = 0;
-		alive = 1;
-	}
-	
-	public String name(){
-		return name;
-	}
-	
-	public void setNumber(int _num){
-		number = _num;
-	}
-	
-	public int getNumber(){
-		return number;
-	}
-	
-	public void setCharacter(int _fig){
-		character = _fig;
-	}
-	
-	public int getCharacter(){
-		return character;
-	}
-	
-	public void setOfficialCharacter(String _fig){
-		officialCharacter = _fig;
-	}
-	
-	public String getOfficialCharacter(){
-		return officialCharacter;
-	}
-	
-	public int alive(){
-		return alive;
+		alive = true;
 	}
 	
 	public void kill(){
-		alive -= 1;
+		alive = false;
 		
-		if (alive == 0){
-			switch (character){
-			case 1: Keys.villager -= 1; break;
-			case 2: Keys.mafia -= 1; break;
-			case 3: Keys.detective -= 1; break;
-			case 4: Keys.doctor -= 1; break;
-			}
-			
-			Keys.killed.add(this);
+		switch (character){
+		case 1: Keys.villager -= 1; break;
+		case 2: Keys.mafia -= 1; break;
+		case 3: Keys.detective -= 1; break;
+		case 4: Keys.doctor -= 1; break;
 		}
-	}
-	
-	public void protect(){
-		alive += 1;
+			
+		Keys.killed.add(this);
 	}
 }

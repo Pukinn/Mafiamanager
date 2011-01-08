@@ -17,9 +17,11 @@
 */
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +37,7 @@ public class Board extends JPanel {
 		con = new GridBagConstraints();
 		con.gridy = GridBagConstraints.RELATIVE;
 		con.anchor = GridBagConstraints.WEST;
+		con.insets = new Insets(0,10,0,0);
 	}
 	
 	public void command(String _text){
@@ -54,11 +57,11 @@ public class Board extends JPanel {
 		add(text, con);
 	}
 	
-	public void note(String _text){
+	public void note(String _note, String _text){
 		con.gridwidth = 1;
 		
 		con.gridx = 0;
-		JLabel note = new JLabel(Messages.getString("board.note"));
+		JLabel note = new JLabel(_note);
 		note.setFont(note.getFont().deriveFont(Font.ITALIC));
 		add(note, con);
 		
