@@ -21,16 +21,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-class Mafiamanager {
+class Mafiamanager implements ActionListener{
 	
 	// general
 	private static SortedMap<String, Player> playerlist;
@@ -40,9 +43,12 @@ class Mafiamanager {
 	private static GridBagConstraints conPlayer;
 	
 	private static JFrame mainframe;
+		private static Controler panelControler;
 		private static JPanel panelPlayers;
 			private static ArrayList<JPanel> panelXplayer;
 				private static ArrayList<JLabel> labelXplayer;
+		private static JPanel panelInteract;
+			private static JButton buttonStartnight;
 		private static Board board;
 	
 	public static void main(String args[])
@@ -69,8 +75,14 @@ class Mafiamanager {
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		panelControler = new Controler(playerlist);
+		conFrame.gridx = 0;
+		conFrame.gridy = 0;
+		mainframe.add(panelControler, conFrame);
+		panelControler.player();
+		
 		// panel players
-		panelPlayers = new JPanel(new GridBagLayout());
+/*		panelPlayers = new JPanel(new GridBagLayout());
 		conFrame.gridx = 0;
 		conFrame.gridy = 0;
 		mainframe.add(panelPlayers, conFrame);
@@ -81,10 +93,15 @@ class Mafiamanager {
 		conPlayer = new GridBagConstraints();
 		conPlayer.insets = new Insets(0,10,0,10);
 
-		
-		
 		drawPlayer();
 		
+		// panel interact
+		
+		panelInteract = new JPanel(new GridLayout(1,0));
+		conFrame.gridy = 1;
+		mainframe.add(panelInteract, conFrame);
+*/		
+		// board
 		board = new Board();
 		conFrame.gridy = 1;
 		conFrame.anchor = GridBagConstraints.NORTHWEST;
@@ -99,25 +116,51 @@ class Mafiamanager {
 		DialogPlayer myPlayers = new DialogPlayer(mainframe);
 		playerlist.clear();
 		playerlist = myPlayers.getPlayer();
-		
-		drawPlayer();
+		panelControler.redrawPlayer(playerlist);
+		mainframe.pack();
 		
 		// create figures
 		DialogCharacters myFigures = new DialogCharacters(playerlist, mainframe);
 		
 		//deal out
-		board.head(Messages.getString("board.dealout"));
+		board.head(Messages.getString("board.n.dealout"));
 		board.note(Messages.getString("board.villager")+" "+Keys.villager);
 		board.note(Messages.getString("board.mafia")+" "+Keys.mafia);
 		board.note(Messages.getString("board.detective")+" "+Keys.detective);
 		board.note(Messages.getString("board.doctor")+" "+Keys.doctor);
 		
+		
+		
+		
+		buttonStartnight = new JButton(Messages.getString("gui.startnight"));
+	//	buttonStartnight.addActionListener();
+		
+		
 		mainframe.pack();
 		
+		// GAME
+		Keys.round = 1;
+		
+		nigth();
 		
 		
+	}
+	
+	public static void nigth(){
+		
+		board.command(Messages.getString("board.c.allsleep"));
+		
+		// first night
+		if (Keys.round == 1){
+			
+		}
 		
 		
+	}
+	
+	public static void day(){
+		
+		Keys.round++;
 	}
 	
 	public static void drawPlayer(){
@@ -157,6 +200,12 @@ class Mafiamanager {
 		}
 		
 		mainframe.pack();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
