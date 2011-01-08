@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.SortedMap;
 
 import javax.swing.JButton;
@@ -175,6 +174,14 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			Keys.mafia = StringToInt(fieldx.get(0).getText());
 			Keys.detective = StringToInt(fieldx.get(1).getText());
 			Keys.doctor = StringToInt(fieldx.get(2).getText());
+			
+			Log.timestamp();
+			Log.addLine(Messages.getString("log.character")+" ");
+			if (Keys.villager > 0) Log.addLine(Messages.getString("villager")+"("+Keys.villager+"), ");
+			if (Keys.mafia > 0) Log.addLine(Messages.getString("mafia")+"("+Keys.mafia+"), ");
+			if (Keys.detective > 0) Log.addLine(Messages.getString("detective")+"("+Keys.detective+"), ");
+			if (Keys.doctor > 0) Log.addLine(Messages.getString("doctor")+"("+Keys.doctor+"), ");
+			Log.newLine("");
 			
 			setVisible(false);
 		}

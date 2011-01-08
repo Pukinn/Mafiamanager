@@ -16,13 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedMap;
@@ -38,12 +36,14 @@ class Mafiamanager {
 	private static SortedMap<String, Player> playerlist;
 	
 	// GUI
-	private static GridBagConstraints con;
+	private static GridBagConstraints conFrame;
+	private static GridBagConstraints conPlayer;
 	
 	private static JFrame mainframe;
 		private static JPanel panelPlayers;
 			private static ArrayList<JPanel> panelXplayer;
 				private static ArrayList<JLabel> labelXplayer;
+		private static Board board;
 	
 	public static void main(String args[])
 	{
@@ -64,28 +64,37 @@ class Mafiamanager {
 		// frame
 		mainframe = new JFrame();
 		mainframe.setLayout(new GridBagLayout());
-		con = new GridBagConstraints();
+		conFrame = new GridBagConstraints();
 		
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// panel players
 		panelPlayers = new JPanel(new GridBagLayout());
-		con.gridx = 0;
-		con.gridy = 0;
-		mainframe.add(panelPlayers, con);
+		conFrame.gridx = 0;
+		conFrame.gridy = 0;
+		mainframe.add(panelPlayers, conFrame);
 		
 		panelXplayer = new ArrayList<JPanel>();
 		labelXplayer = new ArrayList<JLabel>();
 		
+		conPlayer = new GridBagConstraints();
+		conPlayer.insets = new Insets(0,10,0,10);
+
+		
+		
 		drawPlayer();
 		
+		board = new Board();
+		conFrame.gridy = 1;
+		conFrame.anchor = GridBagConstraints.NORTHWEST;
+
+		mainframe.add(board, conFrame);
+		
+		mainframe.pack();
 		mainframe.setVisible(true);
 		
 	// BEFORE GAME
-		
-		
-		
 		// create player
 		DialogPlayer myPlayers = new DialogPlayer(mainframe);
 		playerlist.clear();
@@ -93,7 +102,22 @@ class Mafiamanager {
 		
 		drawPlayer();
 		
+		// create figures
 		DialogCharacters myFigures = new DialogCharacters(playerlist, mainframe);
+		
+		//deal out
+		board.head(Messages.getString("board.dealout"));
+		board.note(Messages.getString("board.villager")+" "+Keys.villager);
+		board.note(Messages.getString("board.mafia")+" "+Keys.mafia);
+		board.note(Messages.getString("board.detective")+" "+Keys.detective);
+		board.note(Messages.getString("board.doctor")+" "+Keys.doctor);
+		
+		mainframe.pack();
+		
+		
+		
+		
+		
 	}
 	
 	public static void drawPlayer(){
@@ -121,9 +145,9 @@ class Mafiamanager {
 					panelXplayer.add(new JPanel(new GridLayout(0,1)));
 					JPanel curPanel = panelXplayer.get(num-1);
 					
-					con.gridy = 0;
-					con.gridx = num-1;
-					panelPlayers.add(curPanel, con);
+					conPlayer.gridy = 0;
+					conPlayer.gridx = num-1;
+					panelPlayers.add(curPanel, conPlayer);
 					
 					labelXplayer.add(new JLabel(playerlist.get(player).name()));
 					curPanel.add(labelXplayer.get(num-1));

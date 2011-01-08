@@ -143,7 +143,6 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			}
 			
 			// write log
-			Log.newLine("");
 			Log.timestamp();
 			Log.addLine(Messages.getString("log.player")+" ");
 			
@@ -161,7 +160,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 					}
 				}
 			}
-			Log.addLine("\n\n");
+			Log.newLine("");
 			
 			// end creating players
 			setVisible(false);
