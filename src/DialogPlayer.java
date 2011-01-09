@@ -24,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -151,7 +150,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			for (int i=1; i<=size; i++){
 				for (String curPlayer : playerset){
 					int num = playerlist.get(curPlayer).number;
-					
+
 					if (i == num){
 						Log.addLine(curPlayer+"("+num+"), ");
 						break;

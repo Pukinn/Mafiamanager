@@ -37,7 +37,6 @@ public class Player {
 		
 		// create player
 		name = _name;
-		System.out.println(name);
 		character = 0;
 		alive = true;
 	}

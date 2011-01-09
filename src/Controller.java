@@ -39,11 +39,6 @@ public class Controller extends JPanel implements ActionListener{
 	private SortedMap<String, Player> playerlist;
 	private Board board;
 	
-	// phases
-	private boolean phasedoctor;
-	private boolean phasemafia;
-	private boolean phasedetective;
-	
 	// gui
 	private GridBagConstraints con;
 	private GridBagConstraints conPlayer;
@@ -80,7 +75,6 @@ public class Controller extends JPanel implements ActionListener{
 		labelXplayer = new ArrayList<JLabel>();
 		
 		redrawPlayer(playerlist);
-		System.out.println("redraw: "+playerlist.size());
 	}
 	
 	public void redrawPlayer(SortedMap<String, Player> playerlist){
@@ -100,8 +94,8 @@ public class Controller extends JPanel implements ActionListener{
 		int size = playerlist.size();
 		
 		for (int i=1; i<=size; i++){
-			for (String player : playerset){
-				int num = playerlist.get(player).number;
+			for (String playerStr : playerset){
+				int num = playerlist.get(playerStr).number;
 				
 				if (i == num){
 					panelXplayer.add(new JPanel(new GridBagLayout()));
@@ -111,28 +105,11 @@ public class Controller extends JPanel implements ActionListener{
 					con.gridx = GridBagConstraints.RELATIVE;
 					panelPlayers.add(curPanel, con);
 					
-					labelXplayer.add(new JLabel(playerlist.get(player).name));
+					labelXplayer.add(new JLabel(playerStr));
 					curPanel.add(labelXplayer.get(num-1), conPlayer);
 					break;
 				}
 			}
-		}
-	}
-	
-	private void addButtons(){
-		for (JLabel curLabel : labelXplayer){
-			JButton buttonSet = new JButton(Messages.getString("gui.set"));
-			buttonSet.addActionListener(this);
-			buttonSet.setActionCommand(curLabel.getText());
-			curLabel.getParent().add(buttonSet, conPlayer);
-			
-			frame.pack();
-		}
-	}
-	
-	private void delButtons(){
-		for (JPanel curPanel : panelXplayer){
-			curPanel.getComponent(1).setVisible(false);
 		}
 	}
 
@@ -158,8 +135,18 @@ public class Controller extends JPanel implements ActionListener{
 		
 		// TASKLIST
 		doctor();
-
+		mafia();
+		detective();
 		
+		if (Keys.round == 1){
+			Set<String> playerset = playerlist.keySet();
+			for (String playerStr : playerset){
+				if (playerlist.get(playerStr).character == 0){
+					playerlist.get(playerStr).character = 1;
+				}
+			}
+
+		}
 	}
 	
 	private void day(){
@@ -168,32 +155,38 @@ public class Controller extends JPanel implements ActionListener{
 	}
 	
 	private void doctor(){ if (Keys.doctor > 0){
-		phasedoctor = true;
-		
 		// first night
 		if (Keys.round == 1){
-			addButtons();
+			DialogSet dialog = new DialogSet(playerlist, frame, Keys.doctor, Messages.getString("gui.whosdoctor"));
+			ArrayList<String> doctors = dialog.getPlayer();
+			for (String doctor : doctors){
+				playerlist.get(doctor).character = 4;
+			}
 		}
 	}
 	}
 	
 	private void mafia(){ if (Keys.mafia > 0){
-		phasemafia = true;
-		
 		// first night
 		if (Keys.round == 1){
-			addButtons();
+			DialogSet dialog = new DialogSet(playerlist, frame, Keys.mafia, Messages.getString("gui.whosmafia"));
+			ArrayList<String> mafias = dialog.getPlayer();
+			for (String mafia : mafias){
+				playerlist.get(mafia).character = 2;
+			}
 		}
 		
 	}
 	}
 	
 	private void detective(){ if (Keys.detective > 0){
-		phasedetective = true;
-		
 		// first night
 		if (Keys.round == 1){
-			addButtons();
+			DialogSet dialog = new DialogSet(playerlist, frame, Keys.detective, Messages.getString("gui.whosdetective"));
+			ArrayList<String> detectives = dialog.getPlayer();
+			for (String detective : detectives){
+				playerlist.get(detective).character = 2;
+			}
 		}
 		
 	}	
@@ -201,48 +194,12 @@ public class Controller extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent event) {
 		
-		int doctors = 0;
-		int mafia = 0;
-		int detectives = 0;
-		
 		if (event.getActionCommand().equals("startnight")){
 			night();
 			buttonStartnight.setVisible(false);
 			frame.pack();
 		}
 		else {
-			Player player = playerlist.get(event.getActionCommand());
-			
-			if (phasedoctor){
-			player.character = 4;
-			((JButton) event.getSource()).setEnabled(false);
-			doctors++;
-			
-				if (doctors == Keys.doctor){
-					delButtons();
-					phasedoctor = false;
-				}
-			}
-			else if (phasemafia){
-				player.character = 2;
-				((JButton) event.getSource()).setEnabled(false);
-				mafia++;
-				
-					if (mafia == Keys.doctor){
-						delButtons();
-						phasemafia = false;
-					}
-			}
-			else if (phasedetective){
-				player.character = 3;
-				((JButton) event.getSource()).setEnabled(false);
-				detectives++;
-				
-					if (detectives == Keys.doctor){
-						delButtons();
-						phasedetective = false;
-					}
-			}
 		}
 	}
 

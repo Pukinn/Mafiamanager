@@ -17,7 +17,6 @@
 */
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -30,51 +29,55 @@ public class Board extends JPanel {
 
 	private static final long serialVersionUID = 6909929629490253770L;
 
-	private GridBagConstraints con;
+	private GridBagConstraints conBoard;
+	private GridBagConstraints conPan;
 	
 	public Board(){
 		setLayout(new GridBagLayout());
-		con = new GridBagConstraints();
-		con.gridy = GridBagConstraints.RELATIVE;
-		con.anchor = GridBagConstraints.WEST;
-		con.insets = new Insets(0,10,0,0);
+		conPan = new GridBagConstraints();
+		conPan.anchor = GridBagConstraints.FIRST_LINE_START;
+		
+		conBoard = new GridBagConstraints();
+		conBoard.gridy = GridBagConstraints.RELATIVE;
+		conBoard.anchor = GridBagConstraints.WEST;
+		conBoard.insets = new Insets(0,10,0,0);
 	}
 	
 	public void command(String _text){
-		con.gridwidth = 1;
+		conBoard.gridwidth = 1;
 		
-		con.gridx = 0;
+		conBoard.gridx = 0;
 		
 		JLabel command = new JLabel(Messages.getString("board.command"));
 		command.setForeground(Color.green);
 		command.setFont(command.getFont().deriveFont(Font.ITALIC));
-		add(command, con);
+		add(command, conBoard);
 		
-		con.gridx = 1;
+		conBoard.gridx = 1;
 		JLabel text = new JLabel(_text);
 		text.setForeground(Color.green);
 		text.setFont(text.getFont().deriveFont(Font.PLAIN));
-		add(text, con);
+		add(text, conBoard);
 	}
 	
 	public void note(String _note, String _text){
-		con.gridwidth = 1;
+		conBoard.gridwidth = 1;
 		
-		con.gridx = 0;
+		conBoard.gridx = 0;
 		JLabel note = new JLabel(_note);
 		note.setFont(note.getFont().deriveFont(Font.ITALIC));
-		add(note, con);
+		add(note, conBoard);
 		
-		con.gridx = 1;
+		conBoard.gridx = 1;
 		JLabel text = new JLabel(_text);
 		text.setFont(text.getFont().deriveFont(Font.PLAIN));
-		add(text, con);
+		add(text, conBoard);
 	}
 	
 	public void head(String _text){
-		con.gridwidth = 2;
-		con.gridx = 0;
+		conBoard.gridwidth = 2;
+		conBoard.gridx = 0;
 		JLabel text = new JLabel(_text);
-		add(text, con);
+		add(text, conBoard);
 	}
 }

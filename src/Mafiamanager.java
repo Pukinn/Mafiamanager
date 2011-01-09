@@ -32,7 +32,7 @@ class Mafiamanager{
 	private static GridBagConstraints conFrame;
 	
 	private static JFrame mainframe;
-		private static Controller panelControler;
+		private static Controller panelController;
 		private static Board board;
 	
 	public static void main(String args[])
@@ -51,7 +51,7 @@ class Mafiamanager{
 		// GUI
 		mainframe = new JFrame();
 		board = new Board();
-		panelControler = new Controller(playerlist, board, mainframe);
+		panelController = new Controller(playerlist, board, mainframe);
 		
 		// frame
 		mainframe.setLayout(new GridBagLayout());
@@ -63,12 +63,12 @@ class Mafiamanager{
 		// controler
 		conFrame.gridx = 0;
 		conFrame.gridy = 0;
-		mainframe.add(panelControler, conFrame);
-		panelControler.player();
+		mainframe.add(panelController, conFrame);
+		panelController.player();
 		
 		// board
 		conFrame.gridy = 1;
-		conFrame.anchor = GridBagConstraints.NORTHWEST;
+		conFrame.anchor = GridBagConstraints.FIRST_LINE_START;
 
 		mainframe.add(board, conFrame);
 		
@@ -78,7 +78,7 @@ class Mafiamanager{
 	// BEFORE GAME
 		// create player
 		DialogPlayer myPlayers = new DialogPlayer(playerlist, mainframe);
-		panelControler.redrawPlayer(playerlist);
+		panelController.redrawPlayer(playerlist);
 		mainframe.pack();
 		
 		// create figures
@@ -91,7 +91,7 @@ class Mafiamanager{
 		board.note(Messages.getString("board.n.detective"), Integer.toString(Keys.detective));
 		board.note(Messages.getString("board.n.doctor"), Integer.toString(Keys.doctor));
 
-		panelControler.interact();
+		panelController.interact();
 		
 		mainframe.pack();
 	}
