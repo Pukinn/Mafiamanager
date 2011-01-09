@@ -23,8 +23,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -44,6 +42,7 @@ public class Controller extends JPanel implements ActionListener{
 	// roundsaves
 	private int round;
 	private String deprotectPlayer;
+	private ArrayList<String> died;
 	
 	// gui
 	private GridBagConstraints con;
@@ -63,6 +62,7 @@ public class Controller extends JPanel implements ActionListener{
 		setLayout(new GridLayout(0,1));
 		
 		round = 1;
+		died = new ArrayList<String>();
 		
 		con = new GridBagConstraints();
 		conPlayer = new GridBagConstraints();
@@ -157,11 +157,42 @@ public class Controller extends JPanel implements ActionListener{
 		
 		// after night
 		playerlist.get(deprotectPlayer).isprotected = false;
+		
+		board.command(Messages.getString("board.c.allawake"));
+		if (died.size() == 0){
+			board.command(Messages.getString("board.c.nodied"));
+		}
+		else {
+			board.command(Messages.getString("board.c.isdied"));
+			for (String player : died){
+				playerlist.get(player).alive = false;
+				board.note("", player);
+			}
+		}
+		
+		died.clear();
+		
+		day();
 	}
 	
 	private void day(){
+		DialogSet lynch = new DialogSet(
+				playerlist,
+				frame,
+				1,
+				Messages.getString("gui.lynch"),
+				"nodead");
+		Player player = playerlist.get(lynch.getPlayer().get(0));
+		
+		// output
+		board.note("", "'"+player.name+"' "+Messages.getString("board.n.lynched"));
 		
 		round++;
+		
+		board.head(" ");
+		board.head(Messages.getString("board.n.day")+" "+round);
+		
+		night();
 	}
 	
 	private void doctor(){ if (Keys.doctor > 0){
@@ -182,21 +213,28 @@ public class Controller extends JPanel implements ActionListener{
 		}
 		
 		// every night
+		// get player
 		DialogSet actdoctor = new DialogSet(
 				playerlist,
 				frame,
 				1,
 				Messages.getString("gui.actdoctor"),
-				"nomafia");
+				"nodead");
 		Player player = playerlist.get(actdoctor.getPlayer().get(0));
+		
+		// action
 		player.isprotected = true;
 		deprotectPlayer = player.name;
 		
+		// output
 		board.note("", "'"+player.name+"' "+Messages.getString("board.n.patronized"));
+		board.command(Messages.getString("board.c.doctorssleep"));
 	}
 	}
 	
 	private void mafia(){ if (Keys.mafia > 0){
+		board.command(Messages.getString("board.c.mafiaawake"));
+		
 		// first night
 		if (round == 1){
 			DialogSet dialog = new DialogSet(
@@ -211,10 +249,30 @@ public class Controller extends JPanel implements ActionListener{
 			}
 		}
 		
+		// every night
+		// get player
+		DialogSet actmafia = new DialogSet(
+				playerlist,
+				frame,
+				1,
+				Messages.getString("gui.actmafia"),
+				"nodead");
+		Player player = playerlist.get(actmafia.getPlayer().get(0));
+		
+		// action
+		if (!player.isprotected){
+			died.add(player.name);
+		}
+		
+		// output
+		board.note("", "'"+player.name+"' "+Messages.getString("board.n.trykill"));
+		board.command(Messages.getString("board.c.mafiasleep"));
 	}
 	}
 	
 	private void detective(){ if (Keys.detective > 0){
+		board.command(Messages.getString("board.c.detectiveawake"));
+		
 		// first night
 		if (round == 1){
 			DialogSet dialog = new DialogSet(
@@ -222,13 +280,33 @@ public class Controller extends JPanel implements ActionListener{
 					frame,
 					Keys.detective,
 					Messages.getString("gui.whosdetective"),
-					"onlyunknown");
+					"nodead");
 			ArrayList<String> detectives = dialog.getPlayer();
 			for (String detective : detectives){
 				playerlist.get(detective).character = 2;
 			}
 		}
 		
+		// every night
+		// get player
+		DialogSet actdetective = new DialogSet(
+				playerlist,
+				frame,
+				1,
+				Messages.getString("gui.actdetective"),
+				"nodead");
+		Player player = playerlist.get(actdetective.getPlayer().get(0));
+		
+		// output
+		board.note("", "'"+player.name+"' "+Messages.getString("board.n.askfor"));
+		
+		if (player.character == 2){
+			board.command(Messages.getString("board.c.ismafia"));
+		} else {
+			board.command(Messages.getString("board.c.isnomafia"));
+		}
+		
+		board.command(Messages.getString("board.c.detectivessleep"));
 	}	
 	}
 	

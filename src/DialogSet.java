@@ -94,6 +94,7 @@ public class DialogSet extends JDialog implements ActionListener{
 		if (_param.equals("all")) { }
 		else if (_param.equals("onlyunknown")) { onlyunknown(); }
 		else if (_param.equals("nomafia")) { nomafia(); }
+		else if (_param.equals("nodead")) { nodead(); }
 		else { System.err.println(Messages.getString("err.nopar")); }
 		
 		
@@ -115,6 +116,15 @@ public class DialogSet extends JDialog implements ActionListener{
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
 			if (player.character == 2 || !player.alive){
+				button.setEnabled(false);
+			}
+		}
+	}
+	
+	private void nodead(){
+		for (JButton button: buttons){
+			Player player = playerlist.get(button.getText());
+			if (!player.alive){
 				button.setEnabled(false);
 			}
 		}

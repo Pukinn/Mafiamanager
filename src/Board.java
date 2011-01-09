@@ -22,6 +22,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -31,8 +32,11 @@ public class Board extends JPanel {
 
 	private GridBagConstraints conBoard;
 	private GridBagConstraints conPan;
+	private JFrame frame;
 	
-	public Board(){
+	public Board(JFrame _frame){
+		frame = _frame;
+		
 		setLayout(new GridBagLayout());
 		conPan = new GridBagConstraints();
 		conPan.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -58,6 +62,8 @@ public class Board extends JPanel {
 		text.setForeground(Color.green);
 		text.setFont(text.getFont().deriveFont(Font.PLAIN));
 		add(text, conBoard);
+		
+		frame.pack();
 	}
 	
 	public void note(String _note, String _text){
@@ -72,6 +78,8 @@ public class Board extends JPanel {
 		JLabel text = new JLabel(_text);
 		text.setFont(text.getFont().deriveFont(Font.PLAIN));
 		add(text, conBoard);
+		
+		frame.pack();
 	}
 	
 	public void head(String _text){
@@ -79,5 +87,7 @@ public class Board extends JPanel {
 		conBoard.gridx = 0;
 		JLabel text = new JLabel(_text);
 		add(text, conBoard);
+		
+		frame.pack();
 	}
 }

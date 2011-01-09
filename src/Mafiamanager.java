@@ -50,7 +50,7 @@ class Mafiamanager{
 
 		// GUI
 		mainframe = new JFrame();
-		board = new Board();
+		board = new Board(mainframe);
 		panelController = new Controller(playerlist, board, mainframe);
 		
 		// frame
