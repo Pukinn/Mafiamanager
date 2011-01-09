@@ -41,9 +41,17 @@ public class DialogSet extends JDialog implements ActionListener{
 	private int numberSets;
 	private ArrayList<String> returnPlayer;
 	
+	// gui
+	private ArrayList<JButton> buttons;
+	
 	public ArrayList<String> getPlayer(){ return returnPlayer; }
 	
-	public DialogSet(SortedMap<String, Player> _playerlist, JFrame _frame, int _number, String _head){
+	public DialogSet(SortedMap<String,
+			Player> _playerlist,
+			JFrame _frame,
+			int _number,
+			String _head,
+			String _param){
 		// initialize
 		super(_frame, true);
 		playerlist = _playerlist;
@@ -62,7 +70,7 @@ public class DialogSet extends JDialog implements ActionListener{
 		Set<String> playerset = playerlist.keySet();
 		int size = playerlist.size();
 		
-
+		buttons = new ArrayList<JButton>();
 		con.gridwidth = 1;
 		for (int i=1; i<=size; i++){
 			if (!(i==1)) { con.insets = new Insets(0,5,0,0); }
@@ -76,15 +84,40 @@ public class DialogSet extends JDialog implements ActionListener{
 					JButton buttonSet = new JButton(playerStr);
 					buttonSet.addActionListener(this);
 					buttonSet.setActionCommand(playerStr);
-					add(buttonSet, con);
+					buttons.add(buttonSet);
+					add(buttons.get(i-1), con);
 					break;
 				}
 			}
 		}
 		
+		if (_param.equals("all")) { }
+		else if (_param.equals("onlyunknown")) { onlyunknown(); }
+		else if (_param.equals("nomafia")) { nomafia(); }
+		else { System.err.println(Messages.getString("err.nopar")); }
+		
+		
 		pack();
 		setLocationRelativeTo(_frame);
 		setVisible(true);
+	}
+	
+	private void onlyunknown(){
+		for (JButton button: buttons){
+			Player player = playerlist.get(button.getText());
+			if (player.character != 0 || !player.alive){
+				button.setEnabled(false);
+			}
+		}
+	}
+	
+	private void nomafia(){
+		for (JButton button: buttons){
+			Player player = playerlist.get(button.getText());
+			if (player.character == 2 || !player.alive){
+				button.setEnabled(false);
+			}
+		}
 	}
 
 	public void actionPerformed(ActionEvent event) {

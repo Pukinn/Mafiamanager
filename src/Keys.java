@@ -16,9 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.util.ArrayList;
-
-
 public class Keys {
 
 	// figures
@@ -26,11 +23,6 @@ public class Keys {
 	public static int mafia;
 	public static int detective;
 	public static int doctor;
-	
-	// round informations
-	public static int round;
-	
-	public static ArrayList<Player> killed = new ArrayList<Player>();
 	
 	public static String IntToFigure(final int _num){
 		
@@ -46,14 +38,4 @@ public class Keys {
 		
 		return strFigure;
 	}
-	
-	public static void addKilled(Player _name){
-		killed.add(_name);
-	}
-	
-	public static void clearRound(){
-		killed.clear();
-	}
-	
-	
 }

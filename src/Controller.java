@@ -23,6 +23,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -38,6 +40,10 @@ public class Controller extends JPanel implements ActionListener{
 	// general
 	private SortedMap<String, Player> playerlist;
 	private Board board;
+	
+	// roundsaves
+	private int round;
+	private String deprotectPlayer;
 	
 	// gui
 	private GridBagConstraints con;
@@ -56,7 +62,7 @@ public class Controller extends JPanel implements ActionListener{
 		frame = _frame;
 		setLayout(new GridLayout(0,1));
 		
-		Keys.round = 1;
+		round = 1;
 		
 		con = new GridBagConstraints();
 		conPlayer = new GridBagConstraints();
@@ -125,12 +131,12 @@ public class Controller extends JPanel implements ActionListener{
 	
 	private void night(){
 		board.head(" ");
-		board.head(Messages.getString("board.n.night")+" "+Keys.round);
+		board.head(Messages.getString("board.n.night")+" "+round);
 		board.command(Messages.getString("board.c.allsleep"));
 		
 		Log.newLine("");
 		Log.timestamp();
-		Log.addLine(Messages.getString("board.n.night")+" "+Keys.round);
+		Log.addLine(Messages.getString("board.n.night")+" "+round);
 		Log.newLine("");
 		
 		// TASKLIST
@@ -138,7 +144,8 @@ public class Controller extends JPanel implements ActionListener{
 		mafia();
 		detective();
 		
-		if (Keys.round == 1){
+		// first night
+		if (round == 1){
 			Set<String> playerset = playerlist.keySet();
 			for (String playerStr : playerset){
 				if (playerlist.get(playerStr).character == 0){
@@ -147,29 +154,57 @@ public class Controller extends JPanel implements ActionListener{
 			}
 
 		}
+		
+		// after night
+		playerlist.get(deprotectPlayer).isprotected = false;
 	}
 	
 	private void day(){
 		
-		Keys.round++;
+		round++;
 	}
 	
 	private void doctor(){ if (Keys.doctor > 0){
+		board.command(Messages.getString("board.c.doctorsawake"));
+		
 		// first night
-		if (Keys.round == 1){
-			DialogSet dialog = new DialogSet(playerlist, frame, Keys.doctor, Messages.getString("gui.whosdoctor"));
-			ArrayList<String> doctors = dialog.getPlayer();
+		if (round == 1){
+			DialogSet getdoctors = new DialogSet(
+					playerlist,
+					frame,
+					Keys.doctor,
+					Messages.getString("gui.whosdoctor"),
+					"onlyunknown");
+			ArrayList<String> doctors = getdoctors.getPlayer();
 			for (String doctor : doctors){
 				playerlist.get(doctor).character = 4;
 			}
 		}
+		
+		// every night
+		DialogSet actdoctor = new DialogSet(
+				playerlist,
+				frame,
+				1,
+				Messages.getString("gui.actdoctor"),
+				"nomafia");
+		Player player = playerlist.get(actdoctor.getPlayer().get(0));
+		player.isprotected = true;
+		deprotectPlayer = player.name;
+		
+		board.note("", "'"+player.name+"' "+Messages.getString("board.n.patronized"));
 	}
 	}
 	
 	private void mafia(){ if (Keys.mafia > 0){
 		// first night
-		if (Keys.round == 1){
-			DialogSet dialog = new DialogSet(playerlist, frame, Keys.mafia, Messages.getString("gui.whosmafia"));
+		if (round == 1){
+			DialogSet dialog = new DialogSet(
+					playerlist,
+					frame,
+					Keys.mafia,
+					Messages.getString("gui.whosmafia"),
+					"onlyunknown");
 			ArrayList<String> mafias = dialog.getPlayer();
 			for (String mafia : mafias){
 				playerlist.get(mafia).character = 2;
@@ -181,8 +216,13 @@ public class Controller extends JPanel implements ActionListener{
 	
 	private void detective(){ if (Keys.detective > 0){
 		// first night
-		if (Keys.round == 1){
-			DialogSet dialog = new DialogSet(playerlist, frame, Keys.detective, Messages.getString("gui.whosdetective"));
+		if (round == 1){
+			DialogSet dialog = new DialogSet(
+					playerlist,
+					frame,
+					Keys.detective,
+					Messages.getString("gui.whosdetective"),
+					"onlyunknown");
 			ArrayList<String> detectives = dialog.getPlayer();
 			for (String detective : detectives){
 				playerlist.get(detective).character = 2;
@@ -198,8 +238,6 @@ public class Controller extends JPanel implements ActionListener{
 			night();
 			buttonStartnight.setVisible(false);
 			frame.pack();
-		}
-		else {
 		}
 	}
 

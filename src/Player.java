@@ -40,17 +40,4 @@ public class Player {
 		character = 0;
 		alive = true;
 	}
-	
-	public void kill(){
-		alive = false;
-		
-		switch (character){
-		case 1: Keys.villager -= 1; break;
-		case 2: Keys.mafia -= 1; break;
-		case 3: Keys.detective -= 1; break;
-		case 4: Keys.doctor -= 1; break;
-		}
-			
-		Keys.killed.add(this);
-	}
 }
