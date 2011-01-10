@@ -82,6 +82,7 @@ public class Board extends JPanel {
 	}
 	
 	public void space(){
+		conBoard.gridx = 0;
 		conBoard.gridwidth = GridBagConstraints.REMAINDER;
 		JLabel space = new JLabel(" ");
 		add(space, conBoard);
