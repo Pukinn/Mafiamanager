@@ -154,12 +154,12 @@ public class DialogPlayer extends JDialog implements ActionListener{
 					int num = playerlist.get(curPlayer).number;
 
 					if (i == num){
-						Log.addLine(curPlayer+"("+num+"), ");
+						board.line(curPlayer+"("+num+")");
 						break;
 					}
 				}
 			}
-			Log.newLine("");
+
 			// end creating players
 			setVisible(false);
 		}

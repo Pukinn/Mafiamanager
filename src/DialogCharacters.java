@@ -179,6 +179,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			Keys.detective = StringToInt(fieldx.get(1).getText());
 			Keys.doctor = StringToInt(fieldx.get(2).getText());
 			
+			board.space();
 			board.line(Messages.getString("log.character"));
 			if (Keys.villager > 0) board.line(Messages.getString("villager")+"("+Keys.villager+")");
 			if (Keys.mafia > 0) board.line(Messages.getString("mafia")+"("+Keys.mafia+")");

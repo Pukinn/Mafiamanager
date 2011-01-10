@@ -37,7 +37,6 @@ public class Log {
 		timestamp();
 		addLine(Messages.getString("log.created"));
 		newLine("");
-		newLine("");
 	}
 	
 	public static void newLine(String _s){
