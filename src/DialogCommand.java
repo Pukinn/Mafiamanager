@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,9 +19,11 @@ public class DialogCommand extends JDialog implements ActionListener {
 
 	public DialogCommand(
 			JFrame _frame,
+			String _head,
 			ArrayList<String> _command,
 			ArrayList<String> _note){
 		super(_frame, true);
+		setTitle("Mafiamanager");
 		setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
 		con.anchor = GridBagConstraints.CENTER;
@@ -28,6 +31,12 @@ public class DialogCommand extends JDialog implements ActionListener {
 		
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		con.gridy = 0;
+		
+		if (!_head.equals("")){
+			JLabel label = new JLabel(_head);
+			add(label, con);
+			con.gridy++;
+		}
 		
 		if (_command.size() != 0){
 			for (String command : _command){
@@ -41,13 +50,13 @@ public class DialogCommand extends JDialog implements ActionListener {
 		if (_note.size() != 0){
 			for (String note : _note){
 				JLabel label = new JLabel(note);
+				label.setFont(label.getFont().deriveFont(Font.PLAIN));
 				add(label, con);
 				con.gridy++;
 			}
 		}
 		
 		JButton buttonAcc = new JButton(Messages.getString("gui.ok"));
-		buttonAcc.setEnabled(false);
 		buttonAcc.addActionListener(this);
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		add(buttonAcc, con);

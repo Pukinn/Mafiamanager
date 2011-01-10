@@ -45,6 +45,7 @@ public class Controller extends JPanel implements ActionListener{
 	private ArrayList<String> died;
 	
 	// temporary
+	private String bufferHead;
 	private ArrayList<String> bufferCommand;
 	private ArrayList<String> bufferNote;
 	
@@ -136,7 +137,7 @@ public class Controller extends JPanel implements ActionListener{
 	}
 	
 	private void night(){
-		bufferCommand.add(Messages.getString("board.n.night"+" "+round));
+		bufferHead = Messages.getString("board.n.night")+" "+round;
 		bufferCommand.add(Messages.getString("board.c.allsleep"));
 		
 		Log.newLine("");
@@ -177,6 +178,7 @@ public class Controller extends JPanel implements ActionListener{
 		
 		DialogCommand command = new DialogCommand(
 				frame,
+				bufferHead,
 				bufferCommand,
 				bufferNote);
 		bufferCommand.clear();
@@ -186,12 +188,13 @@ public class Controller extends JPanel implements ActionListener{
 	}
 	
 	private void day(){
-		bufferCommand.add(Messages.getString("board.n.day"+" "+round));
+		bufferHead = Messages.getString("board.n.day")+" "+round;
 		
 		DialogSet lynch = new DialogSet(
 				playerlist,
 				frame,
 				1,
+				bufferHead,
 				bufferCommand,
 				Messages.getString("gui.lynch"),
 				"nodead");
@@ -200,10 +203,11 @@ public class Controller extends JPanel implements ActionListener{
 		bufferNote.clear();
 		
 		// output
-		bufferCommand.add("'"+player.name+"' "+Messages.getString("board.n.lynched"));
+		bufferNote.add("'"+player.name+"' "+Messages.getString("board.n.lynched"));
 		
 		DialogCommand command = new DialogCommand(
 				frame,
+				bufferHead,
 				bufferCommand,
 				bufferNote);
 		bufferCommand.clear();
@@ -224,10 +228,12 @@ public class Controller extends JPanel implements ActionListener{
 					playerlist,
 					frame,
 					Keys.doctor,
+					bufferHead,
 					bufferCommand,
 					Messages.getString("gui.whosdoctor"),
 					"onlyunknown");
 			bufferCommand.clear();
+			bufferNote.clear();
 			
 			ArrayList<String> doctors = getdoctors.getPlayer();
 			for (String doctor : doctors){
@@ -241,10 +247,13 @@ public class Controller extends JPanel implements ActionListener{
 				playerlist,
 				frame,
 				1,
+				bufferHead,
 				bufferCommand,
 				Messages.getString("gui.actdoctor"),
 				"nodead");
 		Player player = playerlist.get(actdoctor.getPlayer().get(0));
+		bufferCommand.clear();
+		bufferNote.clear();
 		
 		// action
 		player.isprotected = true;
@@ -264,10 +273,12 @@ public class Controller extends JPanel implements ActionListener{
 					playerlist,
 					frame,
 					Keys.mafia,
+					bufferHead,
 					bufferCommand,
 					Messages.getString("gui.whosmafia"),
 					"onlyunknown");
 			bufferCommand.clear();
+			bufferNote.clear();
 			
 			ArrayList<String> mafias = dialog.getPlayer();
 			for (String mafia : mafias){
@@ -281,9 +292,13 @@ public class Controller extends JPanel implements ActionListener{
 				playerlist,
 				frame,
 				1,
+				bufferHead,
 				bufferCommand,
 				Messages.getString("gui.actmafia"),
 				"nodead");
+		bufferCommand.clear();
+		bufferNote.clear();
+		
 		Player player = playerlist.get(actmafia.getPlayer().get(0));
 		
 		// action
@@ -305,10 +320,12 @@ public class Controller extends JPanel implements ActionListener{
 					playerlist,
 					frame,
 					Keys.detective,
+					bufferHead,
 					bufferCommand,
 					Messages.getString("gui.whosdetective"),
 					"onlyunknown");
 			bufferCommand.clear();
+			bufferNote.clear();
 			
 			ArrayList<String> detectives = dialog.getPlayer();
 			for (String detective : detectives){
@@ -322,10 +339,12 @@ public class Controller extends JPanel implements ActionListener{
 				playerlist,
 				frame,
 				1,
+				bufferHead,
 				bufferCommand,
 				Messages.getString("gui.actdetective"),
 				"nodead");
 		bufferCommand.clear();
+		bufferNote.clear();
 		
 		Player player = playerlist.get(actdetective.getPlayer().get(0));
 		
@@ -339,6 +358,7 @@ public class Controller extends JPanel implements ActionListener{
 		
 		DialogCommand command = new DialogCommand(
 				frame,
+				bufferHead,
 				bufferCommand,
 				bufferNote);
 		bufferCommand.clear();

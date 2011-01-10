@@ -17,6 +17,7 @@
 */
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -51,11 +52,13 @@ public class DialogSet extends JDialog implements ActionListener{
 			Player> _playerlist,
 			JFrame _frame,
 			int _number,
+			String _head,
 			ArrayList<String> _command,
 			String _note,
 			String _param){
 		// initialize
 		super(_frame, true);
+		setTitle("Mafiamanager");
 		playerlist = _playerlist;
 		numberSets = _number;
 		returnPlayer = new ArrayList<String>();
@@ -66,6 +69,12 @@ public class DialogSet extends JDialog implements ActionListener{
 		
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		con.gridy = 0;
+		
+		if (!_head.equals("")){
+			JLabel label = new JLabel(_head);
+			add(label, con);
+			con.gridy++;
+		}
 		
 		if (_command.size() != 0){
 			for (String command : _command){
@@ -78,6 +87,7 @@ public class DialogSet extends JDialog implements ActionListener{
 		
 		if (!_note.equals("")){
 			JLabel note = new JLabel(_note);
+			note.setFont(note.getFont().deriveFont(Font.PLAIN));
 			add(note, con);
 			con.gridy++;
 		}
