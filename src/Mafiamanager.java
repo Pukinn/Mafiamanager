@@ -77,12 +77,12 @@ class Mafiamanager{
 		
 	// BEFORE GAME
 		// create player
-		DialogPlayer myPlayers = new DialogPlayer(playerlist, mainframe);
+		DialogPlayer myPlayers = new DialogPlayer(playerlist, mainframe, board);
 		panelController.redrawPlayer(playerlist);
 		mainframe.pack();
 		
 		// create figures
-		DialogCharacters myCharacters = new DialogCharacters(playerlist, mainframe);
+		DialogCharacters myCharacters = new DialogCharacters(playerlist, mainframe, board);
 		
 		panelController.start();
 		

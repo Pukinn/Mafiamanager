@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -41,6 +42,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	
 	// general
 	private SortedMap<String, Player> playerlist;
+	private Board board;
 	private int counterCharacters;
 	private int counterPlayer;
 	
@@ -56,16 +58,22 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			private ArrayList<JTextField> fieldx;
 	private JButton buttonAcc;
 	
-	public DialogCharacters(SortedMap<String, Player> _playerlist, JFrame _frame){
+	public DialogCharacters(SortedMap<String, Player> _playerlist, JFrame _frame, Board _board){
 		super(_frame, true);
 		
-		// general
+		// initializing
 		playerlist = _playerlist;
+		board = _board;
+		counterPlayer = playerlist.size();
+		panelx = new ArrayList<JPanel>();
+		labelx = new ArrayList<JLabel>();
+		fieldx = new ArrayList<JTextField>();
 		
 		// gui
 		setLayout(new GridBagLayout());
 		con = new GridBagConstraints();
 		con.gridx = 0;
+		con.insets = new Insets(0,0,5,0);
 		
 		// text
 		labelTxt = new JLabel(Messages.getString("gui.configureTxt"));
@@ -73,19 +81,11 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		add(labelTxt, con);
 		
 		// counter
-		counterPlayer = playerlist.size();
-		
 		labelCounter = new JLabel(Messages.getString("gui.leftPlayer")+" "+counterPlayer);
 		con.gridy = 1;
 		add(labelCounter, con);
-		
-		// labels and textfields for figures
-		panelx = new ArrayList<JPanel>();
-		labelx = new ArrayList<JLabel>();
-		fieldx = new ArrayList<JTextField>();
-		
-		panelCharacters = new JPanel(new GridLayout(0,1));
 
+		// listener for checking textfields
 		keylistener = new KeyListener() {
 			public void keyPressed(KeyEvent event) {
 			}
@@ -131,10 +131,13 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			}
 		};
 		
+		// characters
+		panelCharacters = new JPanel(new GridLayout(0,1));
+		
 		counterCharacters = 0;
-		addFigure(2);
-		addFigure(3);
-		addFigure(4);
+		addCharacter(2);
+		addCharacter(3);
+		addCharacter(4);
 		
 		con.gridy = 2;
 		add(panelCharacters, con);
@@ -145,14 +148,15 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		con.gridy = 3;
 		add(buttonAcc, con);
 		
+		
+		// dialog end
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-		
 	}
 	
 	// add figure
-	public void addFigure(int _fig){
+	public void addCharacter(int _fig){
 		
 		panelx.add(new JPanel(new GridLayout(1,2)));
 		labelx.add(new JLabel(Keys.IntToFigure(_fig)+":"));
@@ -166,8 +170,8 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		counterCharacters++;
 	}
 
+	// button Accept pressed
 	public void actionPerformed(ActionEvent event) {
-	
 		if (event.getSource() == buttonAcc){
 			Keys.villager = counterPlayer;
 			
@@ -175,30 +179,24 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			Keys.detective = StringToInt(fieldx.get(1).getText());
 			Keys.doctor = StringToInt(fieldx.get(2).getText());
 			
-			Log.timestamp();
-			Log.addLine(Messages.getString("log.character")+" ");
-			if (Keys.villager > 0) Log.addLine(Messages.getString("villager")+"("+Keys.villager+"), ");
-			if (Keys.mafia > 0) Log.addLine(Messages.getString("mafia")+"("+Keys.mafia+"), ");
-			if (Keys.detective > 0) Log.addLine(Messages.getString("detective")+"("+Keys.detective+"), ");
-			if (Keys.doctor > 0) Log.addLine(Messages.getString("doctor")+"("+Keys.doctor+"), ");
-			Log.newLine("");
+			board.line(Messages.getString("log.character"));
+			if (Keys.villager > 0) board.line(Messages.getString("villager")+"("+Keys.villager+")");
+			if (Keys.mafia > 0) board.line(Messages.getString("mafia")+"("+Keys.mafia+")");
+			if (Keys.detective > 0) board.line(Messages.getString("detective")+"("+Keys.detective+")");
+			if (Keys.doctor > 0) board.line(Messages.getString("doctor")+"("+Keys.doctor+")");
 			
 			setVisible(false);
 		}
 		
 	}
 	
+	// convert string to integer
 	public int StringToInt(String _s){
 		int i = 0;
-		
 		if (!_s.equals("")){
-			try {
-				i = Integer.parseInt(_s);
-			} catch (NumberFormatException e){
-				System.err.println(Messages.getString("err.nonum"));
-			}
+			try { i = Integer.parseInt(_s); }
+			catch (NumberFormatException e){}
 		}
-		
 		return i;
 	}
 }

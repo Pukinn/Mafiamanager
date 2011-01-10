@@ -35,6 +35,7 @@ public class Controller extends JPanel{
 	// general
 	private SortedMap<String, Player> playerlist;
 	private Board board;
+	// TODO logging the game
 	
 	// roundsaves
 	private int round;

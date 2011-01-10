@@ -35,7 +35,8 @@ public class Log {
 		pathlog = "./Logs/"+time;
 		
 		timestamp();
-		addLine(Messages.getString("log.beginning"));
+		addLine(Messages.getString("log.created"));
+		newLine("");
 		newLine("");
 	}
 	

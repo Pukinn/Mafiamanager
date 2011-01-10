@@ -38,6 +38,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 	
 	// general
 	private SortedMap<String, Player> playerlist;
+	private Board board;
 	private int counterPlayer;
 
 	// gui
@@ -51,11 +52,12 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			private ArrayList<JTextField> fieldx;
 	private JButton buttonAcc;
 
-	public DialogPlayer(SortedMap<String, Player> _playerlist, JFrame _frame){
+	public DialogPlayer(SortedMap<String, Player> _playerlist, JFrame _frame, Board _board){
 		super(_frame, true);
 		
 		// general
 		playerlist = _playerlist;
+		board = _board;
 		Log.create();
 		
 		// gui
@@ -140,8 +142,8 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			}
 			
 			// write log
-			Log.timestamp();
-			Log.addLine(Messages.getString("log.player")+" ");
+			board.space();
+			board.line(Messages.getString("log.player"));
 			
 			// write players in log
 			Set<String> playerset = playerlist.keySet();

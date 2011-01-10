@@ -80,4 +80,15 @@ public class Board extends JPanel {
 		Log.timestamp();
 		Log.addLine(_text + "\n");
 	}
+	
+	public void space(){
+		conBoard.gridwidth = GridBagConstraints.REMAINDER;
+		JLabel space = new JLabel(" ");
+		add(space, conBoard);
+		
+		frame.pack();
+		
+		// log
+		Log.newLine("");
+	}
 }
