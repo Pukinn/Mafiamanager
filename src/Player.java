@@ -19,6 +19,8 @@
 public class Player {
 	
 	// player values
+	private boolean alive;
+	
 	public String name;
 	public int character;
 		/*	0 = unknown
@@ -27,7 +29,6 @@ public class Player {
 		 * 	3 = detective
 		 *	4 = doctor
 		 */
-	public boolean alive;
 	public boolean isprotected;
 	public int number;
 	
@@ -40,4 +41,17 @@ public class Player {
 		character = 0;
 		alive = true;
 	}
+	
+	public void kill(){
+		alive = false;
+		
+		switch (character){
+		case 1: Keys.villager--; break;
+		case 2: Keys.mafia--; break;
+		case 3: Keys.detective--; break;
+		case 4: Keys.doctor--; break;
+		}
+	}
+	
+	public boolean alive(){ return alive; }
 }

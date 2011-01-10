@@ -16,11 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +33,7 @@ public class Board extends JPanel {
 
 	private GridBagConstraints conBoard;
 	private GridBagConstraints conPan;
+	private SimpleDateFormat formatter;
 	private JFrame frame;
 	
 	public Board(JFrame _frame){
@@ -45,48 +47,26 @@ public class Board extends JPanel {
 		conBoard.gridy = GridBagConstraints.RELATIVE;
 		conBoard.anchor = GridBagConstraints.WEST;
 		conBoard.insets = new Insets(0,10,0,0);
+		
+		formatter = new SimpleDateFormat("HH:mm:ss");
 	}
 	
-	public void command(String _text){
+	public void line(String _text){
 		conBoard.gridwidth = 1;
 		
 		conBoard.gridx = 0;
-		
-		JLabel command = new JLabel(Messages.getString("board.command"));
-		command.setForeground(Color.green);
-		command.setFont(command.getFont().deriveFont(Font.ITALIC));
-		add(command, conBoard);
-		
-		conBoard.gridx = 1;
-		JLabel text = new JLabel(_text);
-		text.setForeground(Color.green);
-		text.setFont(text.getFont().deriveFont(Font.PLAIN));
-		add(text, conBoard);
-		
-		frame.pack();
-	}
-	
-	public void note(String _note, String _text){
-		conBoard.gridwidth = 1;
-		
-		conBoard.gridx = 0;
-		JLabel note = new JLabel(_note);
-		note.setFont(note.getFont().deriveFont(Font.ITALIC));
+		Date currentTime = new Date();
+		String time = formatter.format(currentTime);
+		JLabel note = new JLabel(time);
+		note.setFont(note.getFont().deriveFont(Font.PLAIN));
 		add(note, conBoard);
-		
+		Log.timestamp();
+				
 		conBoard.gridx = 1;
 		JLabel text = new JLabel(_text);
 		text.setFont(text.getFont().deriveFont(Font.PLAIN));
 		add(text, conBoard);
-		
-		frame.pack();
-	}
-	
-	public void head(String _text){
-		conBoard.gridwidth = 2;
-		conBoard.gridx = 0;
-		JLabel text = new JLabel(_text);
-		add(text, conBoard);
+		Log.addLine(_text + "\n");
 		
 		frame.pack();
 	}

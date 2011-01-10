@@ -20,18 +20,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedMap;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Controller extends JPanel implements ActionListener{
+public class Controller extends JPanel{
 
 	private static final long serialVersionUID = 5299138914080396570L;
 
@@ -57,8 +54,6 @@ public class Controller extends JPanel implements ActionListener{
 		private JPanel panelPlayers;
 			private ArrayList<JPanel> panelXplayer;
 				private ArrayList<JLabel> labelXplayer;
-		private JPanel panelInteract;
-			private JButton buttonStartnight;
 	
 	public Controller(SortedMap<String, Player> _playerlist, Board _board, JFrame _frame){
 		playerlist = _playerlist;
@@ -126,24 +121,28 @@ public class Controller extends JPanel implements ActionListener{
 		}
 	}
 
-	public void interact(){
-		panelInteract = new JPanel(new GridLayout(1,0));
-		add(panelInteract);
+	public void start(){
+		ArrayList<String> command = new ArrayList<String>();
+		ArrayList<String> dealout = new ArrayList<String>();
 		
-		buttonStartnight = new JButton(Messages.getString("gui.startnight"));
-		buttonStartnight.addActionListener(this);
-		buttonStartnight.setActionCommand("startnight");
-		panelInteract.add(buttonStartnight);
+		command.add(Messages.getString("board.n.dealout"));
+		dealout.add(Messages.getString("board.n.villager")+" "+Integer.toString(Keys.villager));
+		dealout.add(Messages.getString("board.n.mafia")+" "+Integer.toString(Keys.mafia));
+		dealout.add(Messages.getString("board.n.detective")+" "+Integer.toString(Keys.detective));
+		dealout.add(Messages.getString("board.n.doctor")+" "+Integer.toString(Keys.doctor));
+		
+		DialogCommand dialog = new DialogCommand(
+				frame,
+				Messages.getString("gui.beforegame"),
+				command,
+				dealout);
+		
+		night();
 	}
 	
 	private void night(){
 		bufferHead = Messages.getString("board.n.night")+" "+round;
 		bufferCommand.add(Messages.getString("board.c.allsleep"));
-		
-		Log.newLine("");
-		Log.timestamp();
-		Log.addLine(Messages.getString("board.n.night")+" "+round);
-		Log.newLine("");
 		
 		// TASKLIST
 		doctor();
@@ -164,19 +163,25 @@ public class Controller extends JPanel implements ActionListener{
 		// after night
 		playerlist.get(deprotectPlayer).isprotected = false;
 		
+		day();
+	}
+	
+	private void day(){
+		bufferHead = Messages.getString("board.n.day")+" "+round;
+		
 		if (died.size() == 0){
 			bufferCommand.add(Messages.getString("board.c.nodied"));
 		}
 		else {
 			bufferCommand.add(Messages.getString("board.c.isdied"));
 			for (String player : died){
-				playerlist.get(player).alive = false;
+				playerlist.get(player).kill();
 				bufferNote.add(player);
 			}
 		}
 		died.clear();
 		
-		DialogCommand command = new DialogCommand(
+		DialogCommand day = new DialogCommand(
 				frame,
 				bufferHead,
 				bufferCommand,
@@ -184,11 +189,7 @@ public class Controller extends JPanel implements ActionListener{
 		bufferCommand.clear();
 		bufferNote.clear();
 		
-		day();
-	}
-	
-	private void day(){
-		bufferHead = Messages.getString("board.n.day")+" "+round;
+		checkwin();
 		
 		DialogSet lynch = new DialogSet(
 				playerlist,
@@ -198,14 +199,16 @@ public class Controller extends JPanel implements ActionListener{
 				bufferCommand,
 				Messages.getString("gui.lynch"),
 				"nodead");
-		Player player = playerlist.get(lynch.getPlayer().get(0));
 		bufferCommand.clear();
 		bufferNote.clear();
+		
+		Player player = playerlist.get(lynch.getPlayer().get(0));
+		player.kill();
 		
 		// output
 		bufferNote.add("'"+player.name+"' "+Messages.getString("board.n.lynched"));
 		
-		DialogCommand command = new DialogCommand(
+		DialogCommand lynced = new DialogCommand(
 				frame,
 				bufferHead,
 				bufferCommand,
@@ -213,10 +216,43 @@ public class Controller extends JPanel implements ActionListener{
 		bufferCommand.clear();
 		bufferNote.clear();
 		
+		checkwin();
+		
 		round++;
 
 		
 		night();
+	}
+	
+	private void checkwin(){
+		if (Keys.mafia == 0){
+			bufferCommand.add(Messages.getString("gui.villagerswin"));
+			bufferNote.add(Messages.getString("gui.congratulation"));
+			
+			DialogCommand win = new DialogCommand(
+					frame,
+					Messages.getString("gui.endgame"),
+					bufferCommand,
+					bufferNote);
+			
+			System.exit(0);
+		}
+		else if (
+				Keys.detective == 0 &&
+				Keys.doctor == 0 &&
+				Keys.villager == 0){
+			
+			bufferCommand.add(Messages.getString("gui.mafiawin"));
+			bufferNote.add(Messages.getString("gui.congratulation"));
+			
+			DialogCommand win = new DialogCommand(
+					frame,
+					Messages.getString("gui.endgame"),
+					bufferCommand,
+					bufferNote);
+			
+			System.exit(0);
+		}
 	}
 	
 	private void doctor(){ if (Keys.doctor > 0){
@@ -364,15 +400,6 @@ public class Controller extends JPanel implements ActionListener{
 		bufferCommand.clear();
 		bufferNote.clear();
 	}	
-	}
-	
-	public void actionPerformed(ActionEvent event) {
-		
-		if (event.getActionCommand().equals("startnight")){
-			night();
-			buttonStartnight.setVisible(false);
-			frame.pack();
-		}
 	}
 
 }

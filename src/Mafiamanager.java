@@ -84,14 +84,7 @@ class Mafiamanager{
 		// create figures
 		DialogCharacters myCharacters = new DialogCharacters(playerlist, mainframe);
 		
-		//deal out
-		board.head(Messages.getString("board.n.dealout"));
-		board.note(Messages.getString("board.n.villager"), Integer.toString(Keys.villager));
-		board.note(Messages.getString("board.n.mafia"), Integer.toString(Keys.mafia));
-		board.note(Messages.getString("board.n.detective"), Integer.toString(Keys.detective));
-		board.note(Messages.getString("board.n.doctor"), Integer.toString(Keys.doctor));
-
-		panelController.interact();
+		panelController.start();
 		
 		mainframe.pack();
 	}

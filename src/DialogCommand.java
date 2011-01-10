@@ -22,7 +22,7 @@ public class DialogCommand extends JDialog implements ActionListener {
 			String _head,
 			ArrayList<String> _command,
 			ArrayList<String> _note){
-		super(_frame, true);
+		super(_frame, false);
 		setTitle("Mafiamanager");
 		setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
@@ -62,7 +62,7 @@ public class DialogCommand extends JDialog implements ActionListener {
 		add(buttonAcc, con);
 		
 		pack();
-		setLocationRelativeTo(_frame);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	

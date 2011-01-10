@@ -57,7 +57,7 @@ public class DialogSet extends JDialog implements ActionListener{
 			String _note,
 			String _param){
 		// initialize
-		super(_frame, true);
+		super(_frame, false);
 		setTitle("Mafiamanager");
 		playerlist = _playerlist;
 		numberSets = _number;
@@ -132,14 +132,14 @@ public class DialogSet extends JDialog implements ActionListener{
 		
 		
 		pack();
-		setLocationRelativeTo(_frame);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
 	private void onlyunknown(){
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
-			if (player.character != 0 || !player.alive){
+			if (player.character != 0 || !player.alive()){
 				button.setEnabled(false);
 			}
 		}
@@ -148,7 +148,7 @@ public class DialogSet extends JDialog implements ActionListener{
 	private void nomafia(){
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
-			if (player.character == 2 || !player.alive){
+			if (player.character == 2 || !player.alive()){
 				button.setEnabled(false);
 			}
 		}
@@ -157,7 +157,7 @@ public class DialogSet extends JDialog implements ActionListener{
 	private void nodead(){
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
-			if (!player.alive){
+			if (!player.alive()){
 				button.setEnabled(false);
 			}
 		}
