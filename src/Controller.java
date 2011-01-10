@@ -81,7 +81,7 @@ public class Controller extends JPanel{
 // OVERVIEW
 	
 	// state overview
-	// TODO will be a overview of the lifestate, waking/sleeping and all relevant informations
+	// TODO: will be a overview of the lifestate, waking/sleeping and all relevant informations
 	public void player(){
 		panelPlayers = new JPanel(new GridBagLayout());
 		add(panelPlayers);
