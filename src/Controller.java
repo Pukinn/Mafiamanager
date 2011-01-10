@@ -386,7 +386,7 @@ public class Controller extends JPanel{
 			
 			ArrayList<String> detectives = dialog.getPlayer();
 			for (String detective : detectives){
-				playerlist.get(detective).character = 2;
+				playerlist.get(detective).character = 3;
 			}
 		}
 		
