@@ -52,7 +52,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 	private JButton buttonAcc;
 
 	public DialogPlayer(SortedMap<String, Player> _playerlist, JFrame _frame){
-		super(_frame, false);
+		super(_frame, true);
 		
 		// general
 		playerlist = _playerlist;

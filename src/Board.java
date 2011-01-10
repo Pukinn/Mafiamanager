@@ -31,43 +31,53 @@ public class Board extends JPanel {
 
 	private static final long serialVersionUID = 6909929629490253770L;
 
+	// general
+	private SimpleDateFormat formatter;
+	
+	// gui
 	private GridBagConstraints conBoard;
 	private GridBagConstraints conPan;
-	private SimpleDateFormat formatter;
+	
 	private JFrame frame;
 	
 	public Board(JFrame _frame){
-		frame = _frame;
 		
+		// initialize
+		frame = _frame;
+		formatter = new SimpleDateFormat("HH:mm:ss");
+		
+		
+		// gui
 		setLayout(new GridBagLayout());
 		conPan = new GridBagConstraints();
 		conPan.anchor = GridBagConstraints.FIRST_LINE_START;
-		
 		conBoard = new GridBagConstraints();
 		conBoard.gridy = GridBagConstraints.RELATIVE;
 		conBoard.anchor = GridBagConstraints.WEST;
 		conBoard.insets = new Insets(0,10,0,0);
-		
-		formatter = new SimpleDateFormat("HH:mm:ss");
 	}
 	
 	public void line(String _text){
 		conBoard.gridwidth = 1;
 		
+		// timestamp
 		conBoard.gridx = 0;
 		Date currentTime = new Date();
 		String time = formatter.format(currentTime);
 		JLabel note = new JLabel(time);
 		note.setFont(note.getFont().deriveFont(Font.PLAIN));
 		add(note, conBoard);
-		Log.timestamp();
-				
+
+		// text		
 		conBoard.gridx = 1;
 		JLabel text = new JLabel(_text);
 		text.setFont(text.getFont().deriveFont(Font.PLAIN));
 		add(text, conBoard);
-		Log.addLine(_text + "\n");
 		
 		frame.pack();
+		
+		// log
+		Log.timestamp();
+		Log.addLine(_text + "\n");
 	}
 }

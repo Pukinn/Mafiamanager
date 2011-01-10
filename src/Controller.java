@@ -55,24 +55,32 @@ public class Controller extends JPanel{
 			private ArrayList<JPanel> panelXplayer;
 				private ArrayList<JLabel> labelXplayer;
 	
+				
+				
 	public Controller(SortedMap<String, Player> _playerlist, Board _board, JFrame _frame){
+		
+		// initialize
 		playerlist = _playerlist;
 		board = _board;
 		frame = _frame;
-		setLayout(new GridLayout(0,1));
-		
 		round = 1;
 		died = new ArrayList<String>();
 		bufferCommand = new ArrayList<String>();
 		bufferNote = new ArrayList<String>();
 		
+		// gui
+		setLayout(new GridLayout(0,1));		
 		con = new GridBagConstraints();
 		conPlayer = new GridBagConstraints();
 		conPlayer.gridx = 0;
 		conPlayer.gridy = GridBagConstraints.RELATIVE;
 		conPlayer.anchor = GridBagConstraints.CENTER;
 	}
+
+// OVERVIEW
 	
+	// state overview
+	// TODO will be a overview of the lifestate, waking/sleeping and all relevant informations
 	public void player(){
 		panelPlayers = new JPanel(new GridBagLayout());
 		add(panelPlayers);
@@ -85,6 +93,7 @@ public class Controller extends JPanel{
 		redrawPlayer(playerlist);
 	}
 	
+	// redraw state overview
 	public void redrawPlayer(SortedMap<String, Player> playerlist){
 		for (JPanel curPanel : panelXplayer){
 			curPanel.setVisible(false);
@@ -121,6 +130,9 @@ public class Controller extends JPanel{
 		}
 	}
 
+// GAME LOGIC
+	
+	// start game
 	public void start(){
 		ArrayList<String> command = new ArrayList<String>();
 		ArrayList<String> dealout = new ArrayList<String>();
@@ -140,6 +152,7 @@ public class Controller extends JPanel{
 		night();
 	}
 	
+	// night actions
 	private void night(){
 		bufferHead = Messages.getString("board.n.night")+" "+round;
 		bufferCommand.add(Messages.getString("board.c.allsleep"));
@@ -166,6 +179,7 @@ public class Controller extends JPanel{
 		day();
 	}
 	
+	// day actions
 	private void day(){
 		bufferHead = Messages.getString("board.n.day")+" "+round;
 		
@@ -224,6 +238,7 @@ public class Controller extends JPanel{
 		night();
 	}
 	
+	// check if one party have won and exit game
 	private void checkwin(){
 		if (Keys.mafia == 0){
 			bufferCommand.add(Messages.getString("gui.villagerswin"));
@@ -255,6 +270,9 @@ public class Controller extends JPanel{
 		}
 	}
 	
+// CHARACTERS
+	
+	// doctor / Seelenretter
 	private void doctor(){ if (Keys.doctor > 0){
 		bufferCommand.add(Messages.getString("board.c.doctorsawake"));
 		
@@ -300,6 +318,7 @@ public class Controller extends JPanel{
 	}
 	}
 	
+	// mafia / Mafia
 	private void mafia(){ if (Keys.mafia > 0){
 		bufferCommand.add(Messages.getString("board.c.mafiaawake"));
 		
@@ -347,6 +366,7 @@ public class Controller extends JPanel{
 	}
 	}
 	
+	// detective / Detektiv
 	private void detective(){ if (Keys.detective > 0){
 		bufferCommand.add(Messages.getString("board.c.detectivesawake"));
 		

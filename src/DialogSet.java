@@ -57,7 +57,7 @@ public class DialogSet extends JDialog implements ActionListener{
 			String _note,
 			String _param){
 		// initialize
-		super(_frame, false);
+		super(_frame, true);
 		setTitle("Mafiamanager");
 		playerlist = _playerlist;
 		numberSets = _number;

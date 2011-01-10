@@ -1,3 +1,21 @@
+/*
+	Mafiamanager - a tool to support the referee of the parlor game "Mafia"
+    Copyright (C) 2011  Thomas Högner
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -12,7 +30,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-
 public class DialogCommand extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -2216904258505429122L;
@@ -22,7 +39,7 @@ public class DialogCommand extends JDialog implements ActionListener {
 			String _head,
 			ArrayList<String> _command,
 			ArrayList<String> _note){
-		super(_frame, false);
+		super(_frame, true);
 		setTitle("Mafiamanager");
 		setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
