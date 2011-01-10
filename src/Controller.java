@@ -44,6 +44,10 @@ public class Controller extends JPanel implements ActionListener{
 	private String deprotectPlayer;
 	private ArrayList<String> died;
 	
+	// temporary
+	private ArrayList<String> bufferCommand;
+	private ArrayList<String> bufferNote;
+	
 	// gui
 	private GridBagConstraints con;
 	private GridBagConstraints conPlayer;
@@ -63,6 +67,8 @@ public class Controller extends JPanel implements ActionListener{
 		
 		round = 1;
 		died = new ArrayList<String>();
+		bufferCommand = new ArrayList<String>();
+		bufferNote = new ArrayList<String>();
 		
 		con = new GridBagConstraints();
 		conPlayer = new GridBagConstraints();
@@ -130,9 +136,8 @@ public class Controller extends JPanel implements ActionListener{
 	}
 	
 	private void night(){
-		board.head(" ");
-		board.head(Messages.getString("board.n.night")+" "+round);
-		board.command(Messages.getString("board.c.allsleep"));
+		bufferCommand.add(Messages.getString("board.n.night"+" "+round));
+		bufferCommand.add(Messages.getString("board.c.allsleep"));
 		
 		Log.newLine("");
 		Log.timestamp();
@@ -158,45 +163,60 @@ public class Controller extends JPanel implements ActionListener{
 		// after night
 		playerlist.get(deprotectPlayer).isprotected = false;
 		
-		board.command(Messages.getString("board.c.allawake"));
 		if (died.size() == 0){
-			board.command(Messages.getString("board.c.nodied"));
+			bufferCommand.add(Messages.getString("board.c.nodied"));
 		}
 		else {
-			board.command(Messages.getString("board.c.isdied"));
+			bufferCommand.add(Messages.getString("board.c.isdied"));
 			for (String player : died){
 				playerlist.get(player).alive = false;
-				board.note("", player);
+				bufferNote.add(player);
 			}
 		}
-		
 		died.clear();
+		
+		DialogCommand command = new DialogCommand(
+				frame,
+				bufferCommand,
+				bufferNote);
+		bufferCommand.clear();
+		bufferNote.clear();
 		
 		day();
 	}
 	
 	private void day(){
+		bufferCommand.add(Messages.getString("board.n.day"+" "+round));
+		
 		DialogSet lynch = new DialogSet(
 				playerlist,
 				frame,
 				1,
+				bufferCommand,
 				Messages.getString("gui.lynch"),
 				"nodead");
 		Player player = playerlist.get(lynch.getPlayer().get(0));
+		bufferCommand.clear();
+		bufferNote.clear();
 		
 		// output
-		board.note("", "'"+player.name+"' "+Messages.getString("board.n.lynched"));
+		bufferCommand.add("'"+player.name+"' "+Messages.getString("board.n.lynched"));
+		
+		DialogCommand command = new DialogCommand(
+				frame,
+				bufferCommand,
+				bufferNote);
+		bufferCommand.clear();
+		bufferNote.clear();
 		
 		round++;
-		
-		board.head(" ");
-		board.head(Messages.getString("board.n.day")+" "+round);
+
 		
 		night();
 	}
 	
 	private void doctor(){ if (Keys.doctor > 0){
-		board.command(Messages.getString("board.c.doctorsawake"));
+		bufferCommand.add(Messages.getString("board.c.doctorsawake"));
 		
 		// first night
 		if (round == 1){
@@ -204,8 +224,11 @@ public class Controller extends JPanel implements ActionListener{
 					playerlist,
 					frame,
 					Keys.doctor,
+					bufferCommand,
 					Messages.getString("gui.whosdoctor"),
 					"onlyunknown");
+			bufferCommand.clear();
+			
 			ArrayList<String> doctors = getdoctors.getPlayer();
 			for (String doctor : doctors){
 				playerlist.get(doctor).character = 4;
@@ -218,6 +241,7 @@ public class Controller extends JPanel implements ActionListener{
 				playerlist,
 				frame,
 				1,
+				bufferCommand,
 				Messages.getString("gui.actdoctor"),
 				"nodead");
 		Player player = playerlist.get(actdoctor.getPlayer().get(0));
@@ -227,13 +251,12 @@ public class Controller extends JPanel implements ActionListener{
 		deprotectPlayer = player.name;
 		
 		// output
-		board.note("", "'"+player.name+"' "+Messages.getString("board.n.patronized"));
-		board.command(Messages.getString("board.c.doctorssleep"));
+		bufferCommand.add(Messages.getString("board.c.doctorssleep"));
 	}
 	}
 	
 	private void mafia(){ if (Keys.mafia > 0){
-		board.command(Messages.getString("board.c.mafiaawake"));
+		bufferCommand.add(Messages.getString("board.c.mafiaawake"));
 		
 		// first night
 		if (round == 1){
@@ -241,8 +264,11 @@ public class Controller extends JPanel implements ActionListener{
 					playerlist,
 					frame,
 					Keys.mafia,
+					bufferCommand,
 					Messages.getString("gui.whosmafia"),
 					"onlyunknown");
+			bufferCommand.clear();
+			
 			ArrayList<String> mafias = dialog.getPlayer();
 			for (String mafia : mafias){
 				playerlist.get(mafia).character = 2;
@@ -255,6 +281,7 @@ public class Controller extends JPanel implements ActionListener{
 				playerlist,
 				frame,
 				1,
+				bufferCommand,
 				Messages.getString("gui.actmafia"),
 				"nodead");
 		Player player = playerlist.get(actmafia.getPlayer().get(0));
@@ -265,13 +292,12 @@ public class Controller extends JPanel implements ActionListener{
 		}
 		
 		// output
-		board.note("", "'"+player.name+"' "+Messages.getString("board.n.trykill"));
-		board.command(Messages.getString("board.c.mafiasleep"));
+		bufferCommand.add(Messages.getString("board.c.mafiasleep"));
 	}
 	}
 	
 	private void detective(){ if (Keys.detective > 0){
-		board.command(Messages.getString("board.c.detectiveawake"));
+		bufferCommand.add(Messages.getString("board.c.detectivesawake"));
 		
 		// first night
 		if (round == 1){
@@ -279,8 +305,11 @@ public class Controller extends JPanel implements ActionListener{
 					playerlist,
 					frame,
 					Keys.detective,
+					bufferCommand,
 					Messages.getString("gui.whosdetective"),
-					"nodead");
+					"onlyunknown");
+			bufferCommand.clear();
+			
 			ArrayList<String> detectives = dialog.getPlayer();
 			for (String detective : detectives){
 				playerlist.get(detective).character = 2;
@@ -293,20 +322,27 @@ public class Controller extends JPanel implements ActionListener{
 				playerlist,
 				frame,
 				1,
+				bufferCommand,
 				Messages.getString("gui.actdetective"),
 				"nodead");
+		bufferCommand.clear();
+		
 		Player player = playerlist.get(actdetective.getPlayer().get(0));
 		
-		// output
-		board.note("", "'"+player.name+"' "+Messages.getString("board.n.askfor"));
-		
 		if (player.character == 2){
-			board.command(Messages.getString("board.c.ismafia"));
+			bufferCommand.add(Messages.getString("board.c.ismafia"));
 		} else {
-			board.command(Messages.getString("board.c.isnomafia"));
+			bufferCommand.add(Messages.getString("board.c.isnomafia"));
 		}
 		
-		board.command(Messages.getString("board.c.detectivessleep"));
+		bufferCommand.add(Messages.getString("board.c.detectivessleep"));
+		
+		DialogCommand command = new DialogCommand(
+				frame,
+				bufferCommand,
+				bufferNote);
+		bufferCommand.clear();
+		bufferNote.clear();
 	}	
 	}
 	
