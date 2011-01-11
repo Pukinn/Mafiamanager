@@ -206,14 +206,14 @@ public class Controller extends JPanel{
 		
 		checkwin();
 		
-		DialogSet lynch = new DialogSet(
+		DialogDay lynch = new DialogDay(
 				playerlist,
 				frame,
 				1,
 				bufferHead,
 				bufferCommand,
-				Messages.getString("gui.lynch"),
-				"nodead");
+				Messages.getString("gui.lynch")
+				);
 		bufferCommand.clear();
 		bufferNote.clear();
 		
