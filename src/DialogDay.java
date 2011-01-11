@@ -45,6 +45,7 @@ public class DialogDay extends JDialog implements ActionListener{
 	// gui
 	private ArrayList<JButton> buttons;
 	private JButton buttonAcc;
+	private JButton buttonTerr;
 	
 	public ArrayList<String> getPlayer(){ return returnPlayer; }
 	
@@ -122,6 +123,15 @@ public class DialogDay extends JDialog implements ActionListener{
 		buttonAcc.addActionListener(this);
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		add(buttonAcc, con);
+		
+		/*
+		if (Keys.terrorist > 0){
+			buttonTerr = new JButton(Messages.getString("gui.actterrorist"));
+			buttonTerr.addActionListener(this);
+			con.anchor = GridBagConstraints.LINE_END;
+			add(buttonTerr, con);
+		}
+		*/
 		
 		pack();
 		setLocationRelativeTo(null);

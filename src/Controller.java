@@ -143,6 +143,7 @@ public class Controller extends JPanel{
 		dealout.add(Messages.getString("board.n.mafia")+" "+Integer.toString(Keys.mafia));
 		dealout.add(Messages.getString("board.n.detective")+" "+Integer.toString(Keys.detective));
 		dealout.add(Messages.getString("board.n.doctor")+" "+Integer.toString(Keys.doctor));
+	//	dealout.add(Messages.getString("board.n.terrorist")+" "+Integer.toString(Keys.terrorist));
 		
 		DialogCommand dialog = new DialogCommand(
 				frame,

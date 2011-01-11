@@ -28,6 +28,7 @@ public class Player {
 		 * 	2 = mafia
 		 * 	3 = detective
 		 *	4 = doctor
+		 *	5 = terrorist
 		 */
 	public boolean isprotected;
 	public int number;
@@ -50,6 +51,7 @@ public class Player {
 		case 2: Keys.mafia--; break;
 		case 3: Keys.detective--; break;
 		case 4: Keys.doctor--; break;
+	//	case 5: Keys.terrorist--; break;
 		}
 	}
 	

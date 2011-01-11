@@ -23,6 +23,7 @@ public class Keys {
 	public static int mafia;
 	public static int detective;
 	public static int doctor;
+//	public static int terrorist;
 	
 	public static String IntToFigure(final int _num){
 		
@@ -34,6 +35,7 @@ public class Keys {
 		case 2: strFigure = Messages.getString("mafia"); break;
 		case 3: strFigure = Messages.getString("detective"); break;
 		case 4: strFigure = Messages.getString("doctor"); break;
+	//	case 5: strFigure = Messages.getString("terrorist"); break;
 		}
 		
 		return strFigure;

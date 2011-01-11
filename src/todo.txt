@@ -1,0 +1,8 @@
+# change Controller/character-methods to classes
+	## add a dialog to select how much character groups
+
+# change int-character to Strings
+
+# add "team" to Player-class (mafia, villager, own)
+
+#? change all character variables to ArrayLists
