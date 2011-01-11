@@ -101,7 +101,6 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 						try {
 							sum += Integer.parseInt(number);
 						} catch (NumberFormatException e){
-							System.err.println(Messages.getString("err.nonum"));
 							onlynumbers = false;
 							break;
 						}
