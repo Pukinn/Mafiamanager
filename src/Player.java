@@ -19,40 +19,30 @@
 public class Player {
 	
 	// player values
-	private boolean alive;
-	
 	public String name;
-	public int character;
-		/*	0 = unknown
-		 *	1 = villager
-		 * 	2 = mafia
-		 * 	3 = detective
-		 *	4 = doctor
-		 *	5 = terrorist
-		 */
-	public boolean isprotected;
+	public String character;
 	public int number;
 	
-	public String officialCharacter;
+	// states
+	private boolean alive;
+	public boolean isprotected;
 
 	public Player(String _name){
 		
 		// create player
 		name = _name;
-		character = 0;
+		character = "undefined";
 		alive = true;
 	}
 	
 	public void kill(){
 		alive = false;
 		
-		switch (character){
-		case 1: Keys.villager--; break;
-		case 2: Keys.mafia--; break;
-		case 3: Keys.detective--; break;
-		case 4: Keys.doctor--; break;
-		case 5: Keys.terrorist--; break;
-		}
+		if (character.equals("villager")) { Keys.villager--; }
+		else if (character.equals("mafia")) { Keys.mafia--; }
+		else if (character.equals("detective")) { Keys.detective--; }
+		else if (character.equals("doctor")) { Keys.doctor--; }
+		else if (character.equals("terrorist")) { Keys.terrorist--; }
 	}
 	
 	public boolean alive(){ return alive; }

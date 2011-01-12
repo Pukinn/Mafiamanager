@@ -16,28 +16,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.util.ArrayList;
+
 public class Keys {
 
 	// figures
 	public static int villager;
-	public static int mafia;
-	public static int detective;
-	public static int doctor;
-	public static int terrorist;
 	
-	public static String IntToFigure(final int _num){
-		
-		String strFigure = "err";
-		
-		switch (_num){
-		case 0: strFigure = Messages.getString("unknown"); break;
-		case 1: strFigure = Messages.getString("villager"); break;
-		case 2: strFigure = Messages.getString("mafia"); break;
-		case 3: strFigure = Messages.getString("detective"); break;
-		case 4: strFigure = Messages.getString("doctor"); break;
-		case 5: strFigure = Messages.getString("terrorist"); break;
-		}
-		
-		return strFigure;
-	}
+	public static ArrayList<String> gMafia;
+	public static ArrayList<Integer> mafia;
+	
+	public static ArrayList<String> gDetective;
+	public static ArrayList<Integer> detective;
+	
+	public static ArrayList<String> gDoctor;
+	public static ArrayList<Integer> doctor;
+	
+	public static ArrayList<String> gTerrorist;
+	public static ArrayList<Integer> terrorist;
+	
 }

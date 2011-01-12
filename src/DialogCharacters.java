@@ -48,14 +48,15 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	
 	// gui
 	private GridBagConstraints con;
+	private GridBagConstraints conGroups;
+	
 	private KeyListener keylistener;
 	
 	private JLabel labelTxt;
 	private JLabel labelCounter;
-	private JPanel panelCharacters;
-		private ArrayList<JPanel> panelx;
-			private ArrayList<JLabel> labelx;
-			private ArrayList<JTextField> fieldx;
+
+
+			
 	private JButton buttonAcc;
 	
 	public DialogCharacters(SortedMap<String, Player> _playerlist, JFrame _frame, Board _board){
@@ -65,13 +66,11 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		playerlist = _playerlist;
 		board = _board;
 		counterPlayer = playerlist.size();
-		panelx = new ArrayList<JPanel>();
-		labelx = new ArrayList<JLabel>();
-		fieldx = new ArrayList<JTextField>();
+		con = new GridBagConstraints();
+		conGroups = new GridBagConstraints();
 		
 		// gui
 		setLayout(new GridBagLayout());
-		con = new GridBagConstraints();
 		con.gridx = 0;
 		con.insets = new Insets(0,0,5,0);
 		
@@ -85,7 +84,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		con.gridy = 1;
 		add(labelCounter, con);
 
-		// listener for checking textfields
+		// listener for checking amount of players
 		keylistener = new KeyListener() {
 			public void keyPressed(KeyEvent event) {
 			}
@@ -94,7 +93,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 				int sum = 0;
 				boolean onlynumbers = true;
 				
-				for (JTextField curField : fieldx){
+				for (JTextField curField : fieldsGroupPlayer){
 					String number = curField.getText();
 					
 					if (!number.equals("")){
@@ -134,10 +133,10 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		panelCharacters = new JPanel(new GridLayout(0,1));
 		
 		counterCharacters = 0;
-		addCharacter(2);	// mafia
-		addCharacter(3);	// detective
-		addCharacter(4);	// doctor
-	//	addCharacter(5);	// terrorist
+		addCharacter("mafia");
+		addCharacter("detective");
+		addCharacter("doctor");
+	//	addCharacter("terrorist");
 		
 		con.gridy = 2;
 		add(panelCharacters, con);
@@ -155,18 +154,37 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		setVisible(true);
 	}
 	
-	// add figure
-	public void addCharacter(int _fig){
+	// add groups
+	public void addCharacter(String _character){
 		
-		panelx.add(new JPanel(new GridLayout(1,2)));
-		labelx.add(new JLabel(Keys.IntToFigure(_fig)+":"));
-		fieldx.add(new JTextField(5));
-		fieldx.get(counterCharacters).addKeyListener(keylistener);
+		panelsGroup.add(new JPanel(new GridBagLayout()));
+		JPanel curPanel = panelsGroup.get(counterCharacters);
+		panelCharacters.add(curPanel);
 		
-		panelx.get(counterCharacters).add(labelx.get(counterCharacters));
-		panelx.get(counterCharacters).add(fieldx.get(counterCharacters));
-		panelCharacters.add(panelx.get(counterCharacters));
-		
+			// label
+			labelsGroup.add(new JLabel(Messages.getString(_character)+":"));
+			curPanel.add(labelsGroup.get(counterCharacters));
+			
+			// group name
+			fieldsGroupName.add(new JTextField(15));
+			if (_character.equals("mafia")) {
+				fieldsGroupName.get(0).setText("mafiafamilie");
+			}
+			else if (_character.equals("detective")) {
+				fieldsGroupName.get(0).setText("detective agency");
+			}
+			else if (_character.equals("doctor")) {
+				fieldsGroupName.get(0).setText("medical practice");
+			}
+			else if (_character.equals("terrorist")) {
+				fieldsGroupName.get(0).setText("terrorist group");
+			}
+			
+			// how much players
+			fieldsGroupPlayer.add(new JTextField(5));
+			fieldsGroupPlayer.get(counterCharacters).addKeyListener(keylistener);
+			curPanel.add(fieldsGroupPlayer.get(counterCharacters));
+			
 		counterCharacters++;
 	}
 
@@ -175,18 +193,18 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		if (event.getSource() == buttonAcc){
 			Keys.villager = counterPlayer;
 			
-			Keys.mafia = StringToInt(fieldx.get(0).getText());
-			Keys.detective = StringToInt(fieldx.get(1).getText());
-			Keys.doctor = StringToInt(fieldx.get(2).getText());
-			Keys.terrorist = StringToInt(fieldx.get(3).getText());
+		//	Keys.mafia = StringToInt(fieldx.get(0).getText());
+		//	Keys.detective = StringToInt(fieldx.get(1).getText());
+		//	Keys.doctor = StringToInt(fieldx.get(2).getText());
+		//	Keys.terrorist = StringToInt(fieldx.get(3).getText());
 			
 			board.space();
 			board.line(Messages.getString("log.character"));
 			if (Keys.villager > 0) board.line(Messages.getString("villager")+"("+Keys.villager+")");
-			if (Keys.mafia > 0) board.line(Messages.getString("mafia")+"("+Keys.mafia+")");
-			if (Keys.detective > 0) board.line(Messages.getString("detective")+"("+Keys.detective+")");
-			if (Keys.doctor > 0) board.line(Messages.getString("doctor")+"("+Keys.doctor+")");
-			if (Keys.terrorist > 0) board.line(Messages.getString("terrorist")+"("+Keys.terrorist+")");
+	//		if (Keys.mafia > 0) board.line(Messages.getString("mafia")+"("+Keys.mafia+")");
+	//		if (Keys.detective > 0) board.line(Messages.getString("detective")+"("+Keys.detective+")");
+	//		if (Keys.doctor > 0) board.line(Messages.getString("doctor")+"("+Keys.doctor+")");
+	//		if (Keys.terrorist > 0) board.line(Messages.getString("terrorist")+"("+Keys.terrorist+")");
 			
 			setVisible(false);
 		}

@@ -168,8 +168,8 @@ public class Controller extends JPanel{
 		if (round == 1){
 			Set<String> playerset = playerlist.keySet();
 			for (String playerStr : playerset){
-				if (playerlist.get(playerStr).character == 0){
-					playerlist.get(playerStr).character = 1;
+				if (playerlist.get(playerStr).character.equals("undefined")){
+					playerlist.get(playerStr).character = "villager";
 				}
 			}
 
@@ -293,7 +293,7 @@ public class Controller extends JPanel{
 			
 			ArrayList<String> doctors = getdoctors.getPlayer();
 			for (String doctor : doctors){
-				playerlist.get(doctor).character = 4;
+				playerlist.get(doctor).character = "doctor";
 			}
 		}
 		
@@ -339,7 +339,7 @@ public class Controller extends JPanel{
 			
 			ArrayList<String> mafias = dialog.getPlayer();
 			for (String mafia : mafias){
-				playerlist.get(mafia).character = 2;
+				playerlist.get(mafia).character = "mafia";
 			}
 		}
 		
@@ -387,7 +387,7 @@ public class Controller extends JPanel{
 			
 			ArrayList<String> detectives = dialog.getPlayer();
 			for (String detective : detectives){
-				playerlist.get(detective).character = 3;
+				playerlist.get(detective).character = "detective";
 			}
 		}
 		
@@ -406,7 +406,7 @@ public class Controller extends JPanel{
 		
 		Player player = playerlist.get(actdetective.getPlayer().get(0));
 		
-		if (player.character == 2){
+		if (player.character.equals("mafia")){
 			bufferCommand.add(Messages.getString("board.c.ismafia"));
 		} else {
 			bufferCommand.add(Messages.getString("board.c.isnomafia"));
