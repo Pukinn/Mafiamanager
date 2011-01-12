@@ -36,6 +36,7 @@ public class CharacterGroup extends JPanel
 	private static final long serialVersionUID = -1945794586033999887L;
 	
 	// hand overs
+	private DialogCharacters parent;
 	private String group;
 	private Integer leftVillager;
 	private JLabel labelVillager;
@@ -50,9 +51,15 @@ public class CharacterGroup extends JPanel
 	// gui
 	private GridBagConstraints con;
 	
-	public CharacterGroup(String _group, Integer _leftVillager, JLabel _lblVillager, JButton _acc){
+	public CharacterGroup(
+			DialogCharacters _parent,
+			String _group,
+			Integer _leftVillager,
+			JLabel _lblVillager,
+			JButton _acc){
 		
 		// initialize
+		parent = _parent;
 		group = _group;
 		leftVillager = _leftVillager;
 		labelVillager = _lblVillager;
@@ -63,8 +70,8 @@ public class CharacterGroup extends JPanel
 		
 		// set
 		setLayout(new GridBagLayout());
-		con.insets = new Insets(5,5,5,5);
-		con.anchor = GridBagConstraints.EAST;
+		con.insets = new Insets(2,2,2,2);
+		con.anchor = GridBagConstraints.LINE_START;
 		
 		// keylistener
 		keylisVillager = new KeyListener() {
@@ -97,14 +104,17 @@ public class CharacterGroup extends JPanel
 					buttonAcc.setEnabled(false);
 					labelVillager.setText(Messages.getString("gui.leftPlayererr"));
 				}
-				
-				
 			}
 
 			public void keyPressed(KeyEvent arg0) {}
 			public void keyTyped(KeyEvent arg0) {}
 			
 		};
+		
+		// get maximum 
+		
+		// create first
+		newGroup();
 	}
 	
 	// add new group
@@ -113,10 +123,10 @@ public class CharacterGroup extends JPanel
 		
 		// group
 		con.gridx = 0;
-		String grouptext = "conf."+ group +".group";
+		String grouptext = Messages.getString("conf."+ group +".group") + " " + (linecounter+1);
 		JLabel labelGroup = new JLabel(grouptext);
 		add(labelGroup, con);
-		
+
 		// name of group
 		con.gridx = 1;
 		JTextField fieldName = new JTextField(15);
@@ -137,17 +147,19 @@ public class CharacterGroup extends JPanel
 		
 		// button add group
 		con.gridx = 3;
-		JButton buttonAdd = new JButton(Messages.getString("gui.add"));
+		JButton buttonAdd = new JButton(Messages.getString("conf.add"));
 		buttonAdd.addActionListener(this);
 		add(buttonAdd, con);
 		
+		parent.pack();
 		linecounter++;
 	}
 
 	// button pressed
 	public void actionPerformed(ActionEvent event) {
 		
-		
+		System.out.println("blubb");
+		newGroup();
 	}
 	
 }

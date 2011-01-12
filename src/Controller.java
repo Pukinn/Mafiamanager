@@ -139,10 +139,10 @@ public class Controller extends JPanel{
 		ArrayList<String> dealout = new ArrayList<String>();
 		
 		command.add(Messages.getString("board.n.dealout"));
-		dealout.add(Messages.getString("board.n.villager")+" "+Integer.toString(Keys.villager));
-		dealout.add(Messages.getString("board.n.mafia")+" "+Integer.toString(Keys.mafia));
-		dealout.add(Messages.getString("board.n.detective")+" "+Integer.toString(Keys.detective));
-		dealout.add(Messages.getString("board.n.doctor")+" "+Integer.toString(Keys.doctor));
+	//	dealout.add(Messages.getString("board.n.villager")+" "+Integer.toString(Keys.villager));
+	//	dealout.add(Messages.getString("board.n.mafia")+" "+Integer.toString(Keys.mafia));
+	//	dealout.add(Messages.getString("board.n.detective")+" "+Integer.toString(Keys.detective));
+	//	dealout.add(Messages.getString("board.n.doctor")+" "+Integer.toString(Keys.doctor));
 	//	dealout.add(Messages.getString("board.n.terrorist")+" "+Integer.toString(Keys.terrorist));
 		
 		DialogCommand dialog = new DialogCommand(
@@ -160,9 +160,9 @@ public class Controller extends JPanel{
 		bufferCommand.add(Messages.getString("board.c.allsleep"));
 		
 		// TASKLIST
-		doctor();
-		mafia();
-		detective();
+	//	doctor();
+	//	mafia();
+	//	detective();
 		
 		// first night
 		if (round == 1){
@@ -205,7 +205,7 @@ public class Controller extends JPanel{
 		bufferCommand.clear();
 		bufferNote.clear();
 		
-		checkwin();
+	//	checkwin();
 		
 		DialogDay lynch = new DialogDay(
 				playerlist,
@@ -232,7 +232,7 @@ public class Controller extends JPanel{
 		bufferCommand.clear();
 		bufferNote.clear();
 		
-		checkwin();
+	//	checkwin();
 		
 		round++;
 
@@ -241,7 +241,7 @@ public class Controller extends JPanel{
 	}
 	
 	// check if one party have won and exit game
-	private void checkwin(){
+/*	private void checkwin(){
 		if (Keys.mafia == 0){
 			bufferCommand.add(Messages.getString("gui.villagerswin"));
 			bufferNote.add(Messages.getString("gui.congratulation"));
@@ -423,5 +423,5 @@ public class Controller extends JPanel{
 		bufferNote.clear();
 	}	
 	}
-
+*/
 }

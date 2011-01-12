@@ -16,34 +16,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class Player {
-	
-	// player values
-	public String name;
-	public String character;
-	public int number;
-	
-	// states
-	private boolean alive;
-	public boolean isprotected;
+public class Group {
 
-	public Player(String _name){
-		
-		// create player
-		name = _name;
-		character = "undefined";
-		alive = true;
+	private String group;
+	private String groupname;
+	private int groupsize;
+	private boolean alldead;
+	
+	public String group(){ return group; }
+	public String groupname(){ return groupname; }
+	public boolean alldead(){ return alldead; }
+	public int groupsize(){ return groupsize; }
+	
+	public Group(String _group, String _name){
+		group = _group;
+		groupname = _name;
+		alldead = false;
+	}
+	
+	public void setGroupsize(int _size){
+		groupsize = _size;
 	}
 	
 	public void kill(){
-		alive = false;
+		groupsize--;
 		
-	//	if (character.equals("villager")) { Keys.villager--; }
-	//	else if (character.equals("mafia")) { Keys.mafia--; }
-	//	else if (character.equals("detective")) { Keys.detective--; }
-	//	else if (character.equals("doctor")) { Keys.doctor--; }
-	//	else if (character.equals("terrorist")) { Keys.terrorist--; }
+		if (groupsize == 0){
+			alldead = true;
+		}
 	}
-	
-	public boolean alive(){ return alive; }
 }

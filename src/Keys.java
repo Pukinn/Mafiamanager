@@ -19,20 +19,7 @@
 import java.util.ArrayList;
 
 public class Keys {
-
-	// figures
-	public static int villager;
 	
-	public static ArrayList<String> gMafia;
-	public static ArrayList<Integer> mafia;
-	
-	public static ArrayList<String> gDetective;
-	public static ArrayList<Integer> detective;
-	
-	public static ArrayList<String> gDoctor;
-	public static ArrayList<Integer> doctor;
-	
-	public static ArrayList<String> gTerrorist;
-	public static ArrayList<Integer> terrorist;
+	public static ArrayList<Group> groups;
 	
 }
