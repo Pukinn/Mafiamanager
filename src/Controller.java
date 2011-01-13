@@ -138,14 +138,15 @@ public class Controller extends JPanel{
 		ArrayList<String> command = new ArrayList<String>();
 		ArrayList<String> dealout = new ArrayList<String>();
 		
-		command.add(Messages.getString("board.n.dealout"));
-	//	dealout.add(Messages.getString("board.n.villager")+" "+Integer.toString(Keys.villager));
-	//	dealout.add(Messages.getString("board.n.mafia")+" "+Integer.toString(Keys.mafia));
-	//	dealout.add(Messages.getString("board.n.detective")+" "+Integer.toString(Keys.detective));
-	//	dealout.add(Messages.getString("board.n.doctor")+" "+Integer.toString(Keys.doctor));
-	//	dealout.add(Messages.getString("board.n.terrorist")+" "+Integer.toString(Keys.terrorist));
+		command.add(Messages.getString("deal.note"));
+		for (Group group : Keys.groups){
+			String mess = Messages.getString("deal."+group.group()) + " ";
+			mess += group.groupname() + ": ";
+			mess += group.groupsize();
+			dealout.add(mess);
+		}
 		
-		DialogCommand dialog = new DialogCommand(
+		DialogCommand dialDealout = new DialogCommand(
 				frame,
 				Messages.getString("gui.beforegame"),
 				command,

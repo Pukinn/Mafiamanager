@@ -51,7 +51,7 @@ public class CharacterGroup extends JPanel
 		// initialize
 		parent = _parent;
 		group = _group;
-		linecounter = 0;
+		linecounter = 1;
 		names = new ArrayList<JTextField>();
 		numbers = new ArrayList<JTextField>();
 		con = new GridBagConstraints();
@@ -59,43 +59,43 @@ public class CharacterGroup extends JPanel
 		// set
 		setLayout(new GridBagLayout());
 		con.insets = new Insets(2,2,2,2);
-		con.anchor = GridBagConstraints.LINE_START;
+		con.anchor = GridBagConstraints.CENTER;
 		
-		// create first
+		// head
+		JLabel head = new JLabel(Messages.getString("conf."+group));
+		con.gridx = 0;
+		con.gridy = 0;
+		add(head, con);
+		
+		// button add
+		JButton buttonAdd = new JButton(Messages.getString("conf.add"));
+		buttonAdd.addActionListener(this);
+		con.gridx = 1;
+		add(buttonAdd, con);
+		
+		// create first group
 		newGroup();
 	}
 	
 	// add new group
 	public void newGroup(){
 		con.gridy = linecounter;
-		
-		// group
-		con.gridx = 0;
-		String grouptext = Messages.getString("conf."+ group +".group") + " " + (linecounter+1);
-		JLabel labelGroup = new JLabel(grouptext);
-		add(labelGroup, con);
 
 		// name of group
-		con.gridx = 1;
+		con.gridx = 0;
 		JTextField fieldName = new JTextField(15);
-		if (linecounter < 3){
-			String fieldtext = "conf."+ group +".group."+(linecounter+1);
+		if (linecounter <= 3){
+			String fieldtext = "conf."+ group +".group."+(linecounter);
 			fieldName.setText(Messages.getString(fieldtext));
 		}
 		names.add(fieldName);
 		add(fieldName, con);
 		
 		// number of players
-		con.gridx = 2;
+		con.gridx = 1;
 		JTextField fieldNum = new JTextField(5);
 		numbers.add(fieldNum);
 		add(fieldNum, con);
-		
-		// button add group
-		con.gridx = 3;
-		JButton buttonAdd = new JButton(Messages.getString("conf.add"));
-		buttonAdd.addActionListener(this);
-		add(buttonAdd, con);
 		
 		parent.pack();
 		linecounter++;
@@ -106,7 +106,7 @@ public class CharacterGroup extends JPanel
 		ArrayList<Group> groups = new ArrayList<Group>();
 		error = false;
 		
-		for (int i=0; i<linecounter; i++){
+		for (int i=0; i<linecounter-1; i++){
 			// get Strings
 			String strName = names.get(i).getText();
 			String strNum = numbers.get(i).getText();

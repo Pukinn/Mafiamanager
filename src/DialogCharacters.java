@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -28,7 +29,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JSeparator;
 
 
 public class DialogCharacters  extends JDialog implements ActionListener{
@@ -38,17 +38,16 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	// general
 	private SortedMap<String, Player> playerlist;
 	private Board board;
-	private Integer leftVillager;
 	
 	// gui
 	private GridBagConstraints con;
 	
 	private JLabel labelTxt;
-	private JLabel labelCounter;
 	private CharacterGroup groupMafia;
 	private CharacterGroup groupDetective;
 	private CharacterGroup groupDoctor;
-	private CharacterGroup groupTerrorist;	
+	private CharacterGroup groupTerrorist;
+	private JLabel labelErrors;
 	private JButton buttonAcc;
 	
 	public DialogCharacters(SortedMap<String, Player> _playerlist, JFrame _frame, Board _board){
@@ -62,75 +61,50 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		// gui
 		setLayout(new GridBagLayout());
 		con.gridx = 0;
-		con.insets = new Insets(0,0,5,0);
+		con.insets = new Insets(0,0,15,0);
 		
 		// text
 		labelTxt = new JLabel(Messages.getString("gui.configureTxt"));
 		con.gridy = 0;
 		add(labelTxt, con);
 		
-		// counter
-		leftVillager = new Integer(playerlist.size());
-		labelCounter = new JLabel(Messages.getString("gui.leftPlayer")+" "+leftVillager);
-		con.gridy = 1;
-		add(labelCounter, con);
-		
 		// CHARACTERS
 		con.anchor = GridBagConstraints.LINE_END;
 		
-		// separator
-		con.gridy = 2;
-		con.fill = GridBagConstraints.HORIZONTAL;
-		add(new JSeparator(), con);
-		
 		//mafia
 		groupMafia = new CharacterGroup(this, "mafia");
-		con.gridy = 3;
+		con.gridy = 1;
 		con.fill = GridBagConstraints.NONE;
 		add(groupMafia, con);
 		
-		// separator
-		con.gridy = 4;
-		con.fill = GridBagConstraints.HORIZONTAL;
-		add(new JSeparator(), con);
-		
 		//detective
 		groupDetective = new CharacterGroup(this, "detective");
-		con.gridy = 5;
+		con.gridy = 2;
 		con.fill = GridBagConstraints.NONE;
 		add(groupDetective, con);
 		
-		// separator
-		con.gridy = 6;
-		con.fill = GridBagConstraints.HORIZONTAL;
-		add(new JSeparator(), con);
-		
 		//doctor
 		groupDoctor = new CharacterGroup(this, "doctor");
-		con.gridy = 7;
+		con.gridy = 3;
 		con.fill = GridBagConstraints.NONE;
 		add(groupDoctor, con);
 		
-		// separator
-		con.gridy = 8;
-		con.fill = GridBagConstraints.HORIZONTAL;
-		add(new JSeparator(), con);
-		
 		//terrorist
 		groupTerrorist = new CharacterGroup(this, "terrorist");
-		con.gridy = 9;
+		con.gridy = 4;
 		con.fill = GridBagConstraints.NONE;
 		add(groupTerrorist, con);
 		
-		// separator
-		con.gridy = 10;
-		con.fill = GridBagConstraints.HORIZONTAL;
-		add(new JSeparator(), con);
+		// error messages
+		con.gridy = 5;
+		labelErrors = new JLabel(" ");
+		labelErrors.setForeground(Color.red);
+		add(labelErrors, con);
 		
 		// button accept
 		buttonAcc = new JButton(Messages.getString("gui.acc"));
 		buttonAcc.addActionListener(this);
-		con.gridy = 11;
+		con.gridy = 6;
 		con.anchor = GridBagConstraints.CENTER;
 		con.fill = GridBagConstraints.NONE;
 		add(buttonAcc, con);
@@ -169,13 +143,13 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 				
 				if (playerlist.size() < amountPlayer){
 					Keys.groups.clear();
-					
-					//TODO error message
+					labelErrors.setText(Messages.getString("conf.err.character"));
+					pack();
 				}
 				else if (amountPlayer == 0){
 					Keys.groups.clear();
-					
-					//TODO error message
+					labelErrors.setText(Messages.getString("conf.err.player"));
+					pack();
 				}
 				else {
 					int villager = playerlist.size() - amountPlayer;
@@ -185,12 +159,11 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					board.space();
 					board.line(Messages.getString("log.character"));
 					for (Group group : Keys.groups){
-						String mess = Messages.getString(group.group())+": ";
+						String mess = Messages.getString("conf."+group.group()) + " ";
 						mess += group.groupname();
-						mess += "("+group+")";
+						mess += "("+group.groupsize()+")";
+						board.line(mess);
 					}
-					
-					System.out.println(Keys.groups);
 					
 					// end dialog
 					setVisible(false);
