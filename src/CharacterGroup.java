@@ -16,14 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -38,80 +36,30 @@ public class CharacterGroup extends JPanel
 	// hand overs
 	private DialogCharacters parent;
 	private String group;
-	private Integer leftVillager;
-	private JLabel labelVillager;
 	private int linecounter;
-	private JButton buttonAcc;
-	
+
 	// general
-	private KeyListener keylisName;
-	private KeyListener keylisVillager;
-	private boolean onlynumbers;
+	public boolean error;
 	
 	// gui
 	private GridBagConstraints con;
+	private ArrayList<JTextField> names;
+	private ArrayList<JTextField> numbers;
 	
-	public CharacterGroup(
-			DialogCharacters _parent,
-			String _group,
-			Integer _leftVillager,
-			JLabel _lblVillager,
-			JButton _acc){
+	public CharacterGroup(DialogCharacters _parent, String _group){
 		
 		// initialize
 		parent = _parent;
 		group = _group;
-		leftVillager = _leftVillager;
-		labelVillager = _lblVillager;
 		linecounter = 0;
-		buttonAcc = _acc;
-		onlynumbers = true;
+		names = new ArrayList<JTextField>();
+		numbers = new ArrayList<JTextField>();
 		con = new GridBagConstraints();
 		
 		// set
 		setLayout(new GridBagLayout());
 		con.insets = new Insets(2,2,2,2);
 		con.anchor = GridBagConstraints.LINE_START;
-		
-		// keylistener
-		keylisVillager = new KeyListener() {
-			public void keyReleased(KeyEvent event) {
-				String number = ((JTextField)event.getSource()).getText();
-				
-				if (!number.equals("")){
-					try {
-						leftVillager -= Integer.parseInt(number);;
-					} catch (NumberFormatException e){
-						onlynumbers = false;
-					}
-				}
-				
-				// positive villager
-				if (onlynumbers && leftVillager >= 0){
-					labelVillager.setForeground(null);
-					buttonAcc.setEnabled(true);
-					labelVillager.setText(Messages.getString("gui.leftPlayer")+" "+leftVillager);
-				}
-				// negative villager
-				else if (onlynumbers) {
-					labelVillager.setForeground(Color.red);
-					buttonAcc.setEnabled(false);
-					labelVillager.setText(Messages.getString("gui.leftPlayer")+" "+leftVillager);
-				}
-				// no allowed string
-				else {
-					labelVillager.setForeground(Color.red);
-					buttonAcc.setEnabled(false);
-					labelVillager.setText(Messages.getString("gui.leftPlayererr"));
-				}
-			}
-
-			public void keyPressed(KeyEvent arg0) {}
-			public void keyTyped(KeyEvent arg0) {}
-			
-		};
-		
-		// get maximum 
 		
 		// create first
 		newGroup();
@@ -134,15 +82,13 @@ public class CharacterGroup extends JPanel
 			String fieldtext = "conf."+ group +".group."+(linecounter+1);
 			fieldName.setText(Messages.getString(fieldtext));
 		}
-		fieldName.addKeyListener(keylisName);
-		fieldName.setActionCommand("checksame");
+		names.add(fieldName);
 		add(fieldName, con);
 		
 		// number of players
 		con.gridx = 2;
 		JTextField fieldNum = new JTextField(5);
-		fieldNum.addKeyListener(keylisVillager);
-		fieldNum.setActionCommand("checknumbers");
+		numbers.add(fieldNum);
 		add(fieldNum, con);
 		
 		// button add group
@@ -154,11 +100,52 @@ public class CharacterGroup extends JPanel
 		parent.pack();
 		linecounter++;
 	}
+	
+	public ArrayList<Group> getGroups(){
+		
+		ArrayList<Group> groups = new ArrayList<Group>();
+		error = false;
+		
+		for (int i=0; i<linecounter; i++){
+			// get Strings
+			String strName = names.get(i).getText();
+			String strNum = numbers.get(i).getText();
+			
+			// check lonly number
+			if ((strName.equals("") ||
+					strName.equals(Messages.getString("conf.err.setname"))) &&
+					!strNum.equals("")){
+				
+				strName = "err";
+				names.get(i).setText(Messages.getString("conf.err.setname"));
+				error = true;
+				
+				System.out.println("lonly number at line "+(i+1)+" "+group);
+			}
+			
+			if (!strNum.equals("")){
+				// check invalid number
+				int number = 0;
+				try {
+					number = Integer.parseInt(strNum);
+				} catch (NumberFormatException e){
+					error = true;
+					numbers.get(i).setText("err");
+					System.out.println("invalid number at line"+(i+1)+" "+group);
+				}
+				
+				// add group
+				groups.add(new Group(group, strName, number));
+			}
+			
+
+		}
+		
+		return groups;
+	}
 
 	// button pressed
 	public void actionPerformed(ActionEvent event) {
-		
-		System.out.println("blubb");
 		newGroup();
 	}
 	

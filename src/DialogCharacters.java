@@ -21,6 +21,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.SortedMap;
 
 import javax.swing.JButton;
@@ -83,12 +84,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		add(new JSeparator(), con);
 		
 		//mafia
-		groupMafia = new CharacterGroup(
-				this,
-				"mafia",
-				leftVillager,
-				labelCounter,
-				buttonAcc);
+		groupMafia = new CharacterGroup(this, "mafia");
 		con.gridy = 3;
 		con.fill = GridBagConstraints.NONE;
 		add(groupMafia, con);
@@ -99,12 +95,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		add(new JSeparator(), con);
 		
 		//detective
-		groupDetective = new CharacterGroup(
-				this,
-				"detective",
-				leftVillager,
-				labelCounter,
-				buttonAcc);
+		groupDetective = new CharacterGroup(this, "detective");
 		con.gridy = 5;
 		con.fill = GridBagConstraints.NONE;
 		add(groupDetective, con);
@@ -115,12 +106,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		add(new JSeparator(), con);
 		
 		//doctor
-		groupDoctor = new CharacterGroup(
-				this,
-				"doctor",
-				leftVillager,
-				labelCounter,
-				buttonAcc);
+		groupDoctor = new CharacterGroup(this, "doctor");
 		con.gridy = 7;
 		con.fill = GridBagConstraints.NONE;
 		add(groupDoctor, con);
@@ -131,12 +117,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		add(new JSeparator(), con);
 		
 		//terrorist
-		groupTerrorist = new CharacterGroup(
-				this,
-				"terrorist",
-				leftVillager,
-				labelCounter,
-				buttonAcc);
+		groupTerrorist = new CharacterGroup(this, "terrorist");
 		con.gridy = 9;
 		con.fill = GridBagConstraints.NONE;
 		add(groupTerrorist, con);
@@ -164,24 +145,58 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	// button Accept pressed
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == buttonAcc){
-		//	Keys.villager = leftVillager;
 			
-		//	Keys.mafia = StringToInt(fieldx.get(0).getText());
-		//	Keys.detective = StringToInt(fieldx.get(1).getText());
-		//	Keys.doctor = StringToInt(fieldx.get(2).getText());
-		//	Keys.terrorist = StringToInt(fieldx.get(3).getText());
+			// generate groups
+			Keys.groups = new ArrayList<Group>();
 			
-			board.space();
-			board.line(Messages.getString("log.character"));
-	//		if (Keys.villager > 0) board.line(Messages.getString("villager")+"("+Keys.villager+")");
-	//		if (Keys.mafia > 0) board.line(Messages.getString("mafia")+"("+Keys.mafia+")");
-	//		if (Keys.detective > 0) board.line(Messages.getString("detective")+"("+Keys.detective+")");
-	//		if (Keys.doctor > 0) board.line(Messages.getString("doctor")+"("+Keys.doctor+")");
-	//		if (Keys.terrorist > 0) board.line(Messages.getString("terrorist")+"("+Keys.terrorist+")");
+			// get groups
+			Keys.groups.addAll(groupMafia.getGroups());
+			Keys.groups.addAll(groupDetective.getGroups());
+			Keys.groups.addAll(groupDoctor.getGroups());
+			Keys.groups.addAll(groupTerrorist.getGroups());
 			
-			setVisible(false);
+			// if no error
+			if (!groupMafia.error &&
+					!groupDetective.error &&
+					!groupDoctor.error &&
+					!groupTerrorist.error){				
+				
+				// check for enough player
+				int amountPlayer = 0;
+				for (Group group : Keys.groups){
+					amountPlayer += group.groupsize();
+				}
+				
+				if (playerlist.size() < amountPlayer){
+					Keys.groups.clear();
+					
+					//TODO error message
+				}
+				else if (amountPlayer == 0){
+					Keys.groups.clear();
+					
+					//TODO error message
+				}
+				else {
+					int villager = playerlist.size() - amountPlayer;
+					Keys.groups.add(new Group("villager", Messages.getString("conf.villager.group"), villager));
+					
+					// write log
+					board.space();
+					board.line(Messages.getString("log.character"));
+					for (Group group : Keys.groups){
+						String mess = Messages.getString(group.group())+": ";
+						mess += group.groupname();
+						mess += "("+group+")";
+					}
+					
+					System.out.println(Keys.groups);
+					
+					// end dialog
+					setVisible(false);
+				}
+			}
 		}
-		
 	}
 	
 	// convert string to integer

@@ -28,14 +28,11 @@ public class Group {
 	public boolean alldead(){ return alldead; }
 	public int groupsize(){ return groupsize; }
 	
-	public Group(String _group, String _name){
+	public Group(String _group, String _name, int _size){
 		group = _group;
 		groupname = _name;
-		alldead = false;
-	}
-	
-	public void setGroupsize(int _size){
 		groupsize = _size;
+		alldead = false;
 	}
 	
 	public void kill(){
