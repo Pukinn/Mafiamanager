@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -32,7 +33,11 @@ public class Log {
 		formatter = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
 		Date currentTime = new Date();
 		String time = formatter.format(currentTime);
-		pathlog = "./Logs/"+time;
+
+		File log_directory = new File("Logs");
+		if (!log_directory.exists()) log_directory.mkdir();
+
+		pathlog = new File(log_directory, time).getPath();
 		
 		timestamp();
 		addLine(Messages.getString("log.created"));
