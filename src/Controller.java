@@ -242,7 +242,24 @@ public class Controller extends JPanel{
 	}
 	
 	// check if one party have won and exit game
-/*	private void checkwin(){
+	private void checkwin(){
+		
+		for (Group groupwon : Keys.groups){
+			
+			String curgoup = groupwon.groupname();
+			
+			for (Group group : Keys.groups){
+				if
+				
+				
+			}
+			
+			
+			
+			
+		}
+
+		
 		if (Keys.mafia == 0){
 			bufferCommand.add(Messages.getString("gui.villagerswin"));
 			bufferNote.add(Messages.getString("gui.congratulation"));
@@ -272,12 +289,41 @@ public class Controller extends JPanel{
 			System.exit(0);
 		}
 	}
-	
+
 // CHARACTERS
 	
 	// doctor / Seelenretter
-	private void doctor(){ if (Keys.doctor > 0){
-		bufferCommand.add(Messages.getString("board.c.doctorsawake"));
+	private void doctor(){ 
+		for (Group group : Keys.doctors) { if (!group.alldead()){
+			bufferCommand.add(Messages.getString("night.doctor.awake") + " " + group.groupname());
+			
+			if (round == 1){
+				DialogSet getdoctors = new DialogSet(
+						playerlist,
+						frame,
+						group.groupsize(),
+						bufferHead,
+						bufferCommand,
+						Messages.getString("gui.whosdoctor"),
+						"onlyunknown");
+				bufferCommand.clear();
+				bufferNote.clear();
+				
+				ArrayList<String> doctors = getdoctors.getPlayer();
+				for (String doctor : doctors){
+					playerlist.get(doctor).character = "doctor";
+				}
+			}
+			
+			
+			
+		}
+		}
+		
+		
+		
+		if (Keys.doctor > 0){
+	//	bufferCommand.add(Messages.getString("board.c.doctorsawake"));
 		
 		// first night
 		if (round == 1){
@@ -424,5 +470,5 @@ public class Controller extends JPanel{
 		bufferNote.clear();
 	}	
 	}
-*/
+
 }

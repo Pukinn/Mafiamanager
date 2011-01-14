@@ -25,9 +25,6 @@ import javax.swing.JFrame;
 
 class Mafiamanager{
 	
-	// general
-	private static SortedMap<String, Player> playerlist;
-	
 	// GUI
 	private static GridBagConstraints conFrame;
 	
@@ -38,20 +35,20 @@ class Mafiamanager{
 	public static void main(String args[])
 	{
 		// declare
-		playerlist = new TreeMap<String, Player>();
+		Keys.playerlist = new TreeMap<String, Player>();
 
 		// set default player
 		for (int i=1; i<=5; i++){
 			String player = Messages.getString("gui.player")+" "+i;
-			playerlist.put(player, new Player(player));
-			playerlist.get(player).number = i;
+			Keys.playerlist.put(player, new Player(player));
+			Keys.playerlist.get(player).number = i;
 		}
 		
 
 		// GUI
 		mainframe = new JFrame();
 		board = new Board(mainframe);
-		panelController = new Controller(playerlist, board, mainframe);
+		panelController = new Controller(board, mainframe);
 		
 		// frame
 		mainframe.setLayout(new GridBagLayout());
@@ -77,12 +74,12 @@ class Mafiamanager{
 		
 	// BEFORE GAME
 		// create player
-		DialogPlayer myPlayers = new DialogPlayer(playerlist, mainframe, board);
-		panelController.redrawPlayer(playerlist);
+		DialogPlayer myPlayers = new DialogPlayer(mainframe, board);
+		panelController.redrawPlayer();
 		mainframe.pack();
 		
 		// create figures
-		DialogCharacters myCharacters = new DialogCharacters(playerlist, mainframe, board);
+		DialogCharacters myCharacters = new DialogCharacters(mainframe, board);
 		
 		panelController.start();
 		

@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -37,7 +38,6 @@ public class DialogPlayer extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 6208935351597319699L;
 	
 	// general
-	private SortedMap<String, Player> playerlist;
 	private Board board;
 	private int counterPlayer;
 
@@ -52,11 +52,10 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			private ArrayList<JTextField> fieldx;
 	private JButton buttonAcc;
 
-	public DialogPlayer(SortedMap<String, Player> _playerlist, JFrame _frame, Board _board){
+	public DialogPlayer(JFrame _frame, Board _board){
 		super(_frame, true);
 		
 		// general
-		playerlist = _playerlist;
 		board = _board;
 		Log.create();
 		
@@ -127,7 +126,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 		}
 		// 'accept' pressed
 		else if (event.getSource() == buttonAcc){
-			playerlist.clear();
+			Keys.playerlist.clear();
 			
 			// generate players
 			int count = 1;
@@ -135,8 +134,8 @@ public class DialogPlayer extends JDialog implements ActionListener{
 				String player = curField.getText();
 				
 				if (!player.equals("")){
-					playerlist.put(player, new Player(player));
-					playerlist.get(player).number = count;
+					Keys.playerlist.put(player, new Player(player));
+					Keys.playerlist.get(player).number = count;
 					count++;
 				}
 			}
@@ -146,12 +145,12 @@ public class DialogPlayer extends JDialog implements ActionListener{
 			board.line(Messages.getString("log.player"));
 			
 			// write players in log
-			Set<String> playerset = playerlist.keySet();
-			int size = playerlist.size();
+			Set<String> playerset = Keys.playerlist.keySet();
+			int size = Keys.playerlist.size();
 			
 			for (int i=1; i<=size; i++){
 				for (String curPlayer : playerset){
-					int num = playerlist.get(curPlayer).number;
+					int num = Keys.playerlist.get(curPlayer).number;
 
 					if (i == num){
 						board.line(curPlayer+"("+num+")");

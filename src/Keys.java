@@ -17,9 +17,24 @@
 */
 
 import java.util.ArrayList;
+import java.util.SortedMap;
 
 public class Keys {
 	
 	public static ArrayList<Group> groups;
+	
+	// groups
+	public static Group villager;
+	public static ArrayList<Mafia> mafia;
+//	public static ArrayList<Detective> detectives;
+//	public static ArrayList<Doctor> doctors;
+//	public static ArrayList<Terrorist> terrorists;
+	
+	// player
+	public static SortedMap<String, Player> playerlist;
+	
+	// buffer
+	public static ArrayList<String> bufferCommand;
+	public static ArrayList<String> bufferNote;
 	
 }

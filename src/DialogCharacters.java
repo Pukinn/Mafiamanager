@@ -23,7 +23,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.SortedMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -36,7 +35,6 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -9021187337746013906L;
 	
 	// general
-	private SortedMap<String, Player> playerlist;
 	private Board board;
 	
 	// gui
@@ -50,11 +48,10 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	private JLabel labelErrors;
 	private JButton buttonAcc;
 	
-	public DialogCharacters(SortedMap<String, Player> _playerlist, JFrame _frame, Board _board){
+	public DialogCharacters(JFrame _frame, Board _board){
 		super(_frame, true);
 		
 		// initializing
-		playerlist = _playerlist;
 		board = _board;
 		con = new GridBagConstraints();
 		
@@ -121,13 +118,13 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		if (event.getSource() == buttonAcc){
 			
 			// generate groups
-			Keys.groups = new ArrayList<Group>();
+			ArrayList<Group> groups = new ArrayList<Group>();
 			
-			// get groups
-			Keys.groups.addAll(groupMafia.getGroups());
-			Keys.groups.addAll(groupDetective.getGroups());
-			Keys.groups.addAll(groupDoctor.getGroups());
-			Keys.groups.addAll(groupTerrorist.getGroups());
+			// get groups			
+			groups.addAll(groupMafia.getGroups());
+			groups.addAll(groupDetective.getGroups());
+			groups.addAll(groupDoctor.getGroups());
+			groups.addAll(groupTerrorist.getGroups());
 			
 			// if no error
 			if (!groupMafia.error &&
@@ -137,23 +134,32 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 				
 				// check for enough player
 				int amountPlayer = 0;
-				for (Group group : Keys.groups){
+				for (Group group : groups){
 					amountPlayer += group.groupsize();
 				}
 				
-				if (playerlist.size() < amountPlayer){
-					Keys.groups.clear();
+				if (Keys.playerlist.size() < amountPlayer){
+					groups.clear();
 					labelErrors.setText(Messages.getString("conf.err.character"));
 					pack();
 				}
 				else if (amountPlayer == 0){
-					Keys.groups.clear();
+					groups.clear();
 					labelErrors.setText(Messages.getString("conf.err.player"));
 					pack();
 				}
 				else {
-					int villager = playerlist.size() - amountPlayer;
-					Keys.groups.add(new Group("villager", Messages.getString("conf.villager.group"), villager));
+					int villager = Keys.playerlist.size() - amountPlayer;
+					Keys.villager = new Group("villager", Messages.getString("conf.villager.group"), villager);
+					Keys.mafia = new ArrayList<Group>();
+					Keys.detectives = new ArrayList<Group>();
+					Keys.doctors = new ArrayList<Group>();
+					Keys.terrorists = new ArrayList<Group>();
+					
+					Keys.mafia.addAll(groupMafia.getGroups());
+					Keys.detectives.addAll(groupDetective.getGroups());
+					Keys.doctors.addAll(groupDoctor.getGroups());
+					Keys.terrorists.addAll(groupTerrorist.getGroups());
 					
 					// write log
 					board.space();

@@ -16,33 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-public class Player {
-	
-	// player values
-	public String name;
-	public int number;
-	public Object group;
-	
-	// states
-	private boolean alive;
-	public boolean isprotected;
+import java.util.ArrayList;
 
-	public Player(String _name){
-		
-		// create player
-		name = _name;
-		alive = true;
-	}
-	
-	public void kill(){
-		alive = false;
-		
-	//	if (character.equals("villager")) { Keys.villager--; }
-	//	else if (character.equals("mafia")) { Keys.mafia--; }
-	//	else if (character.equals("detective")) { Keys.detective--; }
-	//	else if (character.equals("doctor")) { Keys.doctor--; }
-	//	else if (character.equals("terrorist")) { Keys.terrorist--; }
-	}
-	
-	public boolean alive(){ return alive; }
+
+public class Mafia {
+
+	public String name;
+	public ArrayList<Player> player;
 }
