@@ -21,10 +21,16 @@ public class Player {
 	// player values
 	public String name;
 	public int number;
-	public Object group;
+	
+	// Character
+	public CharVillager villager;
+	public CharMafia mafia;
+	public CharDetective detective;
+	public CharDoctor doctor;
+	public CharTerrorist terrorist;
 	
 	// states
-	private boolean alive;
+	public boolean alive;
 	public boolean isprotected;
 
 	public Player(String _name){
@@ -34,15 +40,18 @@ public class Player {
 		alive = true;
 	}
 	
-	public void kill(){
-		alive = false;
+	public String type(){
+		String type = "undefined";
 		
-	//	if (character.equals("villager")) { Keys.villager--; }
-	//	else if (character.equals("mafia")) { Keys.mafia--; }
-	//	else if (character.equals("detective")) { Keys.detective--; }
-	//	else if (character.equals("doctor")) { Keys.doctor--; }
-	//	else if (character.equals("terrorist")) { Keys.terrorist--; }
+		int cnt = 0;
+		if (villager != null){ type = "villager"; cnt++; }
+		if (mafia != null){ type = "mafia"; cnt++; }
+		if (detective != null){ type = "detective"; cnt++; }
+		if (doctor != null){ type = "doctor"; cnt++; }
+		if (terrorist != null){ type = "terrorist"; cnt++; }
+		
+		if (cnt > 1){ System.err.println(Messages.getString("err.doublecharacter") + " " + name); }
+		
+		return type;
 	}
-	
-	public boolean alive(){ return alive; }
 }

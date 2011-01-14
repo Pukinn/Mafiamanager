@@ -46,6 +46,13 @@ public class CharacterGroup extends JPanel
 	private ArrayList<JTextField> names;
 	private ArrayList<JTextField> numbers;
 	
+	// returns
+	private ArrayList<String> retNames;
+	private ArrayList<Integer> retNumbers;
+	
+	public ArrayList<String> getNames(){ return retNames; }
+	public ArrayList<Integer> getNumbers() { return retNumbers; }
+	
 	public CharacterGroup(DialogCharacters _parent, String _group){
 		
 		// initialize
@@ -101,9 +108,10 @@ public class CharacterGroup extends JPanel
 		linecounter++;
 	}
 	
-	public ArrayList<Group> getGroups(){
+	public void evaluate(){
+		ArrayList<String> retNames = new ArrayList<String>();
+		ArrayList<Integer> retNumbers = new ArrayList<Integer>();
 		
-		ArrayList<Group> groups = new ArrayList<Group>();
 		error = false;
 		
 		for (int i=0; i<linecounter-1; i++){
@@ -119,8 +127,6 @@ public class CharacterGroup extends JPanel
 				strName = "err";
 				names.get(i).setText(Messages.getString("conf.err.setname"));
 				error = true;
-				
-				System.out.println("lonly number at line "+(i+1)+" "+group);
 			}
 			
 			if (!strNum.equals("")){
@@ -131,19 +137,14 @@ public class CharacterGroup extends JPanel
 				} catch (NumberFormatException e){
 					error = true;
 					numbers.get(i).setText("err");
-					System.out.println("invalid number at line"+(i+1)+" "+group);
 				}
 				
-				// add group
-				groups.add(new Group(group, strName, number));
+				retNames.add(strName);
+				retNumbers.add(number);
 			}
-			
-
 		}
-		
-		return groups;
 	}
-
+	
 	// button pressed
 	public void actionPerformed(ActionEvent event) {
 		newGroup();

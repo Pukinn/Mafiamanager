@@ -30,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 
+
 public class DialogCharacters  extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = -9021187337746013906L;
@@ -121,10 +122,10 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			ArrayList<Group> groups = new ArrayList<Group>();
 			
 			// get groups			
-			groups.addAll(groupMafia.getGroups());
-			groups.addAll(groupDetective.getGroups());
-			groups.addAll(groupDoctor.getGroups());
-			groups.addAll(groupTerrorist.getGroups());
+			groupMafia.evaluate();
+			groupDetective.evaluate();
+			groupDoctor.evaluate();
+			groupTerrorist.evaluate();
 			
 			// if no error
 			if (!groupMafia.error &&
@@ -149,18 +150,45 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					pack();
 				}
 				else {
+					
+					// villager
 					int villager = Keys.playerlist.size() - amountPlayer;
-					Keys.villager = new Group("villager", Messages.getString("conf.villager.group"), villager);
-					Keys.mafia = new ArrayList<Group>();
-					Keys.detectives = new ArrayList<Group>();
-					Keys.doctors = new ArrayList<Group>();
-					Keys.terrorists = new ArrayList<Group>();
+					Keys.villager = new CharVillager(villager);
 					
-					Keys.mafia.addAll(groupMafia.getGroups());
-					Keys.detectives.addAll(groupDetective.getGroups());
-					Keys.doctors.addAll(groupDoctor.getGroups());
-					Keys.terrorists.addAll(groupTerrorist.getGroups());
+					// mafia
+					ArrayList<String> names = groupMafia.getNames();
+					ArrayList<Integer> numbers = groupMafia.getNumbers();
+					Keys.mafia = new ArrayList<CharMafia>();
+					for (int i=0; i<names.size(); i++){
+						Keys.mafia.add(new CharMafia(numbers.get(i), names.get(i)));
+					}
 					
+					// detectives
+					names = groupDetective.getNames();
+					numbers = groupDetective.getNumbers();
+					Keys.detectives = new ArrayList<CharDetective>();
+					for (int i=0; i<names.size(); i++){
+						Keys.detectives.add(new CharDetective(numbers.get(i), names.get(i)));
+					}
+					
+					// doctors
+					names = groupDoctor.getNames();
+					numbers = groupDoctor.getNumbers();
+					Keys.doctors = new ArrayList<CharDoctor>();
+					for (int i=0; i<names.size(); i++){
+						Keys.doctors.add(new CharDoctor(numbers.get(i), names.get(i)));
+					}
+					
+					// terrorists
+					names = groupTerrorist.getNames();
+					numbers = groupTerrorist.getNumbers();
+					Keys.terrorists = new ArrayList<CharTerrorist>();
+					for (int i=0; i<names.size(); i++){
+						Keys.terrorists.add(new CharTerrorist(numbers.get(i), names.get(i)));
+					}
+					
+
+/*					
 					// write log
 					board.space();
 					board.line(Messages.getString("log.character"));
@@ -170,6 +198,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 						mess += "("+group.groupsize()+")";
 						board.line(mess);
 					}
+*/
 					
 					// end dialog
 					setVisible(false);

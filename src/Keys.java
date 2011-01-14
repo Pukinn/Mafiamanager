@@ -19,22 +19,24 @@
 import java.util.ArrayList;
 import java.util.SortedMap;
 
+
 public class Keys {
 	
-	public static ArrayList<Group> groups;
-	
 	// groups
-	public static Group villager;
-	public static ArrayList<Mafia> mafia;
-//	public static ArrayList<Detective> detectives;
-//	public static ArrayList<Doctor> doctors;
-//	public static ArrayList<Terrorist> terrorists;
+	public static CharVillager villager;
+	public static ArrayList<CharMafia> mafia;
+	public static ArrayList<CharDetective> detectives;
+	public static ArrayList<CharDoctor> doctors;
+	public static ArrayList<CharTerrorist> terrorists;
 	
 	// player
 	public static SortedMap<String, Player> playerlist;
 	
 	// buffer
-	public static ArrayList<String> bufferCommand;
-	public static ArrayList<String> bufferNote;
+	public static ArrayList<String> bufferCommand = new ArrayList<String>();
+	public static ArrayList<String> bufferNote = new ArrayList<String>();
+	public static String bufferHead;
 	
+	// round informations
+	public static int round;
 }

@@ -139,7 +139,8 @@ public class DialogSet extends JDialog implements ActionListener{
 	private void onlyunknown(){
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
-			if (!player.character.equals("undefined") || !player.alive()){
+			if (!player.type().equals("undefined") || !player.alive){
+				
 				button.setEnabled(false);
 			}
 		}
@@ -148,7 +149,7 @@ public class DialogSet extends JDialog implements ActionListener{
 	private void nomafia(){
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
-			if (player.character.equals("mafia") || !player.alive()){
+			if (!player.type().equals("mafia") || !player.alive){
 				button.setEnabled(false);
 			}
 		}
@@ -157,7 +158,7 @@ public class DialogSet extends JDialog implements ActionListener{
 	private void nodead(){
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
-			if (!player.alive()){
+			if (!player.alive){
 				button.setEnabled(false);
 			}
 		}

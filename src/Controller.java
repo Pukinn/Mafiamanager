@@ -28,6 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 public class Controller extends JPanel{
 
 	private static final long serialVersionUID = 5299138914080396570L;
@@ -139,16 +140,46 @@ public class Controller extends JPanel{
 		ArrayList<String> dealout = new ArrayList<String>();
 		
 		command.add(Messages.getString("deal.note"));
-		for (Group group : Keys.groups){
-			String mess = Messages.getString("deal."+group.group()) + " ";
-			mess += group.groupname() + ": ";
-			mess += group.groupsize();
+		
+		// villager
+		dealout.add(Messages.getString("conf.villager.group") + " " + Keys.villager.size);
+		
+		// mafia
+		for (CharMafia mafia : Keys.mafia){
+			String mess = Messages.getString("conf.mafia") + " ";
+			mess += mafia.name + ": ";
+			mess += mafia.size;
 			dealout.add(mess);
 		}
 		
-		DialogCommand dialDealout = new DialogCommand(
+		// detectives
+		for (CharDetective detective : Keys.detectives){
+			String mess = Messages.getString("conf.detective") + " ";
+			mess += detective.name + ": ";
+			mess += detective.size;
+			dealout.add(mess);
+		}
+		
+		// doctors
+		for (CharDoctor doctor : Keys.doctors){
+			String mess = Messages.getString("conf.doctor") + " ";
+			mess += doctor.name + ": ";
+			mess += doctor.size;
+			dealout.add(mess);
+		}
+		
+		// terrorists
+		for (CharTerrorist terrorist : Keys.terrorists){
+			String mess = Messages.getString("conf.terrorist") + " ";
+			mess += terrorist.name + ": ";
+			mess += terrorist.size;
+			dealout.add(mess);
+		}
+
+		
+		DialogCommand diaDealout = new DialogCommand(
 				frame,
-				Messages.getString("gui.beforegame"),
+				Messages.getString("deal.head"),
 				command,
 				dealout);
 		
@@ -161,20 +192,16 @@ public class Controller extends JPanel{
 		bufferCommand.add(Messages.getString("board.c.allsleep"));
 		
 		// TASKLIST
+		
+		for (CharDoctor doctor : Keys.doctors){
+			
+		}
+		
+		
 	//	doctor();
 	//	mafia();
 	//	detective();
-		
-		// first night
-		if (round == 1){
-			Set<String> playerset = playerlist.keySet();
-			for (String playerStr : playerset){
-				if (playerlist.get(playerStr).character.equals("undefined")){
-					playerlist.get(playerStr).character = "villager";
-				}
-			}
 
-		}
 		
 		// after night
 		playerlist.get(deprotectPlayer).isprotected = false;
