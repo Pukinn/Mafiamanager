@@ -40,12 +40,17 @@ public class CharDoctor {
 		
 		// initialize
 		type = "doctor";
+		player = new ArrayList<Player>();
 	}
 	
 	public void night(
 			// handover
 			JFrame _parentframe){
 		
+		if (Keys.round == 1 || playeralive() > 0){
+			Keys.bufferCommand.add(Messages.getString("night.doctor.awake") + " " + name);
+		}
+
 		// ACTIONS
 		// first night
 		if (Keys.round == 1){
@@ -55,7 +60,7 @@ public class CharDoctor {
 					size,
 					Keys.bufferHead,
 					Keys.bufferCommand,
-					Messages.getString("gui.whosdoctor"),
+					Messages.getString("night.doctor.who"),
 					"onlyunknown");
 			Keys.bufferCommand.clear();
 			Keys.bufferNote.clear();
@@ -63,12 +68,12 @@ public class CharDoctor {
 			ArrayList<String> doctors = getdoctors.getPlayer();
 			for (String doctor : doctors){
 				Keys.playerlist.get(doctor).doctor = this;
+				player.add(Keys.playerlist.get(doctor));
 			}
 		}
 		
 		// every night
-		if (playeralive() > 0){
-			Keys.bufferCommand.add(Messages.getString("night.doctor.awake") + " " + name);
+		if (playeralive() > 0 || Keys.round == 1){
 			
 			DialogSet actdoctor = new DialogSet(
 					Keys.playerlist,
@@ -76,7 +81,7 @@ public class CharDoctor {
 					1,
 					Keys.bufferHead,
 					Keys.bufferCommand,
-					Messages.getString("gui.actdoctor"),
+					Messages.getString("night.doctor.act"),
 					"nodead");
 			Player player = Keys.playerlist.get(actdoctor.getPlayer().get(0));
 			Keys.bufferCommand.clear();

@@ -34,19 +34,12 @@ public class Controller extends JPanel{
 	private static final long serialVersionUID = 5299138914080396570L;
 
 	// general
-	private SortedMap<String, Player> playerlist;
 	private Board board;
 	// TODO logging the game
 	
 	// roundsaves
-	private int round;
-	private String deprotectPlayer;
-	private ArrayList<String> died;
-	
-	// temporary
-	private String bufferHead;
-	private ArrayList<String> bufferCommand;
-	private ArrayList<String> bufferNote;
+	private ArrayList<String> protectedPlayer;
+	private ArrayList<String> diedPlayer;
 	
 	// gui
 	private GridBagConstraints con;
@@ -59,16 +52,14 @@ public class Controller extends JPanel{
 	
 				
 				
-	public Controller(SortedMap<String, Player> _playerlist, Board _board, JFrame _frame){
+	public Controller(Board _board, JFrame _frame){
 		
 		// initialize
-		playerlist = _playerlist;
 		board = _board;
 		frame = _frame;
-		round = 1;
-		died = new ArrayList<String>();
-		bufferCommand = new ArrayList<String>();
-		bufferNote = new ArrayList<String>();
+		Keys.round = 1;
+		protectedPlayer = new ArrayList<String>();
+		diedPlayer = new ArrayList<String>();
 		
 		// gui
 		setLayout(new GridLayout(0,1));		
@@ -92,11 +83,11 @@ public class Controller extends JPanel{
 		panelXplayer = new ArrayList<JPanel>();
 		labelXplayer = new ArrayList<JLabel>();
 		
-		redrawPlayer(playerlist);
+		redrawPlayer();
 	}
 	
 	// redraw state overview
-	public void redrawPlayer(SortedMap<String, Player> playerlist){
+	public void redrawPlayer(){
 		for (JPanel curPanel : panelXplayer){
 			curPanel.setVisible(false);
 			curPanel = null;
@@ -109,12 +100,12 @@ public class Controller extends JPanel{
 		panelXplayer.clear();
 		labelXplayer.clear();
 		
-		Set<String> playerset = playerlist.keySet();
-		int size = playerlist.size();
+		Set<String> playerset = Keys.playerlist.keySet();
+		int size = Keys.playerlist.size();
 		
 		for (int i=1; i<=size; i++){
 			for (String playerStr : playerset){
-				int num = playerlist.get(playerStr).number;
+				int num = Keys.playerlist.get(playerStr).number;
 				
 				if (i == num){
 					panelXplayer.add(new JPanel(new GridBagLayout()));
@@ -142,7 +133,7 @@ public class Controller extends JPanel{
 		command.add(Messages.getString("deal.note"));
 		
 		// villager
-		dealout.add(Messages.getString("conf.villager.group") + " " + Keys.villager.size);
+		dealout.add(Messages.getString("conf.villager.group") + " " + Keys.villager.startsize);
 		
 		// mafia
 		for (CharMafia mafia : Keys.mafia){
@@ -188,81 +179,106 @@ public class Controller extends JPanel{
 	
 	// night actions
 	private void night(){
-		bufferHead = Messages.getString("board.n.night")+" "+round;
-		bufferCommand.add(Messages.getString("board.c.allsleep"));
+		Keys.bufferHead = Messages.getString("night")+" "+Keys.round;
+		Keys.bufferCommand.add(Messages.getString("night.sleep"));
 		
-		// TASKLIST
-		
+	// TASKLIST
+		// doctors
 		for (CharDoctor doctor : Keys.doctors){
-			
+			doctor.night(frame);
+			protectedPlayer.add(doctor.protectedPlayer);
 		}
-		
-		
-	//	doctor();
-	//	mafia();
-	//	detective();
+		// mafia
+		for (CharMafia mafia : Keys.mafia){
+			mafia.night(frame);
+			diedPlayer.add(mafia.killedPlayer);
+		}
+		// detectives
+		for (CharDetective detective : Keys.detectives){
+			detective.night(frame);
+		}
+
 
 		
 		// after night
-		playerlist.get(deprotectPlayer).isprotected = false;
+		for (String player : protectedPlayer){
+			Keys.playerlist.get(player).isprotected = false;
+		}
+		
+		Set<String> playerset = Keys.playerlist.keySet();
+		
+		for (String strPlayer : playerset){
+			Player player = Keys.playerlist.get(strPlayer);
+			
+			if (player.mafia == null &&
+					player.detective == null &&
+					player.doctor == null &&
+					player.terrorist == null){
+				
+				player.villager = Keys.villager;
+			}
+		}
+		
 		
 		day();
 	}
 	
 	// day actions
 	private void day(){
-		bufferHead = Messages.getString("board.n.day")+" "+round;
+		Keys.bufferHead = Messages.getString("day")+" "+Keys.round;
 		
-		if (died.size() == 0){
-			bufferCommand.add(Messages.getString("board.c.nodied"));
+		
+		System.out.println(diedPlayer.size());
+		
+		if (diedPlayer.size() == 0){
+			Keys.bufferCommand.add(Messages.getString("day.nodied"));
 		}
 		else {
-			bufferCommand.add(Messages.getString("board.c.isdied"));
-			for (String player : died){
-				playerlist.get(player).kill();
-				bufferNote.add(player);
+			Keys.bufferCommand.add(Messages.getString("day.isdied"));
+			for (String player : diedPlayer){
+				Keys.playerlist.get(player).alive = false;
+				Keys.bufferNote.add(player);
 			}
 		}
-		died.clear();
+		diedPlayer.clear();
 		
 		DialogCommand day = new DialogCommand(
 				frame,
-				bufferHead,
-				bufferCommand,
-				bufferNote);
-		bufferCommand.clear();
-		bufferNote.clear();
+				Keys.bufferHead,
+				Keys.bufferCommand,
+				Keys.bufferNote);
+		Keys.bufferCommand.clear();
+		Keys.bufferNote.clear();
 		
-	//	checkwin();
+		checkwin();
 		
 		DialogDay lynch = new DialogDay(
-				playerlist,
 				frame,
 				1,
-				bufferHead,
-				bufferCommand,
-				Messages.getString("gui.lynch")
+				Keys.bufferHead,
+				Keys.bufferCommand,
+				Messages.getString("day.lynch")
 				);
-		bufferCommand.clear();
-		bufferNote.clear();
+		Keys.bufferCommand.clear();
+		Keys.bufferNote.clear();
 		
-		Player player = playerlist.get(lynch.getPlayer().get(0));
-		player.kill();
+		Player player = Keys.playerlist.get(lynch.getPlayer().get(0));
+		player.alive = false;
 		
 		// output
-		bufferNote.add("'"+player.name+"' "+Messages.getString("board.n.lynched"));
+		Keys.bufferNote.add("'"+player.name+"' "+Messages.getString("day.lynched"));
 		
 		DialogCommand lynced = new DialogCommand(
 				frame,
-				bufferHead,
-				bufferCommand,
-				bufferNote);
-		bufferCommand.clear();
-		bufferNote.clear();
+				Keys.bufferHead,
+				Keys.bufferCommand,
+				Keys.bufferNote);
+		Keys.bufferCommand.clear();
+		Keys.bufferNote.clear();
 		
-	//	checkwin();
+		checkwin();
 		
-		round++;
+		Keys.round++;
 
 		
 		night();
@@ -270,23 +286,64 @@ public class Controller extends JPanel{
 	
 	// check if one party have won and exit game
 	private void checkwin(){
+		int amountVillager = Keys.villager.playeralive();
 		
-		for (Group groupwon : Keys.groups){
-			
-			String curgoup = groupwon.groupname();
-			
-			for (Group group : Keys.groups){
-				if
-				
-				
-			}
-			
-			
-			
-			
+		int amountMafia = 0;
+		for (CharMafia mafia : Keys.mafia){
+			amountMafia += mafia.playeralive();
 		}
 
+		int amountDetectives = 0;
+		for (CharDetective detective : Keys.detectives){
+			amountDetectives += detective.playeralive();
+		}
 		
+		int amountDoctors = 0;
+		for (CharDoctor doctor : Keys.doctors){
+			amountDoctors += doctor.playeralive();
+		}
+		
+		int amountTerrorists = 0;
+		for (CharTerrorist terrorist : Keys.terrorists){
+			amountTerrorists += terrorist.playeralive();
+		}
+		
+		String winner = "";
+		
+		for (CharMafia mafia : Keys.mafia){
+			int amount = amountMafia
+				- mafia.playeralive()
+				+ amountDetectives
+				+ amountDoctors
+				+ amountVillager;
+			
+			if (amount == 0){
+				winner = Messages.getString("deal.mafia") + " " + mafia.name;
+			}
+		}
+
+		int amountBad = amountMafia + amountTerrorists;
+		
+		if (amountBad == 0){
+			winner = Messages.getString("villager");
+		}
+			
+		if (!winner.equals("")){
+			
+			Keys.bufferCommand.add(Messages.getString("win.wintext"));
+			Keys.bufferNote.add(winner);
+			DialogCommand win = new DialogCommand(
+					frame,
+					Messages.getString("win.endgame"),
+					Keys.bufferCommand,
+					Keys.bufferNote);
+			
+			System.exit(0);
+		}
+			
+		
+
+		/*
 		if (Keys.mafia == 0){
 			bufferCommand.add(Messages.getString("gui.villagerswin"));
 			bufferNote.add(Messages.getString("gui.congratulation"));
@@ -314,188 +371,7 @@ public class Controller extends JPanel{
 					bufferNote);
 			
 			System.exit(0);
-		}
-	}
-
-// CHARACTERS
-	
-	// doctor / Seelenretter
-	private void doctor(){ 
-		for (Group group : Keys.doctors) { if (!group.alldead()){
-			bufferCommand.add(Messages.getString("night.doctor.awake") + " " + group.groupname());
-			
-			if (round == 1){
-				DialogSet getdoctors = new DialogSet(
-						playerlist,
-						frame,
-						group.groupsize(),
-						bufferHead,
-						bufferCommand,
-						Messages.getString("gui.whosdoctor"),
-						"onlyunknown");
-				bufferCommand.clear();
-				bufferNote.clear();
-				
-				ArrayList<String> doctors = getdoctors.getPlayer();
-				for (String doctor : doctors){
-					playerlist.get(doctor).character = "doctor";
-				}
-			}
-			
-			
-			
-		}
-		}
-		
-		
-		
-		if (Keys.doctor > 0){
-	//	bufferCommand.add(Messages.getString("board.c.doctorsawake"));
-		
-		// first night
-		if (round == 1){
-			DialogSet getdoctors = new DialogSet(
-					playerlist,
-					frame,
-					Keys.doctor,
-					bufferHead,
-					bufferCommand,
-					Messages.getString("gui.whosdoctor"),
-					"onlyunknown");
-			bufferCommand.clear();
-			bufferNote.clear();
-			
-			ArrayList<String> doctors = getdoctors.getPlayer();
-			for (String doctor : doctors){
-				playerlist.get(doctor).character = "doctor";
-			}
-		}
-		
-		// every night
-		// get player
-		DialogSet actdoctor = new DialogSet(
-				playerlist,
-				frame,
-				1,
-				bufferHead,
-				bufferCommand,
-				Messages.getString("gui.actdoctor"),
-				"nodead");
-		Player player = playerlist.get(actdoctor.getPlayer().get(0));
-		bufferCommand.clear();
-		bufferNote.clear();
-		
-		// action
-		player.isprotected = true;
-		deprotectPlayer = player.name;
-		
-		// output
-		bufferCommand.add(Messages.getString("board.c.doctorssleep"));
-	}
-	}
-	
-	// mafia / Mafia
-	private void mafia(){ if (Keys.mafia > 0){
-		bufferCommand.add(Messages.getString("board.c.mafiaawake"));
-		
-		// first night
-		if (round == 1){
-			DialogSet dialog = new DialogSet(
-					playerlist,
-					frame,
-					Keys.mafia,
-					bufferHead,
-					bufferCommand,
-					Messages.getString("gui.whosmafia"),
-					"onlyunknown");
-			bufferCommand.clear();
-			bufferNote.clear();
-			
-			ArrayList<String> mafias = dialog.getPlayer();
-			for (String mafia : mafias){
-				playerlist.get(mafia).character = "mafia";
-			}
-		}
-		
-		// every night
-		// get player
-		DialogSet actmafia = new DialogSet(
-				playerlist,
-				frame,
-				1,
-				bufferHead,
-				bufferCommand,
-				Messages.getString("gui.actmafia"),
-				"nodead");
-		bufferCommand.clear();
-		bufferNote.clear();
-		
-		Player player = playerlist.get(actmafia.getPlayer().get(0));
-		
-		// action
-		if (!player.isprotected){
-			died.add(player.name);
-		}
-		
-		// output
-		bufferCommand.add(Messages.getString("board.c.mafiasleep"));
-	}
-	}
-	
-	// detective / Detektiv
-	private void detective(){ if (Keys.detective > 0){
-		bufferCommand.add(Messages.getString("board.c.detectivesawake"));
-		
-		// first night
-		if (round == 1){
-			DialogSet dialog = new DialogSet(
-					playerlist,
-					frame,
-					Keys.detective,
-					bufferHead,
-					bufferCommand,
-					Messages.getString("gui.whosdetective"),
-					"onlyunknown");
-			bufferCommand.clear();
-			bufferNote.clear();
-			
-			ArrayList<String> detectives = dialog.getPlayer();
-			for (String detective : detectives){
-				playerlist.get(detective).character = "detective";
-			}
-		}
-		
-		// every night
-		// get player
-		DialogSet actdetective = new DialogSet(
-				playerlist,
-				frame,
-				1,
-				bufferHead,
-				bufferCommand,
-				Messages.getString("gui.actdetective"),
-				"nodead");
-		bufferCommand.clear();
-		bufferNote.clear();
-		
-		Player player = playerlist.get(actdetective.getPlayer().get(0));
-		
-		if (player.character.equals("mafia")){
-			bufferCommand.add(Messages.getString("board.c.ismafia"));
-		} else {
-			bufferCommand.add(Messages.getString("board.c.isnomafia"));
-		}
-		
-		bufferCommand.add(Messages.getString("board.c.detectivessleep"));
-		
-		DialogCommand command = new DialogCommand(
-				frame,
-				bufferHead,
-				bufferCommand,
-				bufferNote);
-		bufferCommand.clear();
-		bufferNote.clear();
-	}	
+		}*/
 	}
 
 }

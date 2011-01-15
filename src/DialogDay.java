@@ -38,7 +38,6 @@ public class DialogDay extends JDialog implements ActionListener{
 	private static final long serialVersionUID = -7503615675227726238L;
 	
 	// general
-	private SortedMap<String, Player> playerlist;
 	private int numberSets;
 	private ArrayList<String> returnPlayer;
 	
@@ -49,8 +48,7 @@ public class DialogDay extends JDialog implements ActionListener{
 	
 	public ArrayList<String> getPlayer(){ return returnPlayer; }
 	
-	public DialogDay(SortedMap<String,
-			Player> _playerlist,
+	public DialogDay(
 			JFrame _frame,
 			int _number,
 			String _head,
@@ -59,7 +57,6 @@ public class DialogDay extends JDialog implements ActionListener{
 		// initialize
 		super(_frame, true);
 		setTitle("Mafiamanager");
-		playerlist = _playerlist;
 		numberSets = _number;
 		returnPlayer = new ArrayList<String>();
 		setLayout(new GridBagLayout());
@@ -92,8 +89,8 @@ public class DialogDay extends JDialog implements ActionListener{
 			con.gridy++;
 		}
 		
-		Set<String> playerset = playerlist.keySet();
-		int size = playerlist.size();
+		Set<String> playerset = Keys.playerlist.keySet();
+		int size = Keys.playerlist.size();
 		
 		buttons = new ArrayList<JButton>();
 		con.gridwidth = 1;
@@ -103,11 +100,11 @@ public class DialogDay extends JDialog implements ActionListener{
 			
 
 			for (String playerStr : playerset){
-				int num = playerlist.get(playerStr).number;
+				int num = Keys.playerlist.get(playerStr).number;
 				
 				if (i == num){
 					JButton buttonSet = new JButton(playerStr);
-					if (!playerlist.get(playerStr).alive()) { buttonSet.setEnabled(false); }
+					if (Keys.playerlist.get(playerStr).alive = false) { buttonSet.setEnabled(false); }
 					buttonSet.addActionListener(this);
 					buttonSet.setActionCommand(playerStr);
 					buttons.add(buttonSet);

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class CharTerrorist {
 	
 	// general
+	public String type;
 	public String name;
 	public ArrayList<Player> player;
 	
@@ -20,6 +21,19 @@ public class CharTerrorist {
 		name = _name;
 		
 		// initialize
+		type = "terrorist";
+		player = new ArrayList<Player>();
 
+	}
+	
+	// returns how much players are alive
+	public int playeralive(){
+		int alive = 0;
+		
+		for (Player p : player){
+			if (p.alive) { alive++; }
+		}
+		
+		return alive;
 	}
 }

@@ -24,8 +24,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
-import java.util.SortedMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -38,7 +38,7 @@ public class DialogSet extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 1419568310395863251L;
 	
 	// general
-	private SortedMap<String, Player> playerlist;
+	private HashMap<String, Player> playerlist;
 	private int numberSets;
 	private ArrayList<String> returnPlayer;
 	
@@ -48,7 +48,7 @@ public class DialogSet extends JDialog implements ActionListener{
 	
 	public ArrayList<String> getPlayer(){ return returnPlayer; }
 	
-	public DialogSet(SortedMap<String,
+	public DialogSet(HashMap<String,
 			Player> _playerlist,
 			JFrame _frame,
 			int _number,
@@ -140,7 +140,6 @@ public class DialogSet extends JDialog implements ActionListener{
 		for (JButton button: buttons){
 			Player player = playerlist.get(button.getText());
 			if (!player.type().equals("undefined") || !player.alive){
-				
 				button.setEnabled(false);
 			}
 		}

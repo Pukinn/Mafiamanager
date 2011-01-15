@@ -17,7 +17,7 @@
 */
 
 import java.util.ArrayList;
-import java.util.SortedMap;
+import java.util.HashMap;
 
 
 public class Keys {
@@ -30,7 +30,7 @@ public class Keys {
 	public static ArrayList<CharTerrorist> terrorists;
 	
 	// player
-	public static SortedMap<String, Player> playerlist;
+	public static HashMap<String, Player> playerlist;
 	
 	// buffer
 	public static ArrayList<String> bufferCommand = new ArrayList<String>();

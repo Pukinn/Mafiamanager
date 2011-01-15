@@ -18,8 +18,7 @@
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -35,7 +34,7 @@ class Mafiamanager{
 	public static void main(String args[])
 	{
 		// declare
-		Keys.playerlist = new TreeMap<String, Player>();
+		Keys.playerlist = new HashMap<String, Player>();
 
 		// set default player
 		for (int i=1; i<=5; i++){

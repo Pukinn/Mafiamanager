@@ -118,9 +118,6 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == buttonAcc){
 			
-			// generate groups
-			ArrayList<Group> groups = new ArrayList<Group>();
-			
 			// get groups			
 			groupMafia.evaluate();
 			groupDetective.evaluate();
@@ -135,17 +132,26 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 				
 				// check for enough player
 				int amountPlayer = 0;
-				for (Group group : groups){
-					amountPlayer += group.groupsize();
+				
+				for (Integer mafia : groupMafia.getNumbers()){
+					amountPlayer += mafia;
 				}
+				for (Integer detective : groupDetective.getNumbers()){
+					amountPlayer += detective;
+				}
+				for (Integer doctor : groupDoctor.getNumbers()){
+					amountPlayer += doctor;
+				}
+				for (Integer terrorist : groupTerrorist.getNumbers()){
+					amountPlayer += terrorist;
+				}
+
 				
 				if (Keys.playerlist.size() < amountPlayer){
-					groups.clear();
 					labelErrors.setText(Messages.getString("conf.err.character"));
 					pack();
 				}
 				else if (amountPlayer == 0){
-					groups.clear();
 					labelErrors.setText(Messages.getString("conf.err.player"));
 					pack();
 				}

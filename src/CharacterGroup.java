@@ -61,6 +61,8 @@ public class CharacterGroup extends JPanel
 		linecounter = 1;
 		names = new ArrayList<JTextField>();
 		numbers = new ArrayList<JTextField>();
+		retNames = new ArrayList<String>();
+		retNumbers = new ArrayList<Integer>();
 		con = new GridBagConstraints();
 		
 		// set
@@ -109,8 +111,8 @@ public class CharacterGroup extends JPanel
 	}
 	
 	public void evaluate(){
-		ArrayList<String> retNames = new ArrayList<String>();
-		ArrayList<Integer> retNumbers = new ArrayList<Integer>();
+		retNames.clear();
+		retNumbers.clear();
 		
 		error = false;
 		
@@ -131,7 +133,7 @@ public class CharacterGroup extends JPanel
 			
 			if (!strNum.equals("")){
 				// check invalid number
-				int number = 0;
+				Integer number = 0;
 				try {
 					number = Integer.parseInt(strNum);
 				} catch (NumberFormatException e){
