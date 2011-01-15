@@ -104,7 +104,9 @@ public class DialogDay extends JDialog implements ActionListener{
 				
 				if (i == num){
 					JButton buttonSet = new JButton(playerStr);
-					if (Keys.playerlist.get(playerStr).alive = false) { buttonSet.setEnabled(false); }
+					if (Keys.playerlist.get(playerStr).alive == false) {
+						buttonSet.setEnabled(false);
+					}
 					buttonSet.addActionListener(this);
 					buttonSet.setActionCommand(playerStr);
 					buttons.add(buttonSet);
@@ -120,7 +122,7 @@ public class DialogDay extends JDialog implements ActionListener{
 		buttonAcc.addActionListener(this);
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		add(buttonAcc, con);
-		
+
 		/*
 		if (Keys.terrorist > 0){
 			buttonTerr = new JButton(Messages.getString("gui.actterrorist"));
@@ -137,7 +139,7 @@ public class DialogDay extends JDialog implements ActionListener{
 
 	public void actionPerformed(ActionEvent event) {
 		
-		if (event.getSource().equals(buttonAcc)){			
+		if (event.getSource().equals(buttonAcc)){
 			setVisible(false);
 		} else {
 			JButton button = (JButton)event.getSource();

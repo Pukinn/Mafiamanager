@@ -216,6 +216,7 @@ public class Controller extends JPanel{
 					player.terrorist == null){
 				
 				player.villager = Keys.villager;
+				Keys.villager.player.add(player);
 			}
 		}
 		
@@ -227,14 +228,14 @@ public class Controller extends JPanel{
 	private void day(){
 		Keys.bufferHead = Messages.getString("day")+" "+Keys.round;
 		
-		
-		System.out.println(diedPlayer.size());
+		System.out.println("died: " + diedPlayer.size());
 		
 		if (diedPlayer.size() == 0){
 			Keys.bufferCommand.add(Messages.getString("day.nodied"));
 		}
 		else {
 			Keys.bufferCommand.add(Messages.getString("day.isdied"));
+			
 			for (String player : diedPlayer){
 				Keys.playerlist.get(player).alive = false;
 				Keys.bufferNote.add(player);
@@ -251,6 +252,7 @@ public class Controller extends JPanel{
 		Keys.bufferNote.clear();
 		
 		checkwin();
+		System.out.println("alivevil: " + Keys.aliveVillager());
 		
 		DialogDay lynch = new DialogDay(
 				frame,
@@ -292,7 +294,7 @@ public class Controller extends JPanel{
 		for (CharMafia mafia : Keys.mafia){
 			amountMafia += mafia.playeralive();
 		}
-
+		
 		int amountDetectives = 0;
 		for (CharDetective detective : Keys.detectives){
 			amountDetectives += detective.playeralive();
@@ -340,38 +342,5 @@ public class Controller extends JPanel{
 			
 			System.exit(0);
 		}
-			
-		
-
-		/*
-		if (Keys.mafia == 0){
-			bufferCommand.add(Messages.getString("gui.villagerswin"));
-			bufferNote.add(Messages.getString("gui.congratulation"));
-			
-			DialogCommand win = new DialogCommand(
-					frame,
-					Messages.getString("gui.endgame"),
-					bufferCommand,
-					bufferNote);
-			
-			System.exit(0);
-		}
-		else if (
-				Keys.detective == 0 &&
-				Keys.doctor == 0 &&
-				Keys.villager == 0){
-			
-			bufferCommand.add(Messages.getString("gui.mafiawin"));
-			bufferNote.add(Messages.getString("gui.congratulation"));
-			
-			DialogCommand win = new DialogCommand(
-					frame,
-					Messages.getString("gui.endgame"),
-					bufferCommand,
-					bufferNote);
-			
-			System.exit(0);
-		}*/
 	}
-
 }

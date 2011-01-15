@@ -35,7 +35,7 @@ public class Log {
 		String time = formatter.format(currentTime);
 
 		File log_directory = new File("Logs");
-		if (!log_directory.exists()) log_directory.mkdir();
+		if (!log_directory.exists()) { log_directory.mkdir(); }
 
 		pathlog = new File(log_directory, time).getPath();
 		

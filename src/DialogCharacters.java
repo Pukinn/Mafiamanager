@@ -91,7 +91,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		groupTerrorist = new CharacterGroup(this, "terrorist");
 		con.gridy = 4;
 		con.fill = GridBagConstraints.NONE;
-		add(groupTerrorist, con);
+//		add(groupTerrorist, con);
 		
 		// error messages
 		con.gridy = 5;

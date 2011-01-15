@@ -39,4 +39,42 @@ public class Keys {
 	
 	// round informations
 	public static int round;
+	
+	public static int aliveVillager(){
+		int alive = 0;
+		alive += villager.playeralive();
+		return alive;
+	}
+	
+	public static int aliveMafia(){
+		int alive = 0;
+		for (CharMafia group : mafia){
+			alive += group.playeralive();
+		}
+		return alive;
+	}
+	
+	public static int aliveDetectives(){
+		int alive = 0;
+		for (CharDetective group : detectives){
+			alive += group.playeralive();
+		}
+		return alive;
+	}
+	
+	public static int aliveDoctors(){
+		int alive = 0;
+		for (CharDoctor group : doctors){
+			alive += group.playeralive();
+		}
+		return alive;
+	}
+	
+	public static int aliveTerrorists(){
+		int alive = 0;
+		for (CharTerrorist group : terrorists){
+			alive += group.playeralive();
+		}
+		return alive;
+	}
 }
