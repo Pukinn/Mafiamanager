@@ -89,10 +89,10 @@ public class CharMafia {
 			Player player = Keys.playerlist.get(actmafia.getPlayer().get(0));
 			
 			// action
-			killedPlayer = player.name;
-			
 			if (player.isprotected){
-				killedPlayer = null;
+				killedPlayer = "none";
+			} else {
+				killedPlayer = player.name;
 			}
 			
 			// set buffer

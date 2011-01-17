@@ -87,7 +87,7 @@ public class CharDetective {
 			Player player = Keys.playerlist.get(actdetective.getPlayer().get(0));
 			
 			if (player.type().equals("mafia")){
-				Keys.bufferCommand.add(Messages.getString("night.detective"));
+				Keys.bufferCommand.add(Messages.getString("night.detective.ismafia"));
 			} else {
 				Keys.bufferCommand.add(Messages.getString("night.detective.isnomafia"));
 			}

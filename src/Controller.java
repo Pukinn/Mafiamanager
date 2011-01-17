@@ -191,7 +191,10 @@ public class Controller extends JPanel{
 		// mafia
 		for (CharMafia mafia : Keys.mafia){
 			mafia.night(frame);
-			diedPlayer.add(mafia.killedPlayer);
+			
+			String killed = mafia.killedPlayer;
+			if (!killed.equals("none")) { diedPlayer.add(killed); }
+			
 		}
 		// detectives
 		for (CharDetective detective : Keys.detectives){
@@ -210,6 +213,12 @@ public class Controller extends JPanel{
 		for (String strPlayer : playerset){
 			Player player = Keys.playerlist.get(strPlayer);
 			
+			if (player.type().equals("undefined")){
+				Keys.villager.player.add(player);
+				player.villager = Keys.villager;
+			}
+			
+			/*
 			if (player.mafia == null &&
 					player.detective == null &&
 					player.doctor == null &&
@@ -218,6 +227,7 @@ public class Controller extends JPanel{
 				player.villager = Keys.villager;
 				Keys.villager.player.add(player);
 			}
+			*/
 		}
 		
 		
@@ -227,8 +237,7 @@ public class Controller extends JPanel{
 	// day actions
 	private void day(){
 		Keys.bufferHead = Messages.getString("day")+" "+Keys.round;
-		
-		System.out.println("died: " + diedPlayer.size());
+		Keys.bufferCommand.add(Messages.getString("day.awake"));
 		
 		if (diedPlayer.size() == 0){
 			Keys.bufferCommand.add(Messages.getString("day.nodied"));
@@ -252,7 +261,6 @@ public class Controller extends JPanel{
 		Keys.bufferNote.clear();
 		
 		checkwin();
-		System.out.println("alivevil: " + Keys.aliveVillager());
 		
 		DialogDay lynch = new DialogDay(
 				frame,

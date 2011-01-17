@@ -77,4 +77,23 @@ public class Keys {
 		}
 		return alive;
 	}
+	
+	public static int aliveGood(){
+		int alive = 0;
+		
+		alive += aliveVillager();
+		alive += aliveDetectives();
+		alive += aliveDoctors();
+		
+		return alive;
+	}
+	
+	public static int aliveBad(){
+		int alive = 0;
+		
+		alive += aliveMafia();
+		alive += aliveTerrorists();
+		
+		return alive;
+	}
 }
