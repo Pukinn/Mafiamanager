@@ -23,11 +23,13 @@ import java.util.HashMap;
 public class Keys {
 	
 	// groups
-	public static CharVillager villager;
-	public static ArrayList<CharMafia> mafia;
-	public static ArrayList<CharDetective> detectives;
-	public static ArrayList<CharDoctor> doctors;
-	public static ArrayList<CharTerrorist> terrorists;
+		// good
+		public static CharVillager villager;
+		public static ArrayList<CharDetective> detectives;
+		public static ArrayList<CharDoctor> doctors;
+		// bad
+		public static ArrayList<CharMafia> mafia;
+		public static ArrayList<CharTerrorist> terrorists;
 	
 	// player
 	public static HashMap<String, Player> playerlist;
@@ -62,6 +64,8 @@ public class Keys {
 		return alive;
 	}
 	
+
+	
 	public static int aliveDoctors(){
 		int alive = 0;
 		for (CharDoctor group : doctors){
@@ -93,6 +97,15 @@ public class Keys {
 		
 		alive += aliveMafia();
 		alive += aliveTerrorists();
+		
+		return alive;
+	}
+	
+	public static int alivePlayer(){
+		int alive = 0;
+		
+		alive += aliveGood();
+		alive += aliveBad();
 		
 		return alive;
 	}

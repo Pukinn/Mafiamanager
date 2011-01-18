@@ -331,7 +331,7 @@ public class Controller extends JPanel{
 				+ amountDoctors
 				+ amountVillager;
 			
-			if (amount == 0){
+			if (Keys.a == 0){
 				winner = Messages.getString("deal.mafia") + " " + mafia.name;
 			}
 		}

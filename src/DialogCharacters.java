@@ -44,6 +44,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	private JLabel labelTxt;
 	private CharacterGroup groupMafia;
 	private CharacterGroup groupDetective;
+	private CharacterGroup groupScharping;
 	private CharacterGroup groupDoctor;
 	private CharacterGroup groupTerrorist;
 	private JLabel labelErrors;
@@ -87,14 +88,20 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		con.fill = GridBagConstraints.NONE;
 		add(groupDoctor, con);
 		
+		//scharping
+		groupScharping = new CharacterGroup(this, "scharping");
+		con.gridy = 4;
+		con.fill = GridBagConstraints.NONE;
+		add(groupScharping, con);
+		
 		//terrorist
 		groupTerrorist = new CharacterGroup(this, "terrorist");
-		con.gridy = 4;
+		con.gridy = 5;
 		con.fill = GridBagConstraints.NONE;
 		add(groupTerrorist, con);
 		
 		// error messages
-		con.gridy = 5;
+		con.gridy = 6;
 		labelErrors = new JLabel(" ");
 		labelErrors.setForeground(Color.red);
 		add(labelErrors, con);
@@ -102,7 +109,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		// button accept
 		buttonAcc = new JButton(Messages.getString("gui.acc"));
 		buttonAcc.addActionListener(this);
-		con.gridy = 6;
+		con.gridy = 7;
 		con.anchor = GridBagConstraints.CENTER;
 		con.fill = GridBagConstraints.NONE;
 		add(buttonAcc, con);
