@@ -324,14 +324,8 @@ public class Controller extends JPanel{
 		
 		String winner = "";
 		
-		for (CharMafia mafia : Keys.mafia){
-			int amount = amountMafia
-				- mafia.playeralive()
-				+ amountDetectives
-				+ amountDoctors
-				+ amountVillager;
-			
-			if (amount == 0){
+		for (CharMafia mafia : Keys.mafia){			
+			if (Keys.alivePlayer()-mafia.playeralive() == 0){
 				winner = Messages.getString("deal.mafia") + " " + mafia.name;
 			}
 		}

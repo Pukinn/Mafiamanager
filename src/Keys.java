@@ -96,4 +96,13 @@ public class Keys {
 		
 		return alive;
 	}
+	
+	public static int alivePlayer(){
+		int alive = 0;
+		
+		alive += aliveGood();
+		alive += aliveBad();
+		
+		return alive;
+	}
 }
