@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.SortedMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -39,12 +38,15 @@ public class DialogDay extends JDialog implements ActionListener{
 	
 	// general
 	private int numberSets;
-	private ArrayList<String> returnPlayer;
+	
+	public ArrayList<String> returnPlayer;
+	public boolean terrkilled;
 	
 	// gui
+	private JFrame parentframe;
 	private ArrayList<JButton> buttons;
 	private JButton buttonAcc;
-	private JButton buttonTerr;
+	
 	
 	public ArrayList<String> getPlayer(){ return returnPlayer; }
 	
@@ -56,13 +58,15 @@ public class DialogDay extends JDialog implements ActionListener{
 			String _note){
 		// initialize
 		super(_frame, true);
+		parentframe = _frame;
 		setTitle("Mafiamanager");
 		numberSets = _number;
+		terrkilled = false;
 		returnPlayer = new ArrayList<String>();
 		setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
 		con.anchor = GridBagConstraints.CENTER;
-		con.insets = new Insets(0,0,5,0);
+		con.insets = new Insets(2,2,2,2);
 		
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		con.gridy = 0;
@@ -82,6 +86,7 @@ public class DialogDay extends JDialog implements ActionListener{
 			}
 		}
 		
+		
 		if (!_note.equals("")){
 			JLabel note = new JLabel(_note);
 			note.setFont(note.getFont().deriveFont(Font.PLAIN));
@@ -96,9 +101,7 @@ public class DialogDay extends JDialog implements ActionListener{
 		con.gridwidth = 1;
 		con.gridx = GridBagConstraints.RELATIVE;
 		for (int i=1; i<=size; i++){
-			if (!(i==1)) { con.insets = new Insets(0,5,5,0); }
 			
-
 			for (String playerStr : playerset){
 				int num = Keys.playerlist.get(playerStr).number;
 				
@@ -108,7 +111,7 @@ public class DialogDay extends JDialog implements ActionListener{
 						buttonSet.setEnabled(false);
 					}
 					buttonSet.addActionListener(this);
-					buttonSet.setActionCommand(playerStr);
+					buttonSet.setActionCommand("player");
 					buttons.add(buttonSet);
 					add(buttons.get(i-1), con);
 					break;
@@ -120,17 +123,19 @@ public class DialogDay extends JDialog implements ActionListener{
 		buttonAcc = new JButton(Messages.getString("gui.acc"));
 		buttonAcc.setEnabled(false);
 		buttonAcc.addActionListener(this);
+		buttonAcc.setActionCommand("accept");
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		add(buttonAcc, con);
-
-		/*
-		if (Keys.terrorist > 0){
-			buttonTerr = new JButton(Messages.getString("gui.actterrorist"));
-			buttonTerr.addActionListener(this);
-			con.anchor = GridBagConstraints.LINE_END;
-			add(buttonTerr, con);
+		con.gridy++;
+		
+		// terrorists assassination
+		if (Keys.aliveTerrorists() > 0){
+			JButton buttonTerrorist = new JButton(Messages.getString("day.assassination"));
+			buttonTerrorist.addActionListener(this);
+			buttonTerrorist.setActionCommand("assasination");
+			add(buttonTerrorist, con);
+			con.gridy++;
 		}
-		*/
 		
 		pack();
 		setLocationRelativeTo(null);
@@ -139,16 +144,17 @@ public class DialogDay extends JDialog implements ActionListener{
 
 	public void actionPerformed(ActionEvent event) {
 		
-		if (event.getSource().equals(buttonAcc)){
+		if (event.getActionCommand().equals("accept")){
 			setVisible(false);
-		} else {
+		}
+		else if (event.getActionCommand().equals("player")){
 			JButton button = (JButton)event.getSource();
 			if (button.getBackground() == Color.green){
 				button.setBackground(null);
-				returnPlayer.remove(event.getActionCommand());
+				returnPlayer.remove(button.getText());
 			} else {
 				button.setBackground(Color.green);	
-				returnPlayer.add(event.getActionCommand());
+				returnPlayer.add(button.getText());
 			}
 			
 			int counterSet = 0;
@@ -161,6 +167,35 @@ public class DialogDay extends JDialog implements ActionListener{
 			} else {
 				buttonAcc.setEnabled(false);
 			}
+		}
+		else if (event.getActionCommand().equals("assasination")){
+
+			// get terrorist
+			DialogTerrorists getterr = new DialogTerrorists(parentframe);
+			
+			// kill player
+			Keys.bufferCommand.add(Messages.getString("day.ass.blast"));
+			
+			DialogSet actterr = new DialogSet(
+					Keys.playerlist,
+					parentframe,
+					1,
+					"",
+					Keys.bufferCommand,
+					"",
+					"nodead");
+			Keys.bufferCommand.clear();
+			Keys.bufferNote.clear();
+			
+			Player player = Keys.playerlist.get(actterr.getPlayer().get(0));
+			
+			// action
+			player.alive = false;
+			terrkilled = true;
+			
+			// end day
+			setVisible(false);
+			
 		}
 	}
 }

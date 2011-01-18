@@ -48,8 +48,7 @@ public class DialogSet extends JDialog implements ActionListener{
 	
 	public ArrayList<String> getPlayer(){ return returnPlayer; }
 	
-	public DialogSet(HashMap<String,
-			Player> _playerlist,
+	public DialogSet(HashMap<String, Player> _playerlist,
 			JFrame _frame,
 			int _number,
 			String _head,

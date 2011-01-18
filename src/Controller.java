@@ -22,7 +22,6 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.SortedMap;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -196,6 +195,10 @@ public class Controller extends JPanel{
 			if (!killed.equals("none")) { diedPlayer.add(killed); }
 			
 		}
+		// terrorists
+		for (CharTerrorist terrorist : Keys.terrorists){
+			terrorist.night(frame);
+		}
 		// detectives
 		for (CharDetective detective : Keys.detectives){
 			detective.night(frame);
@@ -217,17 +220,6 @@ public class Controller extends JPanel{
 				Keys.villager.player.add(player);
 				player.villager = Keys.villager;
 			}
-			
-			/*
-			if (player.mafia == null &&
-					player.detective == null &&
-					player.doctor == null &&
-					player.terrorist == null){
-				
-				player.villager = Keys.villager;
-				Keys.villager.player.add(player);
-			}
-			*/
 		}
 		
 		
@@ -260,23 +252,35 @@ public class Controller extends JPanel{
 		Keys.bufferCommand.clear();
 		Keys.bufferNote.clear();
 		
-		checkwin();
 		
-		DialogDay lynch = new DialogDay(
-				frame,
-				1,
-				Keys.bufferHead,
-				Keys.bufferCommand,
-				Messages.getString("day.lynch")
-				);
-		Keys.bufferCommand.clear();
-		Keys.bufferNote.clear();
 		
-		Player player = Keys.playerlist.get(lynch.getPlayer().get(0));
-		player.alive = false;
+
 		
-		// output
-		Keys.bufferNote.add("'"+player.name+"' "+Messages.getString("day.lynched"));
+		while(true){
+			checkwin();
+			
+			DialogDay lynch = new DialogDay(
+					frame,
+					1,
+					Keys.bufferHead,
+					Keys.bufferCommand,
+					Messages.getString("day.lynch")
+					);
+			Keys.bufferCommand.clear();
+			Keys.bufferNote.clear();
+			
+			if (lynch.terrkilled){
+				continue;
+			}
+			
+			Player player = Keys.playerlist.get(lynch.getPlayer().get(0));
+			player.alive = false;
+			
+			// output
+			Keys.bufferNote.add("'"+player.name+"' "+Messages.getString("day.lynched"));
+			
+			break;
+		}
 		
 		DialogCommand lynced = new DialogCommand(
 				frame,
