@@ -300,27 +300,6 @@ public class Controller extends JPanel{
 	
 	// check if one party have won and exit game
 	private void checkwin(){
-		int amountVillager = Keys.villager.playeralive();
-		
-		int amountMafia = 0;
-		for (CharMafia mafia : Keys.mafia){
-			amountMafia += mafia.playeralive();
-		}
-		
-		int amountDetectives = 0;
-		for (CharDetective detective : Keys.detectives){
-			amountDetectives += detective.playeralive();
-		}
-		
-		int amountDoctors = 0;
-		for (CharDoctor doctor : Keys.doctors){
-			amountDoctors += doctor.playeralive();
-		}
-		
-		int amountTerrorists = 0;
-		for (CharTerrorist terrorist : Keys.terrorists){
-			amountTerrorists += terrorist.playeralive();
-		}
 		
 		String winner = "";
 		

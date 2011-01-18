@@ -18,6 +18,8 @@
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
 
 public class CharScharping {
 
@@ -25,17 +27,50 @@ public class CharScharping {
 	public String type;
 	public String name;
 	public ArrayList<Player> player;
-	public int startsize;
+	public int size;
 	
 	
-	public CharScharping(int _startsize){
+	public CharScharping(int _size){
 		
 		// handover
-		startsize = _startsize;
+		size = _size;
 		
 		// initialize
 		type = "scharping";
 		player = new ArrayList<Player>();
+	}
+	
+	public void night(
+			// handover
+			JFrame _parentframe){
+		
+		if (Keys.round == 1 || playeralive() > 0){
+			Keys.bufferCommand.add(Messages.getString("night.scharping.awake") + " " + name);
+		}
+		
+		// ACTIONS
+		// first night
+		if (Keys.round == 1){
+			DialogSet dialog = new DialogSet(
+					Keys.playerlist,
+					_parentframe,
+					size,
+					Keys.bufferHead,
+					Keys.bufferCommand,
+					Messages.getString("night.scharping.who"),
+					"onlyunknown");
+			Keys.bufferCommand.clear();
+			Keys.bufferNote.clear();
+			
+			ArrayList<String> scharpings = dialog.getPlayer();
+			for (String scharping : scharpings){
+				Keys.playerlist.get(scharping).scharping = this;
+				player.add(Keys.playerlist.get(scharping));
+			}
+			
+			// set buffer
+			Keys.bufferCommand.add(Messages.getString("night.scharping.sleep"));
+		}
 	}
 	
 	// returns how much players are alive
