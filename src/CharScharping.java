@@ -45,13 +45,11 @@ public class CharScharping {
 			// handover
 			JFrame _parentframe){
 		
-		if (Keys.round == 1 || playeralive() > 0){
-			Keys.bufferCommand.add(Messages.getString("night.scharping.awake") + " " + name);
-		}
-		
 		// ACTIONS
 		// first night
 		if (Keys.round == 1){
+			Keys.bufferCommand.add(Messages.getString("night.scharping.awake") + " " + name);
+			
 			DialogSet dialog = new DialogSet(
 					Keys.playerlist,
 					_parentframe,
@@ -72,6 +70,17 @@ public class CharScharping {
 			// set buffer
 			Keys.bufferCommand.add(Messages.getString("night.scharping.sleep"));
 		}
+	}
+	
+	// returns avtive scharpings
+	public ArrayList<Player> actives(){
+		ArrayList<Player> retActives = new ArrayList<Player>();
+		
+		for (Player curPlayer : player){
+			if (curPlayer.dieround != 0){ retActives.add(curPlayer); }
+		}
+		
+		return retActives;
 	}
 	
 	// returns how much players are alive
