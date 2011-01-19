@@ -82,12 +82,21 @@ public class Keys {
 		return alive;
 	}
 	
+	public static int aliveScharpings(){
+		int alive = 0;
+		for (CharScharping group : scharpings){
+			alive += group.playeralive();
+		}
+		return alive;
+	}
+	
 	public static int aliveGood(){
 		int alive = 0;
 		
 		alive += aliveVillager();
 		alive += aliveDetectives();
 		alive += aliveDoctors();
+		alive += aliveScharpings();
 		
 		return alive;
 	}

@@ -165,6 +165,14 @@ public class Controller extends JPanel{
 			mess += terrorist.size;
 			dealout.add(mess);
 		}
+		
+		// scharpings
+		for (CharScharping scharping : Keys.scharpings){
+			String mess = Messages.getString("conf.scharping") + " ";
+			mess += scharping.name + ": ";
+			mess += scharping.size;
+			dealout.add(mess);
+		}
 
 		
 		DialogCommand diaDealout = new DialogCommand(
@@ -198,6 +206,10 @@ public class Controller extends JPanel{
 		// terrorists
 		for (CharTerrorist terrorist : Keys.terrorists){
 			terrorist.night(frame);
+		}
+		// scharpings
+		for (CharScharping scharping : Keys.scharpings){
+			scharping.night(frame);
 		}
 		// detectives
 		for (CharDetective detective : Keys.detectives){
