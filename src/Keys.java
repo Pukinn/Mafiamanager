@@ -23,10 +23,14 @@ import java.util.HashMap;
 public class Keys {
 	
 	// groups
+	// good
 	public static CharVillager villager;
-	public static ArrayList<CharMafia> mafia;
 	public static ArrayList<CharDetective> detectives;
 	public static ArrayList<CharDoctor> doctors;
+	public static ArrayList<CharScharping> scharpings;
+	
+	// bad
+	public static ArrayList<CharMafia> mafia;
 	public static ArrayList<CharTerrorist> terrorists;
 	
 	// player

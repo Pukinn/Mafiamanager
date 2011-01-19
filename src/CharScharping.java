@@ -30,10 +30,11 @@ public class CharScharping {
 	public int size;
 	
 	
-	public CharScharping(int _size){
+	public CharScharping(int _size, String _name){
 		
 		// handover
 		size = _size;
+		name = _name;
 		
 		// initialize
 		type = "scharping";
