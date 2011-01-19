@@ -1,0 +1,8 @@
+CHARACTERS
+- mason
+- golem
+- freelancer
+
+GENERAL
+- add scrollbar to board
+- add logs
