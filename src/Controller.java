@@ -195,21 +195,28 @@ public class Controller extends JPanel{
 			doctor.night(frame);
 			protectedPlayer.add(doctor.protectedPlayer);
 		}
-		// mafia
-		for (CharMafia mafia : Keys.mafia){
-			mafia.night(frame);
-			
-			String killed = mafia.killedPlayer;
-			if (!killed.equals("none")) { diedPlayer.add(killed); }
-			
+		// scharpings
+		for (CharScharping scharping : Keys.scharpings){
+			scharping.night(frame);
 		}
 		// terrorists
 		for (CharTerrorist terrorist : Keys.terrorists){
 			terrorist.night(frame);
 		}
-		// scharpings
-		for (CharScharping scharping : Keys.scharpings){
-			scharping.night(frame);
+		// mafia
+		for (CharMafia mafia : Keys.mafia){
+			mafia.night(frame);
+			
+			String killed = mafia.killedPlayer;
+			if (!killed.equals("none")) { 
+				
+				Player player = Keys.playerlist.get(killed);
+				if (player.type().equals("scharping")){
+					player.dieround = Keys.round + 1;
+				} else {
+					diedPlayer.add(killed);
+				}
+			}
 		}
 		// detectives
 		for (CharDetective detective : Keys.detectives){
@@ -219,12 +226,21 @@ public class Controller extends JPanel{
 
 		
 		// after night
+		// deprotect player
 		for (String player : protectedPlayer){
 			Keys.playerlist.get(player).isprotected = false;
 		}
 		
-		Set<String> playerset = Keys.playerlist.keySet();
+		// check for active scharpings
+		for (CharScharping scharping : Keys.scharpings){
+			for (Player player : scharping.player){
+				
+				if (player.dieround == Keys.round){ diedPlayer.add(player.name); }
+			}
+		}
 		
+		// set undefined 
+		Set<String> playerset = Keys.playerlist.keySet();
 		for (String strPlayer : playerset){
 			Player player = Keys.playerlist.get(strPlayer);
 			
@@ -263,9 +279,7 @@ public class Controller extends JPanel{
 				Keys.bufferNote);
 		Keys.bufferCommand.clear();
 		Keys.bufferNote.clear();
-		
-		
-		
+
 
 		
 		while(true){
