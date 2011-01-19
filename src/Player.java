@@ -28,10 +28,12 @@ public class Player {
 	public CharDetective detective;
 	public CharDoctor doctor;
 	public CharTerrorist terrorist;
+	public CharScharping scharping;
 	
 	// states
 	public boolean alive;
 	public boolean isprotected;
+	public int dieround;
 
 	public Player(String _name){
 		
@@ -49,6 +51,7 @@ public class Player {
 		if (detective != null){ type = "detective"; cnt++; }
 		if (doctor != null){ type = "doctor"; cnt++; }
 		if (terrorist != null){ type = "terrorist"; cnt++; }
+		if (scharping != null){ type = "scharping"; cnt++; }
 		
 		if (cnt > 1){ System.err.println(Messages.getString("err.doublecharacter") + " " + name); }
 		

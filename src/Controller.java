@@ -165,6 +165,14 @@ public class Controller extends JPanel{
 			mess += terrorist.size;
 			dealout.add(mess);
 		}
+		
+		// scharpings
+		for (CharScharping scharping : Keys.scharpings){
+			String mess = Messages.getString("conf.scharping") + " ";
+			mess += scharping.name + ": ";
+			mess += scharping.size;
+			dealout.add(mess);
+		}
 
 		
 		DialogCommand diaDealout = new DialogCommand(
@@ -187,17 +195,28 @@ public class Controller extends JPanel{
 			doctor.night(frame);
 			protectedPlayer.add(doctor.protectedPlayer);
 		}
+		// scharpings
+		for (CharScharping scharping : Keys.scharpings){
+			scharping.night(frame);
+		}
+		// terrorists
+		for (CharTerrorist terrorist : Keys.terrorists){
+			terrorist.night(frame);
+		}
 		// mafia
 		for (CharMafia mafia : Keys.mafia){
 			mafia.night(frame);
 			
 			String killed = mafia.killedPlayer;
-			if (!killed.equals("none")) { diedPlayer.add(killed); }
-			
-		}
-		// terrorists
-		for (CharTerrorist terrorist : Keys.terrorists){
-			terrorist.night(frame);
+			if (!killed.equals("none")) { 
+				
+				Player player = Keys.playerlist.get(killed);
+				if (player.type().equals("scharping")){
+					player.dieround = Keys.round + 1;
+				} else {
+					diedPlayer.add(killed);
+				}
+			}
 		}
 		// detectives
 		for (CharDetective detective : Keys.detectives){
@@ -207,12 +226,21 @@ public class Controller extends JPanel{
 
 		
 		// after night
+		// deprotect player
 		for (String player : protectedPlayer){
 			Keys.playerlist.get(player).isprotected = false;
 		}
 		
-		Set<String> playerset = Keys.playerlist.keySet();
+		// check for active scharpings
+		for (CharScharping scharping : Keys.scharpings){
+			for (Player player : scharping.player){
+				
+				if (player.dieround == Keys.round){ diedPlayer.add(player.name); }
+			}
+		}
 		
+		// set undefined 
+		Set<String> playerset = Keys.playerlist.keySet();
 		for (String strPlayer : playerset){
 			Player player = Keys.playerlist.get(strPlayer);
 			
@@ -251,9 +279,7 @@ public class Controller extends JPanel{
 				Keys.bufferNote);
 		Keys.bufferCommand.clear();
 		Keys.bufferNote.clear();
-		
-		
-		
+
 
 		
 		while(true){
@@ -300,45 +326,16 @@ public class Controller extends JPanel{
 	
 	// check if one party have won and exit game
 	private void checkwin(){
-		int amountVillager = Keys.villager.playeralive();
-		
-		int amountMafia = 0;
-		for (CharMafia mafia : Keys.mafia){
-			amountMafia += mafia.playeralive();
-		}
-		
-		int amountDetectives = 0;
-		for (CharDetective detective : Keys.detectives){
-			amountDetectives += detective.playeralive();
-		}
-		
-		int amountDoctors = 0;
-		for (CharDoctor doctor : Keys.doctors){
-			amountDoctors += doctor.playeralive();
-		}
-		
-		int amountTerrorists = 0;
-		for (CharTerrorist terrorist : Keys.terrorists){
-			amountTerrorists += terrorist.playeralive();
-		}
 		
 		String winner = "";
 		
-		for (CharMafia mafia : Keys.mafia){
-			int amount = amountMafia
-				- mafia.playeralive()
-				+ amountDetectives
-				+ amountDoctors
-				+ amountVillager;
-			
-			if (amount == 0){
+		for (CharMafia mafia : Keys.mafia){			
+			if (Keys.alivePlayer()-mafia.playeralive() == 0){
 				winner = Messages.getString("deal.mafia") + " " + mafia.name;
 			}
 		}
-
-		int amountBad = amountMafia + amountTerrorists;
 		
-		if (amountBad == 0){
+		if (Keys.aliveBad() == 0){
 			winner = Messages.getString("villager");
 		}
 			

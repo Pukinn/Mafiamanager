@@ -27,9 +27,14 @@ public class Keys {
 		public static CharVillager villager;
 		public static ArrayList<CharDetective> detectives;
 		public static ArrayList<CharDoctor> doctors;
+		public static ArrayList<CharScharping> scharpings;
 		// bad
 		public static ArrayList<CharMafia> mafia;
 		public static ArrayList<CharTerrorist> terrorists;
+
+
+	
+
 	
 	// player
 	public static HashMap<String, Player> playerlist;
@@ -64,8 +69,6 @@ public class Keys {
 		return alive;
 	}
 	
-
-	
 	public static int aliveDoctors(){
 		int alive = 0;
 		for (CharDoctor group : doctors){
@@ -82,12 +85,21 @@ public class Keys {
 		return alive;
 	}
 	
+	public static int aliveScharpings(){
+		int alive = 0;
+		for (CharScharping group : scharpings){
+			alive += group.playeralive();
+		}
+		return alive;
+	}
+	
 	public static int aliveGood(){
 		int alive = 0;
 		
 		alive += aliveVillager();
 		alive += aliveDetectives();
 		alive += aliveDoctors();
+		alive += aliveScharpings();
 		
 		return alive;
 	}

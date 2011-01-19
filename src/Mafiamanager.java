@@ -56,7 +56,7 @@ class Mafiamanager{
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// controler
+		// controller
 		conFrame.gridx = 0;
 		conFrame.gridy = 0;
 		mainframe.add(panelController, conFrame);

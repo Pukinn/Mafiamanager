@@ -130,12 +130,14 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			groupDetective.evaluate();
 			groupDoctor.evaluate();
 			groupTerrorist.evaluate();
+			groupScharping.evaluate();
 			
 			// if no error
 			if (!groupMafia.error &&
 					!groupDetective.error &&
 					!groupDoctor.error &&
-					!groupTerrorist.error){				
+					!groupTerrorist.error &&
+					!groupScharping.error){				
 				
 				// check for enough player
 				int amountPlayer = 0;
@@ -151,6 +153,9 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 				}
 				for (Integer terrorist : groupTerrorist.getNumbers()){
 					amountPlayer += terrorist;
+				}
+				for (Integer scharping : groupScharping.getNumbers()){
+					amountPlayer += scharping;
 				}
 
 				
@@ -198,6 +203,14 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					Keys.terrorists = new ArrayList<CharTerrorist>();
 					for (int i=0; i<names.size(); i++){
 						Keys.terrorists.add(new CharTerrorist(numbers.get(i), names.get(i)));
+					}
+					
+					// scharpings
+					names = groupScharping.getNames();
+					numbers = groupScharping.getNumbers();
+					Keys.scharpings = new ArrayList<CharScharping>();
+					for (int i=0; i<names.size(); i++){
+						Keys.scharpings.add(new CharScharping(numbers.get(i), names.get(i)));
 					}
 					
 
