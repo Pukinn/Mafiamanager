@@ -173,6 +173,14 @@ public class Controller extends JPanel{
 			mess += scharping.size;
 			dealout.add(mess);
 		}
+		
+		// freelancers
+		for (CharFreelancer freelancer : Keys.freelancers){
+			String mess = Messages.getString("conf.freelancer") + " ";
+			mess += freelancer.name + ": ";
+			mess += freelancer.size;
+			dealout.add(mess);
+		}
 
 		
 		DialogCommand diaDealout = new DialogCommand(
@@ -188,6 +196,13 @@ public class Controller extends JPanel{
 	private void night(){
 		Keys.bufferHead = Messages.getString("night")+" "+Keys.round;
 		Keys.bufferCommand.add(Messages.getString("night.sleep"));
+
+	// deactivate freelancers
+		for (CharFreelancer freelancer : Keys.freelancers)
+		for (Player p : freelancer.player)
+		{
+			p.activated = false;
+		}
 		
 	// TASKLIST
 		// doctors
@@ -209,7 +224,6 @@ public class Controller extends JPanel{
 			
 			String killed = mafia.killedPlayer;
 			if (!killed.equals("none")) { 
-				
 				Player player = Keys.playerlist.get(killed);
 				if (player.type().equals("scharping")){
 					player.dieround = Keys.round + 1;
@@ -217,6 +231,10 @@ public class Controller extends JPanel{
 					diedPlayer.add(killed);
 				}
 			}
+		}
+		// freelancers
+		for (CharFreelancer freelancer : Keys.freelancers){
+			freelancer.night(frame, diedPlayer);
 		}
 		// detectives
 		for (CharDetective detective : Keys.detectives){
@@ -295,7 +313,7 @@ public class Controller extends JPanel{
 			Keys.bufferCommand.clear();
 			Keys.bufferNote.clear();
 			
-			if (lynch.terrkilled){
+			if (lynch.terrkilled){ // ?
 				continue;
 			}
 			
@@ -328,6 +346,17 @@ public class Controller extends JPanel{
 	private void checkwin(){
 		
 		String winner = "";
+		
+		for (CharFreelancer freelancer : Keys.freelancers){
+			boolean won = false;
+
+			for (Player p : freelancer.player)
+			{
+				if (p.activated && !p.alive) won = true;
+			}
+
+			if (won) winner = Messages.getString("deal.freelancer") + " " + freelancer.name;
+		}
 		
 		for (CharMafia mafia : Keys.mafia){			
 			if (Keys.alivePlayer()-mafia.playeralive() == 0){
