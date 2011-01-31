@@ -31,6 +31,8 @@ public class Keys {
 		// bad
 		public static ArrayList<CharMafia> mafia;
 		public static ArrayList<CharTerrorist> terrorists;
+		// neutral
+		public static ArrayList<CharFreelancer> freelancers;
 
 
 	
