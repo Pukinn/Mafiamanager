@@ -45,6 +45,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 	private CharacterGroup groupMafia;
 	private CharacterGroup groupDetective;
 	private CharacterGroup groupScharping;
+	private CharacterGroup groupFreelancer;
 	private CharacterGroup groupDoctor;
 	private CharacterGroup groupTerrorist;
 	private JLabel labelErrors;
@@ -100,6 +101,12 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		con.fill = GridBagConstraints.NONE;
 		add(groupTerrorist, con);
 		
+		//freelancer
+		groupFreelancer = new CharacterGroup(this, "freelancer");
+		con.gridy = 6;
+		con.fill = GridBagConstraints.NONE;
+		add(groupFreelancer, con);
+		
 		// error messages
 		con.gridy = 6;
 		labelErrors = new JLabel(" ");
@@ -131,13 +138,15 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 			groupDoctor.evaluate();
 			groupTerrorist.evaluate();
 			groupScharping.evaluate();
+			groupFreelancer.evaluate();
 			
 			// if no error
 			if (!groupMafia.error &&
 					!groupDetective.error &&
 					!groupDoctor.error &&
 					!groupTerrorist.error &&
-					!groupScharping.error){				
+					!groupScharping.error &&
+					!groupFreelancer.error){				
 				
 				// check for enough player
 				int amountPlayer = 0;
@@ -156,6 +165,9 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 				}
 				for (Integer scharping : groupScharping.getNumbers()){
 					amountPlayer += scharping;
+				}
+				for (Integer freelancer: groupFreelancer.getNumbers()){
+					amountPlayer += freelancer;
 				}
 
 				
@@ -211,6 +223,14 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					Keys.scharpings = new ArrayList<CharScharping>();
 					for (int i=0; i<names.size(); i++){
 						Keys.scharpings.add(new CharScharping(numbers.get(i), names.get(i)));
+					}
+					
+					// freelancers
+					names = groupFreelancer.getNames();
+					numbers = groupFreelancer.getNumbers();
+					Keys.freelancers = new ArrayList<CharFreelancer>();
+					for (int i=0; i<names.size(); i++){
+						Keys.freelancers.add(new CharFreelancer(numbers.get(i), names.get(i)));
 					}
 					
 
