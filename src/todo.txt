@@ -1,6 +1,14 @@
 CHARACTERS
 - mason
 - golem
+- zombie
 
 GENERAL
+- change night-day-cycle to loop
+- change dialogs to nonmodal
 - add logs
+- set "board" in frame to the left
+- set legend to characters
+
+BUGS
+- last button in night-dialog have offset
