@@ -21,6 +21,7 @@ import java.awt.GridBagLayout;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
 
 class Mafiamanager{
 	
@@ -44,9 +45,10 @@ class Mafiamanager{
 		}
 		
 
-		// GUI
+	// GUI
 		mainframe = new JFrame();
-		board = new Board(mainframe);
+		
+		board = new Board();
 		panelController = new Controller(board, mainframe);
 		
 		// frame
@@ -66,22 +68,32 @@ class Mafiamanager{
 		conFrame.gridy = 1;
 		conFrame.anchor = GridBagConstraints.FIRST_LINE_START;
 
+
+
 		mainframe.add(board, conFrame);
 		
-		mainframe.pack();
+
+		
+		
+		pack();
 		mainframe.setVisible(true);
 		
 	// BEFORE GAME
 		// create player
 		DialogPlayer myPlayers = new DialogPlayer(mainframe, board);
 		panelController.redrawPlayer();
-		mainframe.pack();
+		pack();
+		
 		
 		// create figures
 		DialogCharacters myCharacters = new DialogCharacters(mainframe, board);
 		
 		panelController.start();
-		
+	}
+	
+	private static void pack(){
 		mainframe.pack();
+		JScrollBar verBar = board.getVerticalScrollBar();
+		verBar.setValue(verBar.getMaximum());
 	}
 }

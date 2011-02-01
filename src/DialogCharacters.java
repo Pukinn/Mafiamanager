@@ -158,7 +158,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					amountPlayer += scharping;
 				}
 
-				
+				// errors
 				if (Keys.playerlist.size() < amountPlayer){
 					labelErrors.setText(Messages.getString("conf.err.character"));
 					pack();
@@ -167,11 +167,16 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					labelErrors.setText(Messages.getString("conf.err.player"));
 					pack();
 				}
+				// no error
 				else {
+					
+					board.space();
+					board.line(Messages.getString("log.character"));
 					
 					// villager
 					int villager = Keys.playerlist.size() - amountPlayer;
 					Keys.villager = new CharVillager(villager);
+					board.line(Messages.getString("log.villager")+"("+villager+")");
 					
 					// mafia
 					ArrayList<String> names = groupMafia.getNames();
@@ -179,6 +184,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					Keys.mafia = new ArrayList<CharMafia>();
 					for (int i=0; i<names.size(); i++){
 						Keys.mafia.add(new CharMafia(numbers.get(i), names.get(i)));
+						board.line(Messages.getString("log.mafia")+" "+names.get(i)+"("+numbers.get(i)+")");
 					}
 					
 					// detectives
@@ -187,6 +193,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					Keys.detectives = new ArrayList<CharDetective>();
 					for (int i=0; i<names.size(); i++){
 						Keys.detectives.add(new CharDetective(numbers.get(i), names.get(i)));
+						board.line(Messages.getString("log.detective")+" "+names.get(i)+"("+numbers.get(i)+")");
 					}
 					
 					// doctors
@@ -195,6 +202,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					Keys.doctors = new ArrayList<CharDoctor>();
 					for (int i=0; i<names.size(); i++){
 						Keys.doctors.add(new CharDoctor(numbers.get(i), names.get(i)));
+						board.line(Messages.getString("log.doctor")+" "+names.get(i)+"("+numbers.get(i)+")");
 					}
 					
 					// terrorists
@@ -203,6 +211,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					Keys.terrorists = new ArrayList<CharTerrorist>();
 					for (int i=0; i<names.size(); i++){
 						Keys.terrorists.add(new CharTerrorist(numbers.get(i), names.get(i)));
+						board.line(Messages.getString("log.terrorist")+" "+names.get(i)+"("+numbers.get(i)+")");
 					}
 					
 					// scharpings
@@ -211,20 +220,8 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 					Keys.scharpings = new ArrayList<CharScharping>();
 					for (int i=0; i<names.size(); i++){
 						Keys.scharpings.add(new CharScharping(numbers.get(i), names.get(i)));
+						board.line(Messages.getString("log.scharping")+" "+names.get(i)+"("+numbers.get(i)+")");
 					}
-					
-
-/*					
-					// write log
-					board.space();
-					board.line(Messages.getString("log.character"));
-					for (Group group : Keys.groups){
-						String mess = Messages.getString("conf."+group.group()) + " ";
-						mess += group.groupname();
-						mess += "("+group.groupsize()+")";
-						board.line(mess);
-					}
-*/
 					
 					// end dialog
 					setVisible(false);
