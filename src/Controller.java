@@ -121,7 +121,7 @@ public class Controller extends JPanel{
 		}
 	}
 
-// GAME LOGIC
+// GAME LOGIC 
 	
 	// start game
 	public void start(){
