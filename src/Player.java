@@ -33,7 +33,7 @@ public class Player {
 	// states
 	public boolean alive;
 	public boolean isprotected;
-	public int dieround;
+	public int dieround; 
 
 	public Player(String _name){
 		

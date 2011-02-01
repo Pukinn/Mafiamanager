@@ -1,7 +1,6 @@
 CHARACTERS
 - mason
 - golem
-- freelancer
 
 GENERAL
 - add logs

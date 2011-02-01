@@ -32,9 +32,6 @@ public class Keys {
 		public static ArrayList<CharMafia> mafia;
 		public static ArrayList<CharTerrorist> terrorists;
 
-
-	
-
 	
 	// player
 	public static HashMap<String, Player> playerlist;

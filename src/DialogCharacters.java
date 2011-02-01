@@ -30,7 +30,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 
-
 public class DialogCharacters  extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = -9021187337746013906L;
