@@ -80,6 +80,7 @@ class Mafiamanager{
 		// create figures
 		DialogCharacters myCharacters = new DialogCharacters(mainframe, board);
 		
+		
 		panelController.start();
 		
 		mainframe.pack();

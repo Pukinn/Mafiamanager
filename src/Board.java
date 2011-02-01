@@ -60,7 +60,7 @@ public class Board extends JPanel {
 	public void line(String _text){
 		conBoard.gridwidth = 1;
 		
-		// timestamp
+		// timestamp 
 		conBoard.gridx = 0;
 		Date currentTime = new Date();
 		String time = formatter.format(currentTime);
