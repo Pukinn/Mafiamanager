@@ -27,7 +27,6 @@ public class CharFreelancer {
 	public String type;
 	public String name;
 	public ArrayList<Player> player;
-	public String killedPlayer;
 	
 	// to generate
 	public int size;
@@ -114,6 +113,15 @@ public class CharFreelancer {
 			
 			// set buffer
 			Keys.bufferCommand.add(Messages.getString("night.freelancer.sleep"));
+			
+			
+			DialogCommand command = new DialogCommand(
+					_parentframe,
+					Keys.bufferHead,
+					Keys.bufferCommand,
+					Keys.bufferNote);
+			Keys.bufferCommand.clear();
+			Keys.bufferNote.clear();
 		}
 	}
 	
