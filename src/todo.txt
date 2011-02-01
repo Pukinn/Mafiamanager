@@ -4,5 +4,4 @@ CHARACTERS
 - freelancer
 
 GENERAL
-- add scrollbar to board
 - add logs

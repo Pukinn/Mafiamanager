@@ -67,13 +67,7 @@ class Mafiamanager{
 		// board
 		conFrame.gridy = 1;
 		conFrame.anchor = GridBagConstraints.FIRST_LINE_START;
-
-
-
 		mainframe.add(board, conFrame);
-		
-
-		
 		
 		pack();
 		mainframe.setVisible(true);

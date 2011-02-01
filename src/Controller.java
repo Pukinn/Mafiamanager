@@ -34,7 +34,6 @@ public class Controller extends JPanel{
 
 	// general
 	private Board board;
-	// TODO logging the game
 	
 	// roundsaves
 	private ArrayList<String> protectedPlayer;
@@ -181,11 +180,20 @@ public class Controller extends JPanel{
 				command,
 				dealout);
 		
+		// LOG: game started
+		board.space();
+		board.line(Messages.getString("log.beginning"));
+		
 		night();
 	}
 	
 	// night actions
 	private void night(){
+		
+		// LOG: night
+		board.space();
+		board.line(Messages.getString("night")+" "+Keys.round);
+		
 		Keys.bufferHead = Messages.getString("night")+" "+Keys.round;
 		Keys.bufferCommand.add(Messages.getString("night.sleep"));
 		
@@ -256,6 +264,11 @@ public class Controller extends JPanel{
 	
 	// day actions
 	private void day(){
+		
+		// LOG: day
+		board.space();
+		board.line(Messages.getString("day")+" "+Keys.round);
+		
 		Keys.bufferHead = Messages.getString("day")+" "+Keys.round;
 		Keys.bufferCommand.add(Messages.getString("day.awake"));
 		
@@ -348,6 +361,10 @@ public class Controller extends JPanel{
 					Messages.getString("win.endgame"),
 					Keys.bufferCommand,
 					Keys.bufferNote);
+			
+			board.space();
+			board.line(Messages.getString("log.endgame"));
+			board.line(Messages.getString("log.wintext")+" "+winner);
 			
 			System.exit(0);
 		}
