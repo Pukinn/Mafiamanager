@@ -37,7 +37,6 @@ public class Board extends JScrollPane {
 	
 	// gui
 	private GridBagConstraints conBoard;
-	private GridBagConstraints conPan;
 	private JPanel panel;
 	
 	public Board(){
@@ -50,8 +49,7 @@ public class Board extends JScrollPane {
 		setViewportView(panel);
 		setPreferredSize(new Dimension(400,400));
 		setBorder(null);
-		conPan = new GridBagConstraints();
-		conPan.anchor = GridBagConstraints.WEST;
+		
 		conBoard = new GridBagConstraints();
 		conBoard.gridy = GridBagConstraints.RELATIVE;
 		conBoard.anchor = GridBagConstraints.WEST;

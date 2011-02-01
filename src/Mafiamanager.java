@@ -16,8 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
@@ -25,9 +24,7 @@ import javax.swing.JScrollBar;
 
 class Mafiamanager{
 	
-	// GUI
-	private static GridBagConstraints conFrame;
-	
+	// GUI	
 	private static JFrame mainframe;
 		private static Controller panelController;
 		private static Board board;
@@ -52,22 +49,17 @@ class Mafiamanager{
 		panelController = new Controller(board, mainframe);
 		
 		// frame
-		mainframe.setLayout(new GridBagLayout());
-		conFrame = new GridBagConstraints();
+		mainframe.setLayout(new BorderLayout());
 		
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// controller
-		conFrame.gridx = 0;
-		conFrame.gridy = 0;
-		mainframe.add(panelController, conFrame);
+		mainframe.add(panelController, BorderLayout.PAGE_START);
 		panelController.player();
 		
 		// board
-		conFrame.gridy = 1;
-		conFrame.anchor = GridBagConstraints.FIRST_LINE_START;
-		mainframe.add(board, conFrame);
+		mainframe.add(board, BorderLayout.CENTER);
 		
 		pack();
 		mainframe.setVisible(true);
