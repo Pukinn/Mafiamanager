@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -23,11 +24,11 @@ import java.awt.Insets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-public class Board extends JPanel {
+public class Board extends JScrollPane {
 
 	private static final long serialVersionUID = 6909929629490253770L;
 
@@ -36,21 +37,19 @@ public class Board extends JPanel {
 	
 	// gui
 	private GridBagConstraints conBoard;
-	private GridBagConstraints conPan;
+	private JPanel panel;
 	
-	private JFrame frame;
-	
-	public Board(JFrame _frame){
+	public Board(){
 		
 		// initialize
-		frame = _frame;
 		formatter = new SimpleDateFormat("HH:mm:ss");
 		
-		
 		// gui
-		setLayout(new GridBagLayout());
-		conPan = new GridBagConstraints();
-		conPan.anchor = GridBagConstraints.FIRST_LINE_START;
+		panel = new JPanel(new GridBagLayout());
+		setViewportView(panel);
+		setPreferredSize(new Dimension(400,400));
+		setBorder(null);
+		
 		conBoard = new GridBagConstraints();
 		conBoard.gridy = GridBagConstraints.RELATIVE;
 		conBoard.anchor = GridBagConstraints.WEST;
@@ -66,15 +65,16 @@ public class Board extends JPanel {
 		String time = formatter.format(currentTime);
 		JLabel note = new JLabel(time);
 		note.setFont(note.getFont().deriveFont(Font.PLAIN));
-		add(note, conBoard);
+		panel.add(note, conBoard);
 
 		// text		
 		conBoard.gridx = 1;
 		JLabel text = new JLabel(_text);
 		text.setFont(text.getFont().deriveFont(Font.PLAIN));
-		add(text, conBoard);
+		panel.add(text, conBoard);
 		
-		frame.pack();
+		panel.revalidate();
+		getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
 		
 		// log
 		Log.timestamp();
@@ -85,9 +85,10 @@ public class Board extends JPanel {
 		conBoard.gridx = 0;
 		conBoard.gridwidth = GridBagConstraints.REMAINDER;
 		JLabel space = new JLabel(" ");
-		add(space, conBoard);
+		panel.add(space, conBoard);
 		
-		frame.pack();
+		panel.revalidate();
+		getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
 		
 		// log
 		Log.newLine("");

@@ -3,5 +3,4 @@ CHARACTERS
 - golem
 
 GENERAL
-- add scrollbar to board
 - add logs

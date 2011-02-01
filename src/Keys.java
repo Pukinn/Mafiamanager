@@ -34,9 +34,6 @@ public class Keys {
 		// neutral
 		public static ArrayList<CharFreelancer> freelancers;
 
-
-	
-
 	
 	// player
 	public static HashMap<String, Player> playerlist;
