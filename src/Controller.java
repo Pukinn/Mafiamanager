@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+**/
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,7 +38,6 @@ public class Controller extends JPanel{
 	
 	// roundsaves
 	private ArrayList<String> protectedPlayer;
-//	private ArrayList<String> diedPlayer;
 	
 	// gui
 	private GridBagConstraints con;
@@ -59,7 +58,6 @@ public class Controller extends JPanel{
 		Keys.round = 1;
 		gameruns = true;
 		protectedPlayer = new ArrayList<String>();
-//		diedPlayer = new ArrayList<String>();
 		
 		// gui
 		setLayout(new GridLayout(0,1));		

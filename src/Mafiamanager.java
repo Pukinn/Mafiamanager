@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+**/
 
 import java.awt.BorderLayout;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ class Mafiamanager{
 
 		// set default player
 		for (int i=1; i<=5; i++){
-			String player = Messages.getString("gui.player")+" "+i;
+			String player = Messages.getString("confp.player")+" "+i;
 			Keys.playerlist.put(player, new Player(player));
 			Keys.playerlist.get(player).number = i;
 		}

@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+**/
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -113,7 +113,7 @@ public class DialogCharacters  extends JDialog implements ActionListener{
 		add(labelErrors, con);
 		
 		// button accept
-		buttonAcc = new JButton(Messages.getString("gui.acc"));
+		buttonAcc = new JButton(Messages.getString("conf.acc"));
 		buttonAcc.addActionListener(this);
 		con.gridy = 7;
 		con.anchor = GridBagConstraints.CENTER;

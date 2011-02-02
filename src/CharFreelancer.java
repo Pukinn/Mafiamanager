@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+**/
 
 import java.util.ArrayList;
 
@@ -80,6 +80,7 @@ public class CharFreelancer {
 				p.dieround = 0;
 			}
 		}
+		
 		
 		// every night
 		if (playeralive() > 0 || Keys.round == 1){

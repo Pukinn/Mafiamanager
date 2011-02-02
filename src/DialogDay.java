@@ -86,7 +86,6 @@ public class DialogDay extends JDialog implements ActionListener{
 			}
 		}
 		
-		
 		if (!_note.equals("")){
 			JLabel note = new JLabel(_note);
 			note.setFont(note.getFont().deriveFont(Font.PLAIN));
@@ -120,7 +119,7 @@ public class DialogDay extends JDialog implements ActionListener{
 		}
 		con.gridy++;
 		
-		buttonAcc = new JButton(Messages.getString("gui.acc"));
+		buttonAcc = new JButton(Messages.getString("day.acc"));
 		buttonAcc.setEnabled(false);
 		buttonAcc.addActionListener(this);
 		buttonAcc.setActionCommand("accept");

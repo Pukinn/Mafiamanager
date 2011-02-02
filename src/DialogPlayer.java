@@ -63,12 +63,12 @@ public class DialogPlayer extends JDialog implements ActionListener{
 		con.gridx = 0;
 		
 		// text
-		labelTxt = new JLabel(Messages.getString("gui.createTxt"));
+		labelTxt = new JLabel(Messages.getString("confp.createTxt"));
 		con.gridy = 0;
 		add(labelTxt, con);
 		
 		// button 'add player'
-		buttonAdd = new JButton(Messages.getString("gui.add"));
+		buttonAdd = new JButton(Messages.getString("confp.add"));
 		buttonAdd.addActionListener(this);
 		con.gridy = 1;
 		add(buttonAdd, con);
@@ -89,7 +89,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 		add(panelPlayer, con);
 		
 		// button accept
-		buttonAcc = new JButton(Messages.getString("gui.acc"));
+		buttonAcc = new JButton(Messages.getString("confp.acc"));
 		buttonAcc.addActionListener(this);
 		con.gridy = 3;
 		add(buttonAcc, con);
@@ -104,7 +104,7 @@ public class DialogPlayer extends JDialog implements ActionListener{
 	public void addPlayer(){
 		int player = counterPlayer+1;
 		panelx.add(new JPanel(new GridLayout(1,2)));
-		labelx.add(new JLabel(Messages.getString("gui.player")+" "+player));
+		labelx.add(new JLabel(Messages.getString("confp.player")+" "+player));
 		fieldx.add(new JTextField(15));
 		
 		panelx.get(counterPlayer).add(labelx.get(counterPlayer));
