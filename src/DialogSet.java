@@ -116,7 +116,7 @@ public class DialogSet extends JDialog implements ActionListener{
 		}
 		con.gridy++;
 		
-		buttonAcc = new JButton(Messages.getString("gui.acc"));
+		buttonAcc = new JButton(Messages.getString("conf.acc"));
 		buttonAcc.setEnabled(false);
 		buttonAcc.addActionListener(this);
 		con.gridwidth = GridBagConstraints.REMAINDER;

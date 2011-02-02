@@ -119,12 +119,20 @@ public class DialogDay extends JDialog implements ActionListener{
 		}
 		con.gridy++;
 		
+		// button accept
 		buttonAcc = new JButton(Messages.getString("day.acc"));
 		buttonAcc.setEnabled(false);
 		buttonAcc.addActionListener(this);
 		buttonAcc.setActionCommand("accept");
 		con.gridwidth = GridBagConstraints.REMAINDER;
 		add(buttonAcc, con);
+		con.gridy++;
+		
+		//button nominate
+		JButton buttonNom = new JButton(Messages.getString("day.nominate"));
+		buttonNom.addActionListener(this);
+		buttonNom.setActionCommand("nominate");
+		add(buttonNom, con);
 		con.gridy++;
 		
 		// terrorists assassination
@@ -166,6 +174,13 @@ public class DialogDay extends JDialog implements ActionListener{
 			} else {
 				buttonAcc.setEnabled(false);
 			}
+		}
+		else if (event.getActionCommand().equals("nominate")){
+			
+			
+			// TODO: nomination
+			
+			
 		}
 		else if (event.getActionCommand().equals("assasination")){
 

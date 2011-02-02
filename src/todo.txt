@@ -4,6 +4,7 @@ CHARACTERS
 - zombie
 
 GENERAL
+- add nominating
 - change dialogs to nonmodal
 - add logs
 - set "board" in frame to the left
