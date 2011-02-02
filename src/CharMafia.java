@@ -27,7 +27,6 @@ public class CharMafia {
 	public String type;
 	public String name;
 	public ArrayList<Player> player;
-	public String killedPlayer;
 	
 	// to generate
 	public int size;
@@ -89,10 +88,12 @@ public class CharMafia {
 			Player player = Keys.playerlist.get(actmafia.getPlayer().get(0));
 			
 			// action
-			if (player.isprotected){
-				killedPlayer = "none";
-			} else {
-				killedPlayer = player.name;
+			if (!player.isprotected){
+				if (player.type().equals("scharping")){
+					player.dieround = Keys.round + 1;
+				} else {
+					player.dieround = Keys.round;
+				}
 			}
 			
 			// set buffer

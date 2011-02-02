@@ -42,9 +42,7 @@ public class CharFreelancer {
 		player = new ArrayList<Player>();
 	}
 	
-	public void night(
-			// handover
-			JFrame _parentframe, ArrayList<String> diedPlayers){
+	public void night(JFrame _parentframe){
 		
 		if (Keys.round == 1 || playeralive() > 0){
 			Keys.bufferCommand.add(Messages.getString("night.freelancer.awake") + " " + name);
@@ -70,22 +68,16 @@ public class CharFreelancer {
 				player.add(Keys.playerlist.get(freelancer));
 			}
 		}
-
-		// copy the list of died players to be able to remove items while we iterate through it
-		ArrayList<String> dp =  new ArrayList<String>(diedPlayers);
 		
 		// search killed players for this freelancer team
-		for (String name : dp)
-		{
-			Player p = Keys.playerlist.get(name);
-			if (player.contains(p))
-			{
+		for (Player p : player){
+			if (p.dieround == Keys.round){
+				
 				// activate the freelancer
 				p.activated = true;
-
-				// remove the freelancer from the diedPlayer list
-				int i = diedPlayers.indexOf(name);
-				diedPlayers.remove(i);
+				
+				// set the freelancer alive
+				p.dieround = 0;
 			}
 		}
 		

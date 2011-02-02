@@ -93,10 +93,11 @@ public class CharacterGroup extends JPanel
 		// name of group
 		con.gridx = 0;
 		JTextField fieldName = new JTextField(15);
-		if (linecounter <= 3){
-			String fieldtext = "conf."+ group +".group."+(linecounter);
-			fieldName.setText(Messages.getString(fieldtext));
+		String fieldtext = Messages.getString("conf."+ group +".group."+linecounter);
+		if (!fieldtext.equals("!conf."+ group +".group."+linecounter+"!")){
+			fieldName.setText(fieldtext);
 		}
+		
 		names.add(fieldName);
 		add(fieldName, con);
 		

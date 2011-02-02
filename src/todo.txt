@@ -4,7 +4,6 @@ CHARACTERS
 - zombie
 
 GENERAL
-- change night-day-cycle to loop
 - change dialogs to nonmodal
 - add logs
 - set "board" in frame to the left

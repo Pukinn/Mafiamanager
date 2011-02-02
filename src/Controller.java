@@ -38,7 +38,7 @@ public class Controller extends JPanel{
 	
 	// roundsaves
 	private ArrayList<String> protectedPlayer;
-	private ArrayList<String> diedPlayer;
+//	private ArrayList<String> diedPlayer;
 	
 	// gui
 	private GridBagConstraints con;
@@ -59,7 +59,7 @@ public class Controller extends JPanel{
 		Keys.round = 1;
 		gameruns = true;
 		protectedPlayer = new ArrayList<String>();
-		diedPlayer = new ArrayList<String>();
+//		diedPlayer = new ArrayList<String>();
 		
 		// gui
 		setLayout(new GridLayout(0,1));		
@@ -241,9 +241,9 @@ public class Controller extends JPanel{
 		// mafia
 		for (CharMafia mafia : Keys.mafia){
 			mafia.night(frame);
-			
+		/*	
 			String killed = mafia.killedPlayer;
-			if (!killed.equals("none")) { 
+			if (!killed.equals("none")) {
 				Player player = Keys.playerlist.get(killed);
 				if (player.type().equals("scharping")){
 					player.dieround = Keys.round + 1;
@@ -251,10 +251,11 @@ public class Controller extends JPanel{
 					diedPlayer.add(killed);
 				}
 			}
+			*/
 		}
 		// freelancers
 		for (CharFreelancer freelancer : Keys.freelancers){
-			freelancer.night(frame, diedPlayer);
+			freelancer.night(frame);
 		}
 		// detectives
 		for (CharDetective detective : Keys.detectives){
@@ -267,14 +268,6 @@ public class Controller extends JPanel{
 		// deprotect player
 		for (String player : protectedPlayer){
 			Keys.playerlist.get(player).isprotected = false;
-		}
-		
-		// check for active scharpings
-		for (CharScharping scharping : Keys.scharpings){
-			for (Player player : scharping.player){
-				
-				if (player.dieround == Keys.round){ diedPlayer.add(player.name); }
-			}
 		}
 		
 		// set undefined 
@@ -299,19 +292,29 @@ public class Controller extends JPanel{
 		Keys.bufferHead = Messages.getString("day")+" "+Keys.round;
 		Keys.bufferCommand.add(Messages.getString("day.awake"));
 		
-		if (diedPlayer.size() == 0){
+		// check players if they die this round
+		int died = 0;
+		Set<String> playerset = Keys.playerlist.keySet();
+		for (String strPlayer : playerset){
+			Player p = Keys.playerlist.get(strPlayer);
+			
+			// die this round
+			if (p.dieround == Keys.round){
+				p.alive = false;
+				Keys.bufferNote.add(p.name);
+				died++;
+			}
+		}
+		
+		// set messages: died player or no died player
+		if (died == 0){
 			Keys.bufferCommand.add(Messages.getString("day.nodied"));
 		}
 		else {
 			Keys.bufferCommand.add(Messages.getString("day.isdied"));
-			
-			for (String player : diedPlayer){
-				Keys.playerlist.get(player).alive = false;
-				Keys.bufferNote.add(player);
-			}
 		}
-		diedPlayer.clear();
 		
+		// show message if player died
 		DialogCommand day = new DialogCommand(
 				frame,
 				Keys.bufferHead,
