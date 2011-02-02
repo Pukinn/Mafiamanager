@@ -34,6 +34,7 @@ public class Controller extends JPanel{
 
 	// general
 	private Board board;
+	private boolean gameruns;
 	
 	// roundsaves
 	private ArrayList<String> protectedPlayer;
@@ -56,6 +57,7 @@ public class Controller extends JPanel{
 		board = _board;
 		frame = _frame;
 		Keys.round = 1;
+		gameruns = true;
 		protectedPlayer = new ArrayList<String>();
 		diedPlayer = new ArrayList<String>();
 		
@@ -121,8 +123,7 @@ public class Controller extends JPanel{
 		}
 	}
 
-// GAME LOGIC 
-	
+// GAME LOGIC 	
 	// start game
 	public void start(){
 		ArrayList<String> command = new ArrayList<String>();
@@ -192,7 +193,18 @@ public class Controller extends JPanel{
 		board.space();
 		board.line(Messages.getString("log.beginning"));
 		
-		night();
+		gameloop();
+	}
+	
+	private void gameloop(){
+		while(true){
+			
+			if (!gameruns) break;
+			night();
+			
+			if (!gameruns) break;
+			day();
+		}
 	}
 	
 	// night actions
@@ -275,9 +287,6 @@ public class Controller extends JPanel{
 				player.villager = Keys.villager;
 			}
 		}
-		
-		
-		day();
 	}
 	
 	// day actions
@@ -326,9 +335,8 @@ public class Controller extends JPanel{
 			Keys.bufferCommand.clear();
 			Keys.bufferNote.clear();
 			
-			if (lynch.terrkilled){ // ?
-				continue;
-			}
+			// restart day if terrorist have killed someone
+			if (lynch.terrkilled){ continue; }
 			
 			Player player = Keys.playerlist.get(lynch.getPlayer().get(0));
 			player.alive = false;
@@ -350,9 +358,6 @@ public class Controller extends JPanel{
 		checkwin();
 		
 		Keys.round++;
-
-		
-		night();
 	}
 	
 	// check if one party have won and exit game
@@ -395,7 +400,7 @@ public class Controller extends JPanel{
 			board.line(Messages.getString("log.endgame"));
 			board.line(Messages.getString("log.wintext")+" "+winner);
 			
-			System.exit(0);
+			gameruns = false;
 		}
 	}
 }
