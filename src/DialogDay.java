@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+**/
 
 import java.awt.Color;
 import java.awt.Font;
@@ -46,6 +46,7 @@ public class DialogDay extends JDialog implements ActionListener{
 	private JFrame parentframe;
 	private ArrayList<JButton> buttons;
 	private JButton buttonAcc;
+	private JButton buttonNom;
 	
 	
 	public ArrayList<String> getPlayer(){ return returnPlayer; }
@@ -129,7 +130,7 @@ public class DialogDay extends JDialog implements ActionListener{
 		con.gridy++;
 		
 		//button nominate
-		JButton buttonNom = new JButton(Messages.getString("day.nominate"));
+		buttonNom = new JButton(Messages.getString("day.nominate"));
 		buttonNom.addActionListener(this);
 		buttonNom.setActionCommand("nominate");
 		add(buttonNom, con);
@@ -176,7 +177,12 @@ public class DialogDay extends JDialog implements ActionListener{
 			}
 		}
 		else if (event.getActionCommand().equals("nominate")){
-			
+			if (buttonNom.getBackground() == Color.green){
+				buttonNom.setBackground(null);
+			}
+			else {
+				buttonNom.setBackground(Color.green);
+			}
 			
 			// TODO: nomination
 			
