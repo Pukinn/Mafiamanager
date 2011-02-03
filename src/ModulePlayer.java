@@ -17,6 +17,8 @@
 */
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,8 +40,9 @@ public class ModulePlayer
 	
 	// GUI
 	private JButton buttonName;
+	private JPanel panelStates;
 	
-	private ModulePlayer(String _name){
+	public ModulePlayer(String _name){
 		
 		// set default values
 		sName = _name;			// set name
@@ -55,8 +58,14 @@ public class ModulePlayer
 		buttonName.addActionListener(this);
 		buttonName.setActionCommand("namebutton");
 		
+		// generate state-panel
+		panelStates = new JPanel();
+		panelStates.setBackground(Color.black);
+		panelStates.setPreferredSize(new Dimension(50, 50));
+		
 	// LAYOUT
 		add(buttonName, BorderLayout.WEST);
+		add(panelStates, BorderLayout.EAST);
 	}
 
 	

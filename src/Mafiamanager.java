@@ -1,3 +1,8 @@
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+
 /*
 	Mafiamanager - a tool to support the referee of the parlor game "Mafia"
     Copyright (C) 2011  Thomas Högner
@@ -16,6 +21,39 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+
+class Mafiamanager{
+	
+	
+	public static void main(String args[]){
+	
+		// generate Player Modules
+		ArrayList<ModulePlayer> alPlayerModules = new ArrayList<ModulePlayer>();
+
+		// generate default Players
+		for (int i=1; i<=5; ++i){
+			alPlayerModules.add(new ModulePlayer("Player " + i));
+		}
+		
+		// generate frame
+		JFrame mainframe = new JFrame();
+		mainframe.setTitle("Mafiamanager");
+		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// generate overview
+		Overview overview = new Overview(alPlayerModules);
+		
+		
+		// LAYOUT
+		mainframe.add(overview, BorderLayout.NORTH);
+		
+		mainframe.pack();
+		mainframe.setVisible(true);
+	}
+}
+
+
+/*
 import java.awt.BorderLayout;
 import java.util.HashMap;
 
@@ -77,6 +115,7 @@ class Mafiamanager{
 		
 		panelController.start();
 	}
+
 	
 	private static void pack(){
 		mainframe.pack();
@@ -84,3 +123,4 @@ class Mafiamanager{
 		verBar.setValue(verBar.getMaximum());
 	}
 }
+*/
