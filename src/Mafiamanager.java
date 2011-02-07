@@ -1,8 +1,3 @@
-import java.awt.BorderLayout;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-
 /*
 	Mafiamanager - a tool to support the referee of the parlor game "Mafia"
     Copyright (C) 2011  Thomas Högner
@@ -21,6 +16,14 @@ import javax.swing.JFrame;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
 
 class Mafiamanager{
 	
@@ -29,6 +32,12 @@ class Mafiamanager{
 	
 		// generate Player Modules
 		ArrayList<ModulePlayer> alPlayerModules = new ArrayList<ModulePlayer>();
+		
+		// generate new Player
+		ArrayList<String> alPlayerNames = new ArrayList<String>();
+		for (int i=0; i<5; ++i){
+			alPlayerNames.add("Player "+i);
+		}
 
 		// generate default Players
 		for (int i=1; i<=5; ++i){
@@ -40,12 +49,34 @@ class Mafiamanager{
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		// generate menu
+		// menu bar
+		JMenuBar menuBar = new JMenuBar();
+			// menu game
+			JMenu menGame = new JMenu(Messages.getString("men.game"));
+			menuBar.add(menGame);	
+				// submenu add player
+				JMenu menPlayertogame = new JMenu(Messages.getString("men.playertogame"));
+				menGame.add(menPlayertogame);
+					// players
+					for (String s : alPlayerNames){
+						JMenuItem menPlayer = new JMenuItem(s);
+						menPlayertogame.add(menPlayer);
+					}
+				// start game
+				menGame.addSeparator();
+				JMenuItem menStart = new JMenuItem(Messages.getString("men.start"));
+				menGame.add(menStart);
+
+			// menu 
+				
 		// generate overview
 		Overview overview = new Overview(alPlayerModules);
 		
 		
 		// LAYOUT
-		mainframe.add(overview, BorderLayout.NORTH);
+		mainframe.setJMenuBar(menuBar);
+		mainframe.add(overview, BorderLayout.CENTER);
 		
 		mainframe.pack();
 		mainframe.setVisible(true);

@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -24,6 +23,7 @@ import javax.swing.JPanel;
 
 public class Overview extends JPanel{
 
+	private static final long serialVersionUID = -6525310492322809141L;
 	ArrayList<ModulePlayer> alPlayerModules;
 	
 	public Overview(ArrayList<ModulePlayer> _modulesPlayers){
