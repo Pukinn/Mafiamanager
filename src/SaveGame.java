@@ -16,29 +16,41 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.Dimension;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import javax.swing.JPanel;
 
-
-public class Overview extends JPanel{
-
-	private static final long serialVersionUID = -6525310492322809141L;
-	ArrayList<ModulePlayer> alPlayerModules;
+public class SaveGame {
 	
-	public Overview(ArrayList<ModulePlayer> _modulesPlayers){
-		alPlayerModules = _modulesPlayers;
+	private File player_directory;
+	
+	public SaveGame(){
 		
-		// Layout
-		setPreferredSize(new Dimension(500,500));
+		// create data directory if not exists
+		File data_directory = new File("data");
+		if (!data_directory.exists()) { data_directory.mkdir(); }
 		
-		paintPlayer();
+		// create player directory if not exists
+		player_directory = new File(data_directory, "player");
+		if (!player_directory.exists()) { player_directory.mkdir(); }
+		
+	}
+
+	public void newPlayer(String _name){
+		
+		String pathplayer = new File(player_directory, _name).getPath();
+
+		try{
+			FileWriter saver = new FileWriter(pathplayer, true);
+			saver.write("name:" + "\n" + _name);
+			saver.close();
+			}
+			catch(IOException e){
+			System.err.println(e);
+			}
+
+		
 	}
 	
-	public void paintPlayer(){
-		for (ModulePlayer mp : alPlayerModules){
-			add(mp);
-		}
-	}
 }

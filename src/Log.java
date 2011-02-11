@@ -39,6 +39,7 @@ public class Log {
 
 		pathlog = new File(log_directory, time).getPath();
 		
+		
 		timestamp();
 		addLine(Messages.getString("log.created"));
 		newLine("");
