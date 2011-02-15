@@ -17,6 +17,8 @@
 **/
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -30,6 +32,17 @@ class Mafiamanager{
 	
 	public static void main(String args[]){
 	
+		ActionListener actionlsn = new ActionListener() {
+			
+
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("blubb");
+			}
+		};
+		
+		// generate game saver
+		SaveGame save = new SaveGame();
+		
 		// generate Player Modules
 		ArrayList<ModulePlayer> alPlayerModules = new ArrayList<ModulePlayer>();
 		
@@ -67,8 +80,14 @@ class Mafiamanager{
 				menGame.addSeparator();
 				JMenuItem menStart = new JMenuItem(Messages.getString("men.start"));
 				menGame.add(menStart);
-
-			// menu 
+			// menu player
+			JMenu menPlayer = new JMenu(Messages.getString("men.player"));
+			menuBar.add(menPlayer);
+				// add player
+				JMenuItem menAddPlayer = new JMenuItem(Messages.getString("men.playertolist"));
+				menAddPlayer.addActionListener(actionlsn);
+				menPlayer.add(menAddPlayer);
+ 
 				
 		// generate overview
 		Overview overview = new Overview(alPlayerModules);
