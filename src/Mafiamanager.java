@@ -29,20 +29,30 @@ import javax.swing.JMenuItem;
 
 class Mafiamanager{
 	
+	private static Statistics db;
 	
 	public static void main(String args[]){
 	
+		// generate Statistics
+        db = new Statistics();
+		
 		ActionListener actionlsn = new ActionListener() {
 			
 
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("blubb");
+				
+				if (e.getActionCommand().equals("playertolist")){
+				}
+				
 			}
 		};
 		
-		// generate game saver
-		SaveGame save = new SaveGame();
+
 		
+        
+        
+        
+        
 		// generate Player Modules
 		ArrayList<ModulePlayer> alPlayerModules = new ArrayList<ModulePlayer>();
 		
@@ -86,6 +96,7 @@ class Mafiamanager{
 				// add player
 				JMenuItem menAddPlayer = new JMenuItem(Messages.getString("men.playertolist"));
 				menAddPlayer.addActionListener(actionlsn);
+				menAddPlayer.setActionCommand("playertolist");
 				menPlayer.add(menAddPlayer);
  
 				
@@ -100,7 +111,16 @@ class Mafiamanager{
 		mainframe.pack();
 		mainframe.setVisible(true);
 	}
+	
+	public static void quit(){
+		db.shutdown();
+	}
+	
+	
+	
 }
+
+
 
 
 /*
