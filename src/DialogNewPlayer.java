@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -29,28 +30,45 @@ import javax.swing.JTextField;
 public class DialogNewPlayer extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -6486508555294866021L;
-
-	private JTextField fieldName;
 	
-	public DialogNewPlayer(JFrame _frame){
-		super(_frame, true);
+	private JTextField fieldName;
+	private Statistics stat;
+	
+	public DialogNewPlayer(JFrame _parentframe, Statistics _stat){
+		super(_parentframe, true);
 		
-		// label
+		stat = _stat;
+		
+		// generate label
 		JLabel lblText = new JLabel(Messages.getString("dia.addplayer"));
-		add(lblText);
 		
-		// textfield
+		// generate textfield
 		fieldName = new JTextField(20);
-		add(fieldName);
 		
-		// button
+		// generate button
 		JButton buttAcc = new JButton(Messages.getString("dia.acc"));
 		buttAcc.addActionListener(this);
+		
+		// layout
+		setLayout(new GridLayout(0,1));
+		add(lblText);
+		add(fieldName);
 		add(buttAcc);
+		
+		
+		pack();
+		setLocationRelativeTo(_parentframe);
+		setVisible(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		String player = fieldName.getText().trim();
 		
+		if (!player.equals("")){
+			stat.addPlayer(player);
+		}
+		
+		setVisible(false);
 	}
 
 }

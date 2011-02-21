@@ -23,11 +23,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Statistics {
 
     Connection conn;
   
+    
+    
     public Statistics(){   
     	try {
     		
@@ -42,6 +45,8 @@ public class Statistics {
         
     }
 
+    
+    
     public void shutdown() {
     	try {
     		
@@ -54,7 +59,8 @@ public class Statistics {
 		}
 
     }
-                               
+     
+    
     
     // add character to database
     public void addCharacter(String _char) {
@@ -72,6 +78,9 @@ public class Statistics {
 		}
     }
     
+    
+    
+    // add player to database
     public void addPlayer(String _player) {
     	try {    	
     	
@@ -86,12 +95,15 @@ public class Statistics {
 		}
     }
     
+    
+    
+    // delete player from database
     public void deletePlayer(String _player) {
     	try {
     	
 	        Statement st = conn.createStatement();
 	
-	        st.executeUpdate("DELETE FROM player WHERE player=" + _player);
+	        st.executeUpdate("DELETE FROM player WHERE name='" + _player + "'");
 	
 	        st.close();
 	        
@@ -100,6 +112,9 @@ public class Statistics {
 		}
     }
     
+    
+    
+    // add one win/loose to statistic
     public void addStat(String _name, String _char, boolean _win) {
     	try {
     	
@@ -122,6 +137,32 @@ public class Statistics {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+    }
+    
+    
+    
+    // get sorted list of all players of database
+    public ArrayList<String> getPlayer(){
+    	
+    	ArrayList<String> players = new ArrayList<String>();
+    	
+    	try {
+        	
+	    	Statement st = conn.createStatement();
+	    	ResultSet rs = st.executeQuery("SELECT name FROM player ORDER BY name");
+	    	
+	    	while (rs.next()){
+	    		players.add(rs.getString(1));
+	    	}
+	    	
+	    	rs.close();
+	    	st.close();
+	    	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return players;
     }
     
 
