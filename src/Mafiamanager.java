@@ -29,15 +29,22 @@ import javax.swing.JMenuItem;
 
 class Mafiamanager{
 	
+	// general
 	private static Statistics stat;
 	private static ArrayList<String> playernames;
+	
+	// layout
 	private static JFrame mainframe;
+	private static Overview overview;
+	private static ArrayList<ModulePlayer> playerModules;
 	
 	// menu
 	private static JMenuBar menuBar;
 	private static JMenu menPlayertogame;
 	private static JMenu menDelPlayerDB;
 	private static ActionListener actDelPlayer;
+	private static ActionListener actPlayerToGame;
+	private static ActionListener actDelPlayerGame;
 	
 	
 	
@@ -47,39 +54,50 @@ class Mafiamanager{
         stat = new Statistics();
 		
 		// generate Player Modules
-		ArrayList<ModulePlayer> alPlayerModules = new ArrayList<ModulePlayer>();
+		playerModules = new ArrayList<ModulePlayer>();
+		
+		// generate player names
+		playernames = new ArrayList<String>();
 		
 		// generate frame
 		mainframe = new JFrame();
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		// generate overview
+		overview = new Overview(playerModules);
+		
         // ACTION: add player to database
-		ActionListener actPlayerToList = new ActionListener() {
+		ActionListener actPlayerToDB = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				DialogNewPlayer newplayer = new DialogNewPlayer(mainframe, stat);
-				
 				refreshPlayer();
-				
 			}
 		};
 		
         // ACTION: delete player from database
 		actDelPlayer = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				stat.deletePlayer(e.getActionCommand());
-				
 				refreshPlayer();
-				
 			}
 		};
 
-		// generate default Players
-		for (int i=1; i<=5; ++i){
-			alPlayerModules.add(new ModulePlayer("Player " + i));
-		}
+        // ACTION: add player to game
+		actPlayerToGame = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				playerModules.add(new ModulePlayer(e.getActionCommand()));
+				overview.paintPlayer();
+				refreshPlayer();
+			}
+		};
+		
+        // ACTION: delete player from game
+		actDelPlayerGame = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		};
 		
 
 		
@@ -100,7 +118,7 @@ class Mafiamanager{
 		menDelPlayerDB = new JMenu(Messages.getString("men.delplayerdb"));
 		// add player
 		JMenuItem menPlayerToDB = new JMenuItem(Messages.getString("men.playertodb"));
-		menPlayerToDB.addActionListener(actPlayerToList);
+		menPlayerToDB.addActionListener(actPlayerToDB);
 		
 		menuBar.add(menGame);
 			menGame.add(menPlayertogame);
@@ -112,8 +130,7 @@ class Mafiamanager{
 				
 				
 				
-		// generate overview
-		Overview overview = new Overview(alPlayerModules);
+
 		
 		
 		// LAYOUT
@@ -129,11 +146,22 @@ class Mafiamanager{
 		menPlayertogame.removeAll();
 		menDelPlayerDB.removeAll();
 		
+		playernames.clear();
 		playernames = stat.getPlayer();
 		
 		for (String s : playernames){
-			JMenuItem menPlayer = new JMenuItem(s);
-			menPlayertogame.add(menPlayer);
+			
+			boolean make = true;
+			for (ModulePlayer mp : playerModules){
+				if (s.equals(mp.sName)) { make = false; }
+			}
+			
+			if (make){
+				JMenuItem menPlayer = new JMenuItem(s);
+				menPlayer.addActionListener(actPlayerToGame);
+				menPlayer.setActionCommand(s);
+				menPlayertogame.add(menPlayer);
+			}
 		}
 		
 		for (String s : playernames){

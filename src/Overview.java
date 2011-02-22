@@ -31,7 +31,7 @@ public class Overview extends JPanel{
 		alPlayerModules = _modulesPlayers;
 		
 		// Layout
-		setPreferredSize(new Dimension(500,500));
+		setPreferredSize(new Dimension(1000,500));
 		
 		paintPlayer();
 	}
@@ -40,5 +40,7 @@ public class Overview extends JPanel{
 		for (ModulePlayer mp : alPlayerModules){
 			add(mp);
 		}
+		
+		revalidate();
 	}
 }
