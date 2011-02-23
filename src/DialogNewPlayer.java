@@ -65,6 +65,8 @@ public class DialogNewPlayer extends JDialog implements ActionListener {
 		buttAcc.addActionListener(this);
 		
 		// layout
+		setTitle(Messages.getString("dia.addplayer.title"));
+		
 		setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
 		con.gridx = 0;

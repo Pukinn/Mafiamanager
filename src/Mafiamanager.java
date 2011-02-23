@@ -37,6 +37,7 @@ class Mafiamanager{
 	private static JFrame mainframe;
 	private static Overview overview;
 	private static ArrayList<ModulePlayer> playerModules;
+	private static SwitchPanel switchpanel;
 	
 	// menu
 	private static JMenuBar menuBar;
@@ -50,6 +51,8 @@ class Mafiamanager{
 	
 	public static void main(String args[]){
 	
+		
+		
 		// generate Statistics
         stat = new Statistics();
 		
@@ -66,6 +69,26 @@ class Mafiamanager{
 		
 		// generate overview
 		overview = new Overview(playerModules);
+		
+		// generate switch panel
+		switchpanel = new SwitchPanel(false, new ModuleBeforeGame(overview));
+
+		// generate character modules
+		// mafia
+		switchpanel.addComponent(new ModuleMafia(overview, "1", switchpanel, mainframe));
+		switchpanel.addComponent(new ModuleMafia(overview, "2", switchpanel, mainframe));
+		switchpanel.addComponent(new ModuleMafia(overview, "3", switchpanel, mainframe));
+		switchpanel.addComponent(new ModuleMafia(overview, "4", switchpanel, mainframe));
+
+		
+		
+        // ACTION: start game
+		ActionListener actStartGame = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switchpanel.nextComponent();
+				mainframe.pack();
+			}
+		};
 		
         // ACTION: add player to database
 		ActionListener actPlayerToDB = new ActionListener() {
@@ -112,6 +135,7 @@ class Mafiamanager{
 		// start game
 		menGame.addSeparator();
 		JMenuItem menStart = new JMenuItem(Messages.getString("men.start"));
+		menStart.addActionListener(actStartGame);
 		// menu player
 		JMenu menPlayer = new JMenu(Messages.getString("men.player"));
 		// submenu "delete player form db"
@@ -128,14 +152,13 @@ class Mafiamanager{
 			menPlayer.add(menPlayerToDB);
 			menPlayer.add(menDelPlayerDB);
 				
-				
-				
-
-		
 		
 		// LAYOUT
 		mainframe.setJMenuBar(menuBar);
 		mainframe.add(overview, BorderLayout.CENTER);
+		mainframe.add(switchpanel, BorderLayout.PAGE_END);
+		
+		
 		
 		mainframe.pack();
 		mainframe.setVisible(true);

@@ -16,31 +16,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 
-public class Overview extends JPanel{
-
-	private static final long serialVersionUID = -6525310492322809141L;
-	ArrayList<ModulePlayer> alPlayerModules;
+public class ModuleBeforeGame extends ModuleCharacter {
 	
-	public Overview(ArrayList<ModulePlayer> _modulesPlayers){
-		alPlayerModules = _modulesPlayers;
-		
-		// Layout
-		setPreferredSize(new Dimension(1000,400));
-		
-		paintPlayer();
+	public ModuleBeforeGame(Overview _overview){
+		super(_overview);
+
+		buttonVisible(false);
 	}
+
 	
-	public void paintPlayer(){
-		for (ModulePlayer mp : alPlayerModules){
-			add(mp);
-		}
-		
-		revalidate();
+	void acceptAction() {
 	}
 }

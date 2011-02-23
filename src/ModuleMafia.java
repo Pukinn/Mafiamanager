@@ -16,31 +16,29 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 
-public class Overview extends JPanel{
+public class ModuleMafia extends ModuleCharacter {
 
-	private static final long serialVersionUID = -6525310492322809141L;
-	ArrayList<ModulePlayer> alPlayerModules;
+	private SwitchPanel parent;
+	private JFrame mainframe;
 	
-	public Overview(ArrayList<ModulePlayer> _modulesPlayers){
-		alPlayerModules = _modulesPlayers;
+	public ModuleMafia(Overview _overview, String _title, SwitchPanel _parent, JFrame _mainframe){
+		super(_overview, _title);
 		
-		// Layout
-		setPreferredSize(new Dimension(1000,400));
+		parent  = _parent;
+		mainframe = _mainframe;
 		
-		paintPlayer();
+		
+		addCommand(Messages.getString("mod.mafia.awake"));
+		addNote(Messages.getString("mod.mafia.kill"));
 	}
+
 	
-	public void paintPlayer(){
-		for (ModulePlayer mp : alPlayerModules){
-			add(mp);
-		}
-		
-		revalidate();
+	void acceptAction() {
+		parent.nextComponent();
+		mainframe.pack();
 	}
 }
