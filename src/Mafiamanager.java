@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 
 class Mafiamanager{
@@ -76,11 +77,11 @@ class Mafiamanager{
 		switchpanel = new SwitchPanel(false);
 
 		// generate character modules
+
 		// mafia
-		switchpanel.addComponent(new ModuleMafia(overview, "1", switchpanel, mainframe));
-		switchpanel.addComponent(new ModuleMafia(overview, "2", switchpanel, mainframe));
-		switchpanel.addComponent(new ModuleMafia(overview, "3", switchpanel, mainframe));
-		switchpanel.addComponent(new ModuleMafia(overview, "4", switchpanel, mainframe));
+		switchpanel.addComponent(new ModuleMafia(overview, switchpanel, mainframe));
+		// day
+		switchpanel.addComponent(new ModuleDay(overview, switchpanel, mainframe));
 
 		
 		
@@ -130,7 +131,7 @@ class Mafiamanager{
 		
 
 		
-		// GENERATE MENU
+	// GENERATE MENU
 		
 		// menu bar
 		menuBar = new JMenuBar();
@@ -155,6 +156,8 @@ class Mafiamanager{
 		JMenuItem menPlayerToDB = new JMenuItem(Messages.getString("men.playertodb"));
 		menPlayerToDB.addActionListener(actPlayerToDB);
 		
+		
+	// LAYOUT MENU
 		menuBar.add(menGame);
 			menGame.add(menPlayertogame);
 				refreshPlayer();
@@ -166,12 +169,10 @@ class Mafiamanager{
 			menPlayer.add(menDelPlayerDB);
 				
 		
-		// LAYOUT
+	// LAYOUT FRAME
 		mainframe.setJMenuBar(menuBar);
 		mainframe.add(overview, BorderLayout.CENTER);
 		mainframe.add(switchpanel, BorderLayout.PAGE_END);
-		
-		
 		
 		mainframe.pack();
 		mainframe.setVisible(true);
@@ -212,15 +213,25 @@ class Mafiamanager{
 	
 	private static void startGame(){
 		switchpanel.nextComponent();
+		
+		menPlayertogame.setEnabled(false);
 		menStart.setEnabled(false);
 		menEnd.setEnabled(true);
+		
 		mainframe.pack();
 	}
 	
 	private static void endGame(){
 		switchpanel.showDefault();
+		
+		menPlayertogame.setEnabled(true);
 		menStart.setEnabled(true);
 		menEnd.setEnabled(false);
+		
+		for (ModulePlayer pm : playerModules){
+			pm.reset();
+		}
+		
 		mainframe.pack();
 	}
 	

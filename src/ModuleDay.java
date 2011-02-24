@@ -20,19 +20,19 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 
-public class ModuleMafia extends ModuleCharacter {
+public class ModuleDay extends ModuleCharacter {
 
 	private SwitchPanel parent;
 	private JFrame mainframe;
 	
-	public ModuleMafia(Overview _overview, SwitchPanel _parent, JFrame _mainframe){
+	public ModuleDay(Overview _overview, SwitchPanel _parent, JFrame _mainframe){
 		super(_overview);
 		
 		parent  = _parent;
 		mainframe = _mainframe;
 		
-		addCommand(Messages.getString("mod.mafia.awake"));
-		addNote(Messages.getString("mod.mafia.kill"));
+		addCommand(Messages.getString("mod.day.awake"));
+		addNote(Messages.getString("mod.day.lynch"));
 	}
 
 	

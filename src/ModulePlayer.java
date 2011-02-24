@@ -68,7 +68,13 @@ public class ModulePlayer
 		add(panelStates, BorderLayout.EAST);
 	}
 
-	
+	// reset player to defaults
+	public void reset(){
+		iLifevalue = 1;			// player is alive
+		iDieAtRound = 0;		// no die off setted
+		bProtected = false;		// player is not protected
+		sGroup = "undefined";
+	}
 
 	// Action Listener
 	public void actionPerformed(ActionEvent e) {

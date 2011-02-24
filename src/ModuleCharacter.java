@@ -41,6 +41,7 @@ public abstract class ModuleCharacter extends JPanel{
 	private Overview overview;
 	
 	// layout
+	private JLabel title;
 	private JScrollPane scrpanInfoText;
 	private JPanel panInfoText;
 	private GridBagConstraints conInfoText;
@@ -48,17 +49,14 @@ public abstract class ModuleCharacter extends JPanel{
 	private JButton buttonAcc;
 	public JPanel panFlexButtons;
 	
+
 	public ModuleCharacter(Overview _overview){
-		this(_overview, "");
-	}
-	
-	public ModuleCharacter(Overview _overview, String _title){
 		
 		// get interacting overview panel
 		overview = _overview;
 		
 		// generate title label
-		JLabel title = new JLabel(_title);
+		title = new JLabel();
 		
 		// generate panel for infotext
 		panInfoText = new JPanel(new GridBagLayout());
@@ -71,7 +69,7 @@ public abstract class ModuleCharacter extends JPanel{
 		scrpanInfoText = new JScrollPane();
 		scrpanInfoText.setViewportView(panInfoText);
 		int sizeX = overview.getPreferredSize().width;
-	//	scrpanInfoText.setPreferredSize(new Dimension(sizeX,150));
+		scrpanInfoText.setPreferredSize(new Dimension(sizeX,150));
 		scrpanInfoText.setBorder(null);
 		
 		// generate panel for flexible buttons
@@ -137,6 +135,12 @@ public abstract class ModuleCharacter extends JPanel{
 		panInfoText.add(error, conInfoText);
 		redraw();
 	}
+	
+// SET TITLE
+	public void setTitle(String _title){
+		title.setText(_title);
+	}
+	
 	
 // REDRAW MODULE
 	public void redraw(){
