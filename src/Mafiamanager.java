@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 
 
@@ -212,13 +213,24 @@ class Mafiamanager{
 	}
 	
 	private static void startGame(){
-		switchpanel.nextComponent();
 		
-		menPlayertogame.setEnabled(false);
-		menStart.setEnabled(false);
-		menEnd.setEnabled(true);
-		
-		mainframe.pack();
+		if (playerModules.size() < 3){
+			JOptionPane.showMessageDialog(mainframe,
+					Messages.getString("err.noplayeringame"),
+					Messages.getString("err.noplayeringamettl"),
+					JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			
+			switchpanel.nextComponent();
+			
+			menPlayertogame.setEnabled(false);
+			menStart.setEnabled(false);
+			menEnd.setEnabled(true);
+			
+			mainframe.pack();
+			
+		}
 	}
 	
 	private static void endGame(){
