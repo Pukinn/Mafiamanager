@@ -45,6 +45,8 @@ class Mafiamanager{
 	private static JMenuBar menuBar;
 	private static JMenu menPlayertogame;
 	private static JMenu menPlayerfromgame;
+	private static JMenu menGrouptogame;
+	private static JMenu menGroupfromgame;
 	private static JMenuItem menStart;
 	private static JMenuItem menEnd;
 	private static JMenu menDelPlayerDB;
@@ -153,6 +155,10 @@ class Mafiamanager{
 		menPlayertogame = new JMenu(Messages.getString("men.playertogame"));
 		// submenu "remove player from game"
 		menPlayerfromgame = new JMenu(Messages.getString("men.playerfromgame"));
+		// submenu "add group to game"
+		menGrouptogame = new JMenu(Messages.getString("men.grouptogame"));
+		// submenu "remove group from game"
+		menGroupfromgame = new JMenu(Messages.getString("men.groupfromgame"));
 		// start game
 		menStart = new JMenuItem(Messages.getString("men.start"));
 		menStart.addActionListener(actStartEnd);
@@ -175,13 +181,17 @@ class Mafiamanager{
 		menuBar.add(menGame);
 			menGame.add(menPlayertogame);
 			menGame.add(menPlayerfromgame);
-				refreshMenu();
+			menGame.addSeparator();
+			menGame.add(menGrouptogame);
+			menGame.add(menGroupfromgame);
 			menGame.addSeparator();
 			menGame.add(menStart);
 			menGame.add(menEnd);
 		menuBar.add(menPlayer);
 			menPlayer.add(menPlayerToDB);
 			menPlayer.add(menDelPlayerDB);
+			
+		refreshMenu();
 				
 		
 	// LAYOUT FRAME
@@ -257,7 +267,9 @@ class Mafiamanager{
 			
 			switchpanel.nextComponent();
 			
+			// manage menu entries
 			menPlayertogame.setEnabled(false);
+			menPlayerfromgame.setEnabled(false);
 			menStart.setEnabled(false);
 			menEnd.setEnabled(true);
 			
@@ -269,10 +281,13 @@ class Mafiamanager{
 	private static void endGame(){
 		switchpanel.showDefault();
 		
+		// manage menu entries
 		menPlayertogame.setEnabled(true);
+		menPlayerfromgame.setEnabled(true);
 		menStart.setEnabled(true);
 		menEnd.setEnabled(false);
 		
+		// reset player
 		for (ModulePlayer pm : playerModules){
 			pm.reset();
 		}
