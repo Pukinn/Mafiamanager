@@ -44,6 +44,7 @@ class Mafiamanager{
 	// menu
 	private static JMenuBar menuBar;
 	private static JMenu menPlayertogame;
+	private static JMenu menPlayerfromgame;
 	private static JMenuItem menStart;
 	private static JMenuItem menEnd;
 	private static JMenu menDelPlayerDB;
@@ -102,7 +103,7 @@ class Mafiamanager{
 		ActionListener actPlayerToDB = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DialogNewPlayer newplayer = new DialogNewPlayer(mainframe, stat);
-				refreshPlayer();
+				refreshMenu();
 			}
 		};
 		
@@ -110,7 +111,7 @@ class Mafiamanager{
 		actDelPlayer = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				stat.deletePlayer(e.getActionCommand());
-				refreshPlayer();
+				refreshMenu();
 			}
 		};
 
@@ -119,14 +120,24 @@ class Mafiamanager{
 			public void actionPerformed(ActionEvent e) {
 				playerModules.add(new ModulePlayer(e.getActionCommand()));
 				overview.paintPlayer();
-				refreshPlayer();
+				refreshMenu();
 			}
 		};
 		
         // ACTION: delete player from game
 		actDelPlayerGame = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String comm = e.getActionCommand();
 
+				int cnt = 0;
+				for (ModulePlayer mp : playerModules){
+					if (mp.sName.equals(comm)){	break; }
+					cnt++;
+				}
+				playerModules.remove(cnt);
+
+				overview.paintPlayer();
+				refreshMenu();
 			}
 		};
 		
@@ -140,6 +151,8 @@ class Mafiamanager{
 		JMenu menGame = new JMenu(Messages.getString("men.game"));
 		// submenu "add player to game"
 		menPlayertogame = new JMenu(Messages.getString("men.playertogame"));
+		// submenu "remove player from game"
+		menPlayerfromgame = new JMenu(Messages.getString("men.playerfromgame"));
 		// start game
 		menStart = new JMenuItem(Messages.getString("men.start"));
 		menStart.addActionListener(actStartEnd);
@@ -161,7 +174,8 @@ class Mafiamanager{
 	// LAYOUT MENU
 		menuBar.add(menGame);
 			menGame.add(menPlayertogame);
-				refreshPlayer();
+			menGame.add(menPlayerfromgame);
+				refreshMenu();
 			menGame.addSeparator();
 			menGame.add(menStart);
 			menGame.add(menEnd);
@@ -179,14 +193,13 @@ class Mafiamanager{
 		mainframe.setVisible(true);
 	}
 	
-	public static void refreshPlayer(){
-		
-		menPlayertogame.removeAll();
-		menDelPlayerDB.removeAll();
-		
+	public static void refreshMenu(){
 		playernames.clear();
 		playernames = stat.getPlayer();
 		
+		
+		// refresh menu "player to game"
+		menPlayertogame.removeAll();
 		for (String s : playernames){
 			
 			boolean make = true;
@@ -202,12 +215,32 @@ class Mafiamanager{
 			}
 		}
 		
+		
+		// refresh menu "delete player from game"
+		menPlayerfromgame.removeAll();
+		for (ModulePlayer mp : playerModules){
+			JMenuItem menPlayer = new JMenuItem(mp.sName);
+			menPlayer.addActionListener(actDelPlayerGame);
+			menPlayer.setActionCommand(mp.sName);
+			menPlayerfromgame.add(menPlayer);
+		}
+		if (playerModules.size() == 0){
+			menPlayerfromgame.setEnabled(false);
+		}
+		else {
+			menPlayerfromgame.setEnabled(true);
+		}
+		
+		
+		// refresh menu "delete player from db"
+		menDelPlayerDB.removeAll();
 		for (String s : playernames){
 			JMenuItem menPlayer = new JMenuItem(s);
 			menPlayer.addActionListener(actDelPlayer);
 			menPlayer.setActionCommand(s);
 			menDelPlayerDB.add(menPlayer);
 		}
+		
 		
 		menuBar.revalidate();
 	}
@@ -250,82 +283,5 @@ class Mafiamanager{
 	private static void quit(){
 		stat.shutdown();
 	}
-	
-	
-	
+
 }
-
-
-
-
-/*
-import java.awt.BorderLayout;
-import java.util.HashMap;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollBar;
-
-class Mafiamanager{
-	
-	// GUI	
-	private static JFrame mainframe;
-		private static Controller panelController;
-		private static Board board;
-	
-	public static void main(String args[])
-	{
-		// declare
-		Keys.playerlist = new HashMap<String, Player>();
-
-		// set default player
-		for (int i=1; i<=5; i++){
-			String player = Messages.getString("confp.player")+" "+i;
-			Keys.playerlist.put(player, new Player(player));
-			Keys.playerlist.get(player).number = i;
-		}
-		
-
-	// GUI
-		mainframe = new JFrame();
-		
-		board = new Board();
-		panelController = new Controller(board, mainframe);
-		
-		// frame
-		mainframe.setLayout(new BorderLayout());
-		
-		mainframe.setTitle("Mafiamanager");
-		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		// controller
-		mainframe.add(panelController, BorderLayout.PAGE_START);
-		panelController.player();
-		
-		// board
-		mainframe.add(board, BorderLayout.CENTER);
-		
-		pack();
-		mainframe.setVisible(true);
-		
-	// BEFORE GAME
-		// create player
-		DialogPlayer myPlayers = new DialogPlayer(mainframe, board);
-		panelController.redrawPlayer();
-		pack();
-		
-		
-		// create figures
-		DialogCharacters myCharacters = new DialogCharacters(mainframe, board);
-		
-		
-		panelController.start();
-	}
-
-	
-	private static void pack(){
-		mainframe.pack();
-		JScrollBar verBar = board.getVerticalScrollBar();
-		verBar.setValue(verBar.getMaximum());
-	}
-}
-*/

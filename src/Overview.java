@@ -37,10 +37,12 @@ public class Overview extends JPanel{
 	}
 	
 	public void paintPlayer(){
+		removeAll();
+		
 		for (ModulePlayer mp : alPlayerModules){
 			add(mp);
 		}
 		
-		revalidate();
+		repaint();
 	}
 }
