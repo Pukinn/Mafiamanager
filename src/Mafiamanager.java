@@ -42,6 +42,8 @@ class Mafiamanager{
 	// menu
 	private static JMenuBar menuBar;
 	private static JMenu menPlayertogame;
+	private static JMenuItem menStart;
+	private static JMenuItem menEnd;
 	private static JMenu menDelPlayerDB;
 	private static ActionListener actDelPlayer;
 	private static ActionListener actPlayerToGame;
@@ -71,7 +73,7 @@ class Mafiamanager{
 		overview = new Overview(playerModules);
 		
 		// generate switch panel
-		switchpanel = new SwitchPanel(false, new ModuleBeforeGame(overview));
+		switchpanel = new SwitchPanel(false);
 
 		// generate character modules
 		// mafia
@@ -83,10 +85,14 @@ class Mafiamanager{
 		
 		
         // ACTION: start game
-		ActionListener actStartGame = new ActionListener() {
+		ActionListener actStartEnd = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				switchpanel.nextComponent();
-				mainframe.pack();
+				if (e.getActionCommand().equals("start")){
+					startGame();	
+				}
+				else {
+					endGame();
+				}
 			}
 		};
 		
@@ -133,9 +139,14 @@ class Mafiamanager{
 		// submenu "add player to game"
 		menPlayertogame = new JMenu(Messages.getString("men.playertogame"));
 		// start game
-		menGame.addSeparator();
-		JMenuItem menStart = new JMenuItem(Messages.getString("men.start"));
-		menStart.addActionListener(actStartGame);
+		menStart = new JMenuItem(Messages.getString("men.start"));
+		menStart.addActionListener(actStartEnd);
+		menStart.setActionCommand("start");
+		// end game
+		menEnd = new JMenuItem(Messages.getString("men.end"));
+		menEnd.setEnabled(false);
+		menEnd.addActionListener(actStartEnd);
+		menEnd.setActionCommand("end");
 		// menu player
 		JMenu menPlayer = new JMenu(Messages.getString("men.player"));
 		// submenu "delete player form db"
@@ -147,7 +158,9 @@ class Mafiamanager{
 		menuBar.add(menGame);
 			menGame.add(menPlayertogame);
 				refreshPlayer();
+			menGame.addSeparator();
 			menGame.add(menStart);
+			menGame.add(menEnd);
 		menuBar.add(menPlayer);
 			menPlayer.add(menPlayerToDB);
 			menPlayer.add(menDelPlayerDB);
@@ -197,7 +210,21 @@ class Mafiamanager{
 		menuBar.revalidate();
 	}
 	
-	public static void quit(){
+	private static void startGame(){
+		switchpanel.nextComponent();
+		menStart.setEnabled(false);
+		menEnd.setEnabled(true);
+		mainframe.pack();
+	}
+	
+	private static void endGame(){
+		switchpanel.showDefault();
+		menStart.setEnabled(true);
+		menEnd.setEnabled(false);
+		mainframe.pack();
+	}
+	
+	private static void quit(){
 		stat.shutdown();
 	}
 	

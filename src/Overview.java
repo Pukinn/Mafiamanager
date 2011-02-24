@@ -31,7 +31,7 @@ public class Overview extends JPanel{
 		alPlayerModules = _modulesPlayers;
 		
 		// Layout
-		setPreferredSize(new Dimension(1000,400));
+		setPreferredSize(new Dimension(1000,500));
 		
 		paintPlayer();
 	}

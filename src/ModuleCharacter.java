@@ -71,7 +71,7 @@ public abstract class ModuleCharacter extends JPanel{
 		scrpanInfoText = new JScrollPane();
 		scrpanInfoText.setViewportView(panInfoText);
 		int sizeX = overview.getPreferredSize().width;
-		scrpanInfoText.setPreferredSize(new Dimension(sizeX,150));
+	//	scrpanInfoText.setPreferredSize(new Dimension(sizeX,150));
 		scrpanInfoText.setBorder(null);
 		
 		// generate panel for flexible buttons
