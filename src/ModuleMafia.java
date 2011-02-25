@@ -22,11 +22,19 @@ import javax.swing.JFrame;
 
 public class ModuleMafia extends ModuleCharacter {
 
+	// parent components
 	private SwitchPanel parent;
 	private JFrame mainframe;
 	
-	public ModuleMafia(Overview _overview, SwitchPanel _parent, JFrame _mainframe){
-		super(_overview);
+	public ModuleMafia(Overview _overview,
+			SwitchPanel _parent,
+			JFrame _mainframe,
+			String _groupname,
+			GameValues _gamevalues){
+		
+		super(_overview,
+				Messages.getString("mod.mafia") + ": " + _groupname,
+				_gamevalues);
 		
 		parent  = _parent;
 		mainframe = _mainframe;
@@ -34,9 +42,13 @@ public class ModuleMafia extends ModuleCharacter {
 		addCommand(Messages.getString("mod.mafia.awake"));
 		addNote(Messages.getString("mod.mafia.kill"));
 	}
-
+	
+	// CALLING
+	void calling(){
+	}
 	
 	void acceptAction() {
+		((ModuleCharacter)parent.getCompFromList(0)).call();
 		parent.nextComponent();
 		mainframe.pack();
 	}

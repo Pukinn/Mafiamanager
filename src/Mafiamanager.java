@@ -26,7 +26,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
 
 
 class Mafiamanager{
@@ -53,21 +52,28 @@ class Mafiamanager{
 	private static ActionListener actDelPlayer;
 	private static ActionListener actPlayerToGame;
 	private static ActionListener actDelPlayerGame;
+	private static ActionListener actGroupToGame;
 	
+	// groups
+	private static JMenuItem menMafia;
+	private static ArrayList<String> mafiagroups;
+	
+	//game values
+	private static GameValues gamevalues;
 	
 	
 	public static void main(String args[]){
 	
+		// declare game values
+		gamevalues = new GameValues();
 		
-		
-		// generate Statistics
-        stat = new Statistics();
-		
-		// generate Player Modules
+		// declare lists
 		playerModules = new ArrayList<ModulePlayer>();
-		
-		// generate player names
 		playernames = new ArrayList<String>();
+		mafiagroups = new ArrayList<String>();
+		
+		// generate statistics
+        stat = new Statistics();
 		
 		// generate frame
 		mainframe = new JFrame();
@@ -79,14 +85,6 @@ class Mafiamanager{
 		
 		// generate switch panel
 		switchpanel = new SwitchPanel(false);
-
-		// generate character modules
-
-		// mafia
-		switchpanel.addComponent(new ModuleMafia(overview, switchpanel, mainframe));
-		// day
-		switchpanel.addComponent(new ModuleDay(overview, switchpanel, mainframe));
-
 		
 		
         // ACTION: start game
@@ -126,6 +124,7 @@ class Mafiamanager{
 			}
 		};
 		
+		
         // ACTION: delete player from game
 		actDelPlayerGame = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -139,6 +138,19 @@ class Mafiamanager{
 				playerModules.remove(cnt);
 
 				overview.paintPlayer();
+				refreshMenu();
+			}
+		};
+		
+        // ACTION: add group to game
+		actGroupToGame = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String comm = e.getActionCommand();
+				
+				if (comm.equals("mafia")){
+					DialogNewGroup newgroup = new DialogNewGroup(mainframe, mafiagroups);
+				}
+				
 				refreshMenu();
 			}
 		};
@@ -176,6 +188,11 @@ class Mafiamanager{
 		JMenuItem menPlayerToDB = new JMenuItem(Messages.getString("men.playertodb"));
 		menPlayerToDB.addActionListener(actPlayerToDB);
 		
+		// GROUPS
+		// mafia
+		menMafia = new JMenuItem(Messages.getString("men.gr.mafia"));
+		menMafia.addActionListener(actGroupToGame);
+		menMafia.setActionCommand("mafia");
 		
 	// LAYOUT MENU
 		menuBar.add(menGame);
@@ -183,6 +200,7 @@ class Mafiamanager{
 			menGame.add(menPlayerfromgame);
 			menGame.addSeparator();
 			menGame.add(menGrouptogame);
+				menGrouptogame.add(menMafia);
 			menGame.add(menGroupfromgame);
 			menGame.addSeparator();
 			menGame.add(menStart);
@@ -265,14 +283,27 @@ class Mafiamanager{
 		}
 		else {
 			
-			switchpanel.nextComponent();
-			
-			// manage menu entries
+			// MANAGE MENU ENTRIES
 			menPlayertogame.setEnabled(false);
 			menPlayerfromgame.setEnabled(false);
 			menStart.setEnabled(false);
 			menEnd.setEnabled(true);
 			
+			// SET MODULE LIST
+			// mafia
+			for (String s : mafiagroups){
+				ModuleMafia mm = new ModuleMafia(overview, switchpanel, mainframe, s, gamevalues);
+				switchpanel.addComponent(mm);
+			}
+			// day
+			ModuleDay md = new ModuleDay(overview, switchpanel, mainframe, gamevalues);
+			switchpanel.addComponent(md);
+			
+			// set game running
+			gamevalues.running = true;
+			
+			
+			switchpanel.nextComponent();
 			mainframe.pack();
 			
 		}
@@ -292,6 +323,10 @@ class Mafiamanager{
 			pm.reset();
 		}
 		
+		// reset game values
+		gamevalues.reset();
+		
+		
 		mainframe.pack();
 	}
 	
@@ -299,4 +334,19 @@ class Mafiamanager{
 		stat.shutdown();
 	}
 
+}
+
+// GAME VALUES
+class GameValues{
+	public int round;		// round of game
+	public boolean running;	// game is running
+	
+	public GameValues(){
+		reset();
+	}
+	
+	public void reset(){
+		round = 0;
+		running = false;
+	}
 }

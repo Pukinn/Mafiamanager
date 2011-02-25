@@ -41,7 +41,8 @@ public abstract class ModuleCharacter extends JPanel{
 	private Overview overview;
 	
 	// layout
-	private JLabel title;
+	private JLabel round;
+	private GameValues gamevalues;
 	private JScrollPane scrpanInfoText;
 	private JPanel panInfoText;
 	private GridBagConstraints conInfoText;
@@ -50,13 +51,16 @@ public abstract class ModuleCharacter extends JPanel{
 	public JPanel panFlexButtons;
 	
 
-	public ModuleCharacter(Overview _overview){
+	public ModuleCharacter(Overview _overview, String _title, GameValues _gamevalues){
+		
+		gamevalues = _gamevalues;
 		
 		// get interacting overview panel
 		overview = _overview;
 		
-		// generate title label
-		title = new JLabel();
+		// generate labels
+		JLabel title = new JLabel(_title);
+		round = new JLabel(Messages.getString("mod.round") + ": " + gamevalues.round);
 		
 		// generate panel for infotext
 		panInfoText = new JPanel(new GridBagLayout());
@@ -97,11 +101,9 @@ public abstract class ModuleCharacter extends JPanel{
 		GridBagConstraints conModule = new GridBagConstraints();
 		conModule.gridx = 0;
 		conModule.gridy = GridBagConstraints.RELATIVE;
-		conModule.anchor = GridBagConstraints.LINE_START;
 		
+		add(round, conModule);
 		add(title, conModule);
-		
-		conModule.anchor = GridBagConstraints.CENTER;
 		add(scrpanInfoText, conModule);
 		add(panButtons, conModule);
 			panButtons.add(panFlexButtons);
@@ -136,14 +138,17 @@ public abstract class ModuleCharacter extends JPanel{
 		redraw();
 	}
 	
-// SET TITLE
-	public void setTitle(String _title){
-		title.setText(_title);
+// CALL
+	public void call(){
+		redraw();
+		calling();
 	}
 	
 	
 // REDRAW MODULE
 	public void redraw(){
+		round.setText(Messages.getString("mod.round") + ": " + gamevalues.round);
+		
 		revalidate();
 		JScrollBar verBar = scrpanInfoText.getVerticalScrollBar();
 		verBar.setValue(verBar.getMaximum());
@@ -162,4 +167,6 @@ public abstract class ModuleCharacter extends JPanel{
 	
 	// action
 	abstract void acceptAction();
+	// calling
+	abstract void calling();
 }
