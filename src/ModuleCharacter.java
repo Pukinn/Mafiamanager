@@ -25,6 +25,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -140,8 +141,8 @@ public abstract class ModuleCharacter extends JPanel{
 	
 // CALL
 	public void call(){
-		redraw();
 		calling();
+		redraw();
 	}
 	
 	
@@ -169,4 +170,6 @@ public abstract class ModuleCharacter extends JPanel{
 	abstract void acceptAction();
 	// calling
 	abstract void calling();
+	// event from player modules
+	abstract void playerPressed(ArrayList<String> _marked);
 }

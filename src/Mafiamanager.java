@@ -37,7 +37,7 @@ class Mafiamanager{
 	// layout
 	private static JFrame mainframe;
 	private static Overview overview;
-	private static ArrayList<ModulePlayer> playerModules;
+	private static ActionListener actPlayerNameButton;
 	private static SwitchPanel switchpanel;
 	
 	// menu
@@ -68,7 +68,7 @@ class Mafiamanager{
 		gamevalues = new GameValues();
 		
 		// declare lists
-		playerModules = new ArrayList<ModulePlayer>();
+	//	playerModules = new ArrayList<ModulePlayer>();
 		playernames = new ArrayList<String>();
 		mafiagroups = new ArrayList<String>();
 		
@@ -80,12 +80,20 @@ class Mafiamanager{
 		mainframe.setTitle("Mafiamanager");
 		mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// generate overview
-		overview = new Overview(playerModules);
-		
 		// generate switch panel
 		switchpanel = new SwitchPanel(false);
 		
+		
+		// ACTION: module player; namebutton pressed
+		actPlayerNameButton = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> marked = overview.getMarked();
+				((ModuleCharacter)switchpanel.getActComponent()).playerPressed(marked);
+			}
+		};
+		
+		// generate overview
+		overview = new Overview(actPlayerNameButton);
 		
         // ACTION: start game
 		ActionListener actStartEnd = new ActionListener() {
@@ -118,7 +126,7 @@ class Mafiamanager{
         // ACTION: add player to game
 		actPlayerToGame = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playerModules.add(new ModulePlayer(e.getActionCommand()));
+				overview.addPlayer(e.getActionCommand());
 				overview.paintPlayer();
 				refreshMenu();
 			}
@@ -128,16 +136,8 @@ class Mafiamanager{
         // ACTION: delete player from game
 		actDelPlayerGame = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String comm = e.getActionCommand();
 
-				int cnt = 0;
-				for (ModulePlayer mp : playerModules){
-					if (mp.sName.equals(comm)){	break; }
-					cnt++;
-				}
-				playerModules.remove(cnt);
-
-				overview.paintPlayer();
+				overview.removePlayer(e.getActionCommand());
 				refreshMenu();
 			}
 		};
@@ -224,15 +224,15 @@ class Mafiamanager{
 	public static void refreshMenu(){
 		playernames.clear();
 		playernames = stat.getPlayer();
-		
+		ArrayList<String> playerlist = overview.getPlayerList();
 		
 		// refresh menu "player to game"
 		menPlayertogame.removeAll();
 		for (String s : playernames){
 			
 			boolean make = true;
-			for (ModulePlayer mp : playerModules){
-				if (s.equals(mp.sName)) { make = false; }
+			for (String name : playerlist){
+				if (s.equals(name)) { make = false; }
 			}
 			
 			if (make){
@@ -243,16 +243,15 @@ class Mafiamanager{
 			}
 		}
 		
-		
 		// refresh menu "delete player from game"
 		menPlayerfromgame.removeAll();
-		for (ModulePlayer mp : playerModules){
-			JMenuItem menPlayer = new JMenuItem(mp.sName);
+		for (String s : playerlist){
+			JMenuItem menPlayer = new JMenuItem(s);
 			menPlayer.addActionListener(actDelPlayerGame);
-			menPlayer.setActionCommand(mp.sName);
+			menPlayer.setActionCommand(s);
 			menPlayerfromgame.add(menPlayer);
 		}
-		if (playerModules.size() == 0){
+		if (playerlist.size() == 0){
 			menPlayerfromgame.setEnabled(false);
 		}
 		else {
@@ -275,7 +274,7 @@ class Mafiamanager{
 	
 	private static void startGame(){
 		
-		if (playerModules.size() < 3){
+		if (overview.getPlayerList().size() < 3){
 			JOptionPane.showMessageDialog(mainframe,
 					Messages.getString("err.noplayeringame"),
 					Messages.getString("err.noplayeringamettl"),
@@ -301,8 +300,9 @@ class Mafiamanager{
 			
 			// set game running
 			gamevalues.running = true;
+			overview.setAllEnabeled(true);
 			
-			
+			((ModuleCharacter)switchpanel.getCompFromList(0)).call();
 			switchpanel.nextComponent();
 			mainframe.pack();
 			
@@ -318,10 +318,9 @@ class Mafiamanager{
 		menStart.setEnabled(true);
 		menEnd.setEnabled(false);
 		
+		
 		// reset player
-		for (ModulePlayer pm : playerModules){
-			pm.reset();
-		}
+		overview.resetGame();
 		
 		// reset game values
 		gamevalues.reset();

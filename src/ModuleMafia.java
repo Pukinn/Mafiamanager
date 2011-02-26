@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -25,6 +27,7 @@ public class ModuleMafia extends ModuleCharacter {
 	// parent components
 	private SwitchPanel parent;
 	private JFrame mainframe;
+	private Overview overview;
 	
 	public ModuleMafia(Overview _overview,
 			SwitchPanel _parent,
@@ -38,15 +41,30 @@ public class ModuleMafia extends ModuleCharacter {
 		
 		parent  = _parent;
 		mainframe = _mainframe;
+		overview = _overview;
 		
 		addCommand(Messages.getString("mod.mafia.awake"));
 		addNote(Messages.getString("mod.mafia.kill"));
 	}
 	
-	// CALLING
+// ACTIONS
+	// calling
 	void calling(){
+		overview.resetRound();
+		buttonEnabled(false);
+	}
+
+	// player pressed
+	void playerPressed(ArrayList<String> marked) {
+		if (marked.size() == 1){
+			buttonEnabled(true);
+		}
+		else {
+			buttonEnabled(false);
+		}
 	}
 	
+	// accept
 	void acceptAction() {
 		((ModuleCharacter)parent.getCompFromList(0)).call();
 		parent.nextComponent();

@@ -17,6 +17,7 @@
 */
 
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -25,10 +26,13 @@ import javax.swing.JPanel;
 public class Overview extends JPanel{
 
 	private static final long serialVersionUID = -6525310492322809141L;
-	ArrayList<ModulePlayer> alPlayerModules;
 	
-	public Overview(ArrayList<ModulePlayer> _modulesPlayers){
-		alPlayerModules = _modulesPlayers;
+	public ArrayList<ModulePlayer> playerModules;
+	private ActionListener moduleAL;
+	
+	public Overview(ActionListener _moduleAL){
+		playerModules = new ArrayList<ModulePlayer>();
+		moduleAL = _moduleAL;
 		
 		// Layout
 		setPreferredSize(new Dimension(1000,400));
@@ -39,10 +43,66 @@ public class Overview extends JPanel{
 	public void paintPlayer(){
 		removeAll();
 		
-		for (ModulePlayer mp : alPlayerModules){
+		for (ModulePlayer mp : playerModules){
 			add(mp);
 		}
 		
 		repaint();
 	}
+	
+	public void addPlayer(String _name){
+		playerModules.add(new ModulePlayer(_name, moduleAL));
+	}
+	
+	public void removePlayer(String _name){
+		
+		int cnt = 0;
+		for (ModulePlayer mp : playerModules){
+			if (mp.sName.equals(_name)){ break; }
+			cnt++;
+		}
+		playerModules.remove(cnt);
+
+		paintPlayer();
+	}
+	
+	public ArrayList<String> getPlayerList(){
+		ArrayList<String> player = new ArrayList<String>();
+		
+		for (ModulePlayer mp : playerModules){
+			player.add(mp.sName);
+		}
+		
+		return player;
+	}
+	
+	public void setAllEnabeled(boolean _bool){
+		for (ModulePlayer mp : playerModules){
+			mp.setNameButton(_bool);
+		}
+	}
+	
+	public void resetGame(){
+		for (ModulePlayer mp : playerModules){
+			mp.reset();
+		}
+	}
+	
+	public ArrayList<String> getMarked(){
+		ArrayList<String> marked = new ArrayList<String>();
+		
+		for (ModulePlayer mp : playerModules){
+			if (mp.isMarked()) { marked.add(mp.sName); }
+		}
+		
+		return marked;
+	}
+	
+	public void resetRound(){
+		for (ModulePlayer mp : playerModules){
+			mp.mark(false);
+		}
+	}
+	
+	
 }

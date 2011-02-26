@@ -42,7 +42,7 @@ public class ModulePlayer
 	private JButton buttonName;
 	private JPanel panelStates;
 	
-	public ModulePlayer(String _name){
+	public ModulePlayer(String _name, ActionListener _actButtonPressed){
 		
 		// set default values
 		sName = _name;			// set name
@@ -53,10 +53,13 @@ public class ModulePlayer
 		
 		
 	// GUI
+		
 		// generate buttonName
 		buttonName = new JButton(sName);
+		buttonName.setEnabled(false);
+		buttonName.addActionListener(_actButtonPressed);
 		buttonName.addActionListener(this);
-		buttonName.setActionCommand("namebutton");
+		buttonName.setActionCommand(sName);
 		
 		// generate state-panel
 		panelStates = new JPanel();
@@ -74,10 +77,32 @@ public class ModulePlayer
 		iDieAtRound = 0;		// no die off setted
 		bProtected = false;		// player is not protected
 		sGroup = "undefined";
+		buttonName.setBackground(null);
 	}
 
-	// Action Listener
-	public void actionPerformed(ActionEvent e) {
+	public void setNameButton(boolean _bool){
+		buttonName.setEnabled(_bool);
+	}
+	
+	public boolean isMarked(){
+		boolean marked = false;
 		
+		if (buttonName.getBackground() == Color.green) { marked = true; }
+		
+		return marked;
+	}
+	
+	public void mark(boolean _mark){
+		if (_mark) { buttonName.setBackground(Color.green); }
+		else { buttonName.setBackground(null); }
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (buttonName.getBackground() == Color.green){
+			buttonName.setBackground(null);
+		}
+		else {
+			buttonName.setBackground(Color.green);
+		}
 	}
 }

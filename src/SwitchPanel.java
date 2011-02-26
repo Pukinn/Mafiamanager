@@ -113,4 +113,9 @@ public class SwitchPanel extends JPanel {
 	public Component getCompFromList(int _num){
 		return componentList.get(_num);
 	}
+	
+	// return actual component
+	public Component getActComponent(){
+		return componentList.get(componentList.size() - 1);
+	}
 }

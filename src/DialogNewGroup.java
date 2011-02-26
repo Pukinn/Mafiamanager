@@ -49,7 +49,7 @@ public class DialogNewGroup extends JDialog implements ActionListener {
 		groupnames = _groupnames;
 		
 		// generate label
-		JLabel lblText = new JLabel(Messages.getString("dia.addplayer"));
+		JLabel lblText = new JLabel(Messages.getString("dia.addgroup"));
 		
 		// generate textfield
 		fieldName = new JTextField(20);
@@ -63,7 +63,7 @@ public class DialogNewGroup extends JDialog implements ActionListener {
 		buttAcc.addActionListener(this);
 		
 		// layout
-		setTitle(Messages.getString("dia.addplayer.title"));
+		setTitle(Messages.getString("dia.addgroup.title"));
 		
 		setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
