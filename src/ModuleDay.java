@@ -30,6 +30,9 @@ public class ModuleDay extends ModuleCharacter {
 	private GameValues gamevalues;
 	private Overview overview;
 	
+	//general
+	private ModulePlayer markedPlayer;
+	
 	public ModuleDay(Overview _overview,
 			SwitchPanel _parent,
 			JFrame _mainframe,
@@ -51,24 +54,54 @@ public class ModuleDay extends ModuleCharacter {
 	void calling(){
 		overview.resetRound();
 		buttonEnabled(false);
+		
+		logicAfterNight();
+		
+		overview.refreshPlayer();
 	}
 
 	// player pressed
 	void playerPressed(ArrayList<String> marked) {
-		System.out.println(marked);
 		if (marked.size() == 1){
 			buttonEnabled(true);
+			markedPlayer = overview.getPlayer(marked.get(0));
 		}
 		else {
 			buttonEnabled(false);
+			markedPlayer = null;
 		}
 	}
 	
 	// accept
 	void acceptAction() {
-		gamevalues.round++;
-		((ModuleCharacter)parent.getCompFromList(0)).call();
+		
+		logicAfterDay();
+		
+		// switch to next component
 		parent.nextComponent();
+		((ModuleCharacter)parent.getActComponent()).call();
+		
 		mainframe.pack();
+	}
+	
+	private void logicAfterNight(){
+		
+		// kill player on list
+		for (KillAt ka : gamevalues.dieingPlayer){
+			if (ka.round == gamevalues.round) {
+				overview.getPlayer(ka.name).iLifevalue = 0;
+			}
+		}
+	}
+	
+	private void logicAfterDay(){
+		// count up round
+		gamevalues.round++;
+		
+		// set lynched player dead
+		markedPlayer.iLifevalue = 0;
+		
+		// refresch player panels
+		overview.refreshPlayer();
 	}
 }

@@ -98,9 +98,29 @@ public class Overview extends JPanel{
 		return marked;
 	}
 	
+	public ModulePlayer getPlayer(String _player){
+		ModulePlayer player = null;
+		
+		for (ModulePlayer mp : playerModules){
+			if (mp.sName.equals(_player)) {
+				player = mp;
+				break;
+			}
+			
+		}
+		
+		return player;
+	}
+	
 	public void resetRound(){
 		for (ModulePlayer mp : playerModules){
 			mp.mark(false);
+		}
+	}
+	
+	public void refreshPlayer(){
+		for (ModulePlayer mp : playerModules){
+			mp.refresh();
 		}
 	}
 	

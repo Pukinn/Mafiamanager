@@ -302,8 +302,9 @@ class Mafiamanager{
 			gamevalues.running = true;
 			overview.setAllEnabeled(true);
 			
-			((ModuleCharacter)switchpanel.getCompFromList(0)).call();
 			switchpanel.nextComponent();
+			((ModuleCharacter)switchpanel.getActComponent()).call();
+			
 			mainframe.pack();
 			
 		}
@@ -325,6 +326,9 @@ class Mafiamanager{
 		// reset game values
 		gamevalues.reset();
 		
+		// reset switchpanel
+		switchpanel.resetList();
+		
 		
 		mainframe.pack();
 	}
@@ -337,15 +341,31 @@ class Mafiamanager{
 
 // GAME VALUES
 class GameValues{
-	public int round;		// round of game
-	public boolean running;	// game is running
+	public int round;							// round of game
+	public boolean running;						// game is running
+	public ArrayList<KillAt> dieingPlayer;		// dieing player
+	public ArrayList<String> protectedPlayer;	// can not die
 	
 	public GameValues(){
+		dieingPlayer = new ArrayList<KillAt>();
+		protectedPlayer = new ArrayList<String>();
 		reset();
 	}
 	
 	public void reset(){
-		round = 0;
+		round = 1;
 		running = false;
+		dieingPlayer.clear();
+		protectedPlayer.clear();
+	}
+}
+
+class KillAt{
+	public String name;
+	public int round;
+	
+	public KillAt(String _name, int _round){
+		name = _name;
+		round = _round;
 	}
 }

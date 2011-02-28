@@ -19,6 +19,9 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,7 +35,6 @@ public class ModulePlayer
 	// player values
 	public String sName;		// the name of the player
 	public int iLifevalue;		// amount of lifes of the player
-	public int iDieAtRound;		// this player dies in this round
 	public boolean bProtected;	// can not be killed this round
 	
 	// group values
@@ -40,15 +42,14 @@ public class ModulePlayer
 	
 	// GUI
 	private JButton buttonName;
-	private JPanel panelStates;
+	private JPanel panelChar;
+	private JPanel panelAlive;
 	
 	public ModulePlayer(String _name, ActionListener _actButtonPressed){
 		
 		// set default values
 		sName = _name;			// set name
 		iLifevalue = 1;			// player is alive
-		iDieAtRound = 0;		// no die off setted
-		bProtected = false;		// player is not protected
 		sGroup = "undefined";
 		
 		
@@ -61,20 +62,44 @@ public class ModulePlayer
 		buttonName.addActionListener(this);
 		buttonName.setActionCommand(sName);
 		
-		// generate state-panel
-		panelStates = new JPanel();
-		panelStates.setBackground(Color.black);
-		panelStates.setPreferredSize(new Dimension(50, 50));
+		// generate character pic
+		panelChar = new JPanel();
+		panelChar.setBackground(Color.black);
+		panelChar.setPreferredSize(new Dimension(50, 30));
+		
+		// generate panel alive
+		panelAlive = new JPanel();
+		panelAlive.setPreferredSize(new Dimension(50, 10));
 		
 	// LAYOUT
-		add(buttonName, BorderLayout.WEST);
-		add(panelStates, BorderLayout.EAST);
+		setLayout(new GridBagLayout());
+		GridBagConstraints con = new GridBagConstraints();
+		con.insets = new Insets(3, 3, 3, 3);
+		
+		con.gridx = 0;
+		con.gridy = 0;
+		con.gridwidth = 1;
+		con.gridheight = 1;
+		add(panelChar, con);
+		
+		con.gridx = 0;
+		con.gridy = 1;
+		con.gridwidth = 1;
+		con.gridheight = 1;
+		add(panelAlive, con);
+		
+		con.gridx = 1;
+		con.gridy = 0;
+		con.gridwidth = 1;
+		con.gridheight = 2;
+		add(buttonName, con);
+		
+		refresh();
 	}
 
 	// reset player to defaults
 	public void reset(){
 		iLifevalue = 1;			// player is alive
-		iDieAtRound = 0;		// no die off setted
 		bProtected = false;		// player is not protected
 		sGroup = "undefined";
 		buttonName.setBackground(null);
@@ -95,6 +120,14 @@ public class ModulePlayer
 	public void mark(boolean _mark){
 		if (_mark) { buttonName.setBackground(Color.green); }
 		else { buttonName.setBackground(null); }
+	}
+	
+	public void refresh(){
+		// set alive panel
+		if (iLifevalue > 0) { panelAlive.setBackground(Color.green); }
+		else { panelAlive.setBackground(Color.gray); }
+		
+		revalidate();
 	}
 
 	public void actionPerformed(ActionEvent e) {

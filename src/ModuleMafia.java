@@ -29,6 +29,10 @@ public class ModuleMafia extends ModuleCharacter {
 	private JFrame mainframe;
 	private Overview overview;
 	
+	// general
+	private ModulePlayer markedPlayer;
+	private GameValues gamevalues;
+	
 	public ModuleMafia(Overview _overview,
 			SwitchPanel _parent,
 			JFrame _mainframe,
@@ -42,6 +46,7 @@ public class ModuleMafia extends ModuleCharacter {
 		parent  = _parent;
 		mainframe = _mainframe;
 		overview = _overview;
+		gamevalues = _gamevalues;
 		
 		addCommand(Messages.getString("mod.mafia.awake"));
 		addNote(Messages.getString("mod.mafia.kill"));
@@ -58,16 +63,23 @@ public class ModuleMafia extends ModuleCharacter {
 	void playerPressed(ArrayList<String> marked) {
 		if (marked.size() == 1){
 			buttonEnabled(true);
+			markedPlayer = overview.getPlayer(marked.get(0));
 		}
 		else {
 			buttonEnabled(false);
+			markedPlayer = null;
 		}
 	}
 	
 	// accept
 	void acceptAction() {
-		((ModuleCharacter)parent.getCompFromList(0)).call();
+		// add player to killing list
+		gamevalues.dieingPlayer.add(new KillAt(markedPlayer.sName, gamevalues.round));
+		
+		// switch to next component
 		parent.nextComponent();
+		((ModuleCharacter)parent.getActComponent()).call();
+		
 		mainframe.pack();
 	}
 }
