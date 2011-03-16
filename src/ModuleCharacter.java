@@ -51,8 +51,15 @@ public abstract class ModuleCharacter extends JPanel{
 	private JButton buttonAcc;
 	public JPanel panFlexButtons;
 	
+	// general
+	public String groupType;
+	public String groupName;
+	
 
-	public ModuleCharacter(Overview _overview, String _title, GameValues _gamevalues){
+	public ModuleCharacter(Overview _overview,
+							String _title,
+							String _grouptype,
+							GameValues _gamevalues){
 		
 		gamevalues = _gamevalues;
 		

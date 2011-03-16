@@ -41,6 +41,7 @@ public class ModuleMafia extends ModuleCharacter {
 		
 		super(_overview,
 				Messages.getString("mod.mafia") + ": " + _groupname,
+				"mafia",
 				_gamevalues);
 		
 		parent  = _parent;

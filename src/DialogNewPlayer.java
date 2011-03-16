@@ -65,23 +65,23 @@ public class DialogNewPlayer extends JDialog implements ActionListener {
 		buttAcc.addActionListener(this);
 		
 		// layout
-		setTitle(Messages.getString("dia.addplayer.title"));
+		this.setTitle(Messages.getString("dia.addplayer.title"));
 		
-		setLayout(new GridBagLayout());
+		this.setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
 		con.gridx = 0;
 		con.gridy = GridBagConstraints.RELATIVE;
 		con.insets = new Insets(5, 5, 5, 5);
 		
-		add(lblText, con);
-		add(lblError, con);
-		add(fieldName, con);
-		add(buttAcc, con);
+		this.add(lblText, con);
+		this.add(lblError, con);
+		this.add(fieldName, con);
+		this.add(buttAcc, con);
 		
 		
-		pack();
-		setLocationRelativeTo(_parentframe);
-		setVisible(true);
+		this.pack();
+		this.setLocationRelativeTo(_parentframe);
+		this.setVisible(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -94,15 +94,15 @@ public class DialogNewPlayer extends JDialog implements ActionListener {
 		
 		if (player.equals("")){
 			lblError.setText(Messages.getString("dia.err.noname"));
-			pack();
+			this.pack();
 		}
 		else if (bErr) {
 			lblError.setText(Messages.getString("dia.err.eqname"));
-			pack();
+			this.pack();
 		}
 		else {
 			stat.addPlayer(player);
-			setVisible(false);
+			this.setVisible(false);
 		}
 	}
 

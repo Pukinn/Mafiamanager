@@ -38,7 +38,7 @@ public class ModulePlayer
 	public boolean bProtected;	// can not be killed this round
 	
 	// group values
-	public String sGroup;		// in which group is the player
+	public ModuleCharacter mcGroup; // dedicated character group 
 	
 	// GUI
 	private JButton buttonName;
@@ -50,7 +50,7 @@ public class ModulePlayer
 		// set default values
 		sName = _name;			// set name
 		iLifevalue = 1;			// player is alive
-		sGroup = "undefined";
+		
 		
 		
 	// GUI
@@ -101,7 +101,7 @@ public class ModulePlayer
 	public void reset(){
 		iLifevalue = 1;			// player is alive
 		bProtected = false;		// player is not protected
-		sGroup = "undefined";
+		mcGroup = null;
 		buttonName.setBackground(null);
 	}
 

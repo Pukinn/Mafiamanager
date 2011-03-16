@@ -49,6 +49,7 @@ class Mafiamanager{
 	private static JMenuItem menStart;
 	private static JMenuItem menEnd;
 	private static JMenu menDelPlayerDB;
+	private static JMenuItem menSettings;
 	private static ActionListener actDelPlayer;
 	private static ActionListener actPlayerToGame;
 	private static ActionListener actDelPlayerGame;
@@ -61,7 +62,14 @@ class Mafiamanager{
 	//game values
 	private static GameValues gamevalues;
 	
+
+	/**
+	 * 
+	 * MAIN PROGRAMM
+	 * 
+	 */
 	
+// MAIN
 	public static void main(String args[]){
 	
 		// declare game values
@@ -95,14 +103,17 @@ class Mafiamanager{
 		// generate overview
 		overview = new Overview(actPlayerNameButton);
 		
-        // ACTION: start game
-		ActionListener actStartEnd = new ActionListener() {
+        // ACTION: general menu
+		ActionListener actGeneral = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getActionCommand().equals("start")){
 					startGame();	
 				}
-				else {
+				else if (e.getActionCommand().equals("end")) {
 					endGame();
+				}
+				else if (e.getActionCommand().equals("settings")){
+					DialogSettings ds = new DialogSettings(mainframe, gamevalues);
 				}
 			}
 		};
@@ -161,29 +172,44 @@ class Mafiamanager{
 		
 		// menu bar
 		menuBar = new JMenuBar();
+		
 		// menu game
 		JMenu menGame = new JMenu(Messages.getString("men.game"));
+		
 		// submenu "add player to game"
 		menPlayertogame = new JMenu(Messages.getString("men.playertogame"));
+		
 		// submenu "remove player from game"
 		menPlayerfromgame = new JMenu(Messages.getString("men.playerfromgame"));
+		
 		// submenu "add group to game"
 		menGrouptogame = new JMenu(Messages.getString("men.grouptogame"));
+		
 		// submenu "remove group from game"
 		menGroupfromgame = new JMenu(Messages.getString("men.groupfromgame"));
+		
 		// start game
 		menStart = new JMenuItem(Messages.getString("men.start"));
-		menStart.addActionListener(actStartEnd);
+		menStart.addActionListener(actGeneral);
 		menStart.setActionCommand("start");
+		
 		// end game
 		menEnd = new JMenuItem(Messages.getString("men.end"));
 		menEnd.setEnabled(false);
-		menEnd.addActionListener(actStartEnd);
+		menEnd.addActionListener(actGeneral);
 		menEnd.setActionCommand("end");
+		
+		// settings
+		menSettings = new JMenuItem(Messages.getString("men.settings"));
+		menSettings.addActionListener(actGeneral);
+		menSettings.setActionCommand("settings");
+		
 		// menu player
 		JMenu menPlayer = new JMenu(Messages.getString("men.player"));
+		
 		// submenu "delete player form db"
 		menDelPlayerDB = new JMenu(Messages.getString("men.delplayerdb"));
+		
 		// add player
 		JMenuItem menPlayerToDB = new JMenuItem(Messages.getString("men.playertodb"));
 		menPlayerToDB.addActionListener(actPlayerToDB);
@@ -196,15 +222,17 @@ class Mafiamanager{
 		
 	// LAYOUT MENU
 		menuBar.add(menGame);
+			menGame.add(menStart);
+			menGame.add(menEnd);
+			menGame.add(menSettings);
+			menGame.addSeparator();
 			menGame.add(menPlayertogame);
 			menGame.add(menPlayerfromgame);
 			menGame.addSeparator();
 			menGame.add(menGrouptogame);
 				menGrouptogame.add(menMafia);
 			menGame.add(menGroupfromgame);
-			menGame.addSeparator();
-			menGame.add(menStart);
-			menGame.add(menEnd);
+
 		menuBar.add(menPlayer);
 			menPlayer.add(menPlayerToDB);
 			menPlayer.add(menDelPlayerDB);
@@ -221,6 +249,7 @@ class Mafiamanager{
 		mainframe.setVisible(true);
 	}
 	
+// REFRESH MENU
 	public static void refreshMenu(){
 		playernames.clear();
 		playernames = stat.getPlayer();
@@ -272,9 +301,10 @@ class Mafiamanager{
 		menuBar.revalidate();
 	}
 	
+// START GAME
 	private static void startGame(){
 		
-		if (overview.getPlayerList().size() < 3){
+		if (overview.getPlayerList().size() < 6){
 			JOptionPane.showMessageDialog(mainframe,
 					Messages.getString("err.noplayeringame"),
 					Messages.getString("err.noplayeringamettl"),
@@ -288,15 +318,8 @@ class Mafiamanager{
 			menStart.setEnabled(false);
 			menEnd.setEnabled(true);
 			
-			// SET MODULE LIST
-			// mafia
-			for (String s : mafiagroups){
-				ModuleMafia mm = new ModuleMafia(overview, switchpanel, mainframe, s, gamevalues);
-				switchpanel.addComponent(mm);
-			}
-			// day
-			ModuleDay md = new ModuleDay(overview, switchpanel, mainframe, gamevalues);
-			switchpanel.addComponent(md);
+			// set module list
+			setModuleList();
 			
 			// set game running
 			gamevalues.running = true;
@@ -310,6 +333,24 @@ class Mafiamanager{
 		}
 	}
 	
+// SET MODULE LIST
+	private static void setModuleList(){
+		// mafia
+		for (String s : mafiagroups){
+			ModuleMafia mm = new ModuleMafia(overview, switchpanel, mainframe, s, gamevalues);
+			switchpanel.addComponent(mm);
+		}
+		// day
+		ModuleDay md = new ModuleDay(overview, switchpanel, mainframe, gamevalues);
+		switchpanel.addComponent(md);
+		
+		// SET GROUPS IF AUTOMATIC SELECTION
+		if (gamevalues.selectionMode){
+			// TODO: automatic selection
+		}
+	}
+	
+// END GAME
 	private static void endGame(){
 		switchpanel.showDefault();
 		
@@ -333,14 +374,24 @@ class Mafiamanager{
 		mainframe.pack();
 	}
 	
+// QUIT PROGRAMM
 	private static void quit(){
 		stat.shutdown();
 	}
 
 }
 
-// GAME VALUES
+/**
+ * 
+ * GAME VALUES
+ * 
+ */
+
 class GameValues{
+	// game rulesets
+	public boolean selectionMode;				// true = by cards; false = by program
+	
+	// running game
 	public int round;							// round of game
 	public boolean running;						// game is running
 	public ArrayList<KillAt> dieingPlayer;		// dieing player
@@ -349,16 +400,27 @@ class GameValues{
 	public GameValues(){
 		dieingPlayer = new ArrayList<KillAt>();
 		protectedPlayer = new ArrayList<String>();
+		
+		// game rulesets
+		selectionMode = false;
+		
 		reset();
 	}
 	
+	// reset game values for running game
 	public void reset(){
+		
+		// game rulesets
+		selectionMode = false;
+		
+		// running game
 		round = 1;
 		running = false;
 		dieingPlayer.clear();
 		protectedPlayer.clear();
 	}
 }
+
 
 class KillAt{
 	public String name;

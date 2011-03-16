@@ -38,7 +38,10 @@ public class ModuleDay extends ModuleCharacter {
 			JFrame _mainframe,
 			GameValues _gamevalues){
 		
-		super(_overview, Messages.getString("mod.day"), _gamevalues);
+		super(_overview,
+				Messages.getString("mod.day"),
+				"day",
+				_gamevalues);
 		
 		parent  = _parent;
 		mainframe = _mainframe;
