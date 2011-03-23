@@ -55,6 +55,7 @@ class Mafiamanager{
 	private static ActionListener actPlayerToGame;
 	private static ActionListener actDelPlayerGame;
 	private static ActionListener actGroupToGame;
+	private static ActionListener actGroupFromGame;
 	
 	// groups
 	private static JMenuItem menMafia;
@@ -175,6 +176,23 @@ class Mafiamanager{
 							newgroup.groupName));
 				}
 				
+				refreshMenu();
+			}
+		};
+		
+        // ACTION: delete group from game
+		actGroupFromGame = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String group = e.getActionCommand();
+				int i=0;
+				for (SwitchedModule actGroup : groups){
+					if (actGroup.groupName.equals(group)){
+						groups.remove(i);
+						++i;
+						break;
+					}
+				}
 				refreshMenu();
 			}
 		};
@@ -310,6 +328,16 @@ class Mafiamanager{
 			menDelPlayerDB.add(menPlayer);
 		}
 		
+		
+		// refresh menu "delete group from game"
+		menGroupfromgame.removeAll();
+		for (SwitchedModule actModule : groups){
+			String s = actModule.groupName + " (" + Messages.getString("men.gr." + actModule.groupType) + ") [" + actModule.groupSize + "]";
+			JMenuItem menGroup = new JMenuItem(s);
+			menGroup.addActionListener(actGroupFromGame);
+			menGroup.setActionCommand(actModule.groupName);
+			menGroupfromgame.add(menGroup);
+		}
 		
 		menuBar.revalidate();
 	}
