@@ -22,43 +22,51 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 
-public class ModuleDay extends ModuleCharacter {
+public class SwitchedModuleDay extends SwitchedModule {
 
-	// parent values
+	// parent components
 	private SwitchPanel parent;
 	private JFrame mainframe;
-	private GameValues gamevalues;
 	private Overview overview;
 	
-	//general
+	// general
 	private ModulePlayer markedPlayer;
+	private GameValues gamevalues;
 	
-	public ModuleDay(Overview _overview,
+	public SwitchedModuleDay(
+			Overview _overview,
+			GameValues _gamevalues,
 			SwitchPanel _parent,
 			JFrame _mainframe,
-			GameValues _gamevalues){
+			int _groupSize,
+			String _groupName
+			){
 		
-		super(_overview,
+		super(
+				_overview,
+				_gamevalues,
 				Messages.getString("mod.day"),
 				"day",
-				_gamevalues);
+				_groupSize,
+				_groupName
+				);
 		
 		parent  = _parent;
 		mainframe = _mainframe;
-		gamevalues = _gamevalues;
 		overview = _overview;
+		gamevalues = _gamevalues;
 		
-		addCommand(Messages.getString("mod.day.awake"));
-		addNote(Messages.getString("mod.day.lynch"));
+		this.addCommand(Messages.getString("mod.day.awake"));
+		this.addNote(Messages.getString("mod.day.lynch"));
 	}
 	
 // ACTIONS
 	// calling
 	void calling(){
 		overview.resetRound();
-		buttonEnabled(false);
+		this.buttonEnabled(false);
 		
-		logicAfterNight();
+		this.logicAfterNight();
 		
 		overview.refreshPlayer();
 	}
@@ -66,11 +74,11 @@ public class ModuleDay extends ModuleCharacter {
 	// player pressed
 	void playerPressed(ArrayList<String> marked) {
 		if (marked.size() == 1){
-			buttonEnabled(true);
+			this.buttonEnabled(true);
 			markedPlayer = overview.getPlayer(marked.get(0));
 		}
 		else {
-			buttonEnabled(false);
+			this.buttonEnabled(false);
 			markedPlayer = null;
 		}
 	}
@@ -78,11 +86,11 @@ public class ModuleDay extends ModuleCharacter {
 	// accept
 	void acceptAction() {
 		
-		logicAfterDay();
+		this.logicAfterDay();
 		
 		// switch to next component
 		parent.nextComponent();
-		((ModuleCharacter)parent.getActComponent()).call();
+		((SwitchedModule)parent.getActComponent()).call();
 		
 		mainframe.pack();
 	}

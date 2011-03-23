@@ -25,9 +25,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
@@ -36,17 +38,30 @@ public class DialogNewGroup extends JDialog implements ActionListener {
 	private static final long serialVersionUID = -6486508555294866021L;
 	
 	// general
-	private ArrayList<String> groupnames;
+	private ArrayList<SwitchedModule> groups;
+	private String groupType;
 	
 	// layout
 	private JTextField fieldName;
 	private JLabel lblError;
+	private JComboBox cbPlayer;
+	
+	// out
+	public String groupName;
+	public int groupSize;
 	
 	
-	public DialogNewGroup(JFrame _parentframe, ArrayList<String> _groupnames){
+	public DialogNewGroup(
+							JFrame _parentframe,
+							ArrayList<SwitchedModule> _groups,
+							int _actualPlayer,
+							String _groupType
+							){
+		
 		super(_parentframe, true);
 		
-		groupnames = _groupnames;
+		groups = _groups;
+		groupType = _groupType;
 		
 		// generate label
 		JLabel lblText = new JLabel(Messages.getString("dia.addgroup"));
@@ -62,32 +77,56 @@ public class DialogNewGroup extends JDialog implements ActionListener {
 		JButton buttAcc = new JButton(Messages.getString("dia.acc"));
 		buttAcc.addActionListener(this);
 		
-		// layout
-		setTitle(Messages.getString("dia.addgroup.title"));
+		// generate panel groupsize
+		JPanel panSize = new JPanel();
 		
-		setLayout(new GridBagLayout());
+		// generate label size
+		JLabel lblSize = new JLabel(Messages.getString("dia.addgroup.size"));
+		
+		// get left player
+		int orderdPlayer = 0;
+		for (SwitchedModule sm : groups){
+			orderdPlayer += sm.groupSize;
+		}
+		int leftPlayer = _actualPlayer - orderdPlayer;
+		
+		// generate combo box
+		cbPlayer = new JComboBox();
+		for (int i = 1; i <= leftPlayer; ++i){
+			cbPlayer.addItem(i);
+		}
+		cbPlayer.setMaximumRowCount(10);
+		
+		
+		// layout
+		this.setTitle(Messages.getString("dia.addgroup.title"));
+		
+		this.setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
 		con.gridx = 0;
 		con.gridy = GridBagConstraints.RELATIVE;
 		con.insets = new Insets(5, 5, 5, 5);
 		
-		add(lblText, con);
-		add(lblError, con);
-		add(fieldName, con);
-		add(buttAcc, con);
+		this.add(lblText, con);
+		this.add(lblError, con);
+		this.add(fieldName, con);
+		this.add(panSize, con);
+			panSize.add(lblSize);
+			panSize.add(cbPlayer);
+		this.add(buttAcc, con);
 		
 		
-		pack();
-		setLocationRelativeTo(_parentframe);
-		setVisible(true);
+		this.pack();
+		this.setLocationRelativeTo(_parentframe);
+		this.setVisible(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		String group = fieldName.getText().trim();
 		
 		boolean bErr = false;
-		for (String s : groupnames){
-			if (s.equals(group)){ bErr = true; }
+		for (SwitchedModule sm : groups){
+			if (sm.groupName.equals(group)){ bErr = true; }
 		}
 		
 		if (group.equals("")){
@@ -96,11 +135,14 @@ public class DialogNewGroup extends JDialog implements ActionListener {
 		}
 		else if (bErr) {
 			lblError.setText(Messages.getString("dia.err.eqname"));
-			pack();
+			this.pack();
 		}
 		else {
-			groupnames.add(group);
-			setVisible(false);
+
+			groupName = group;
+			groupSize = cbPlayer.getSelectedIndex()+1;
+			
+			this.setVisible(false);
 		}
 	}
 

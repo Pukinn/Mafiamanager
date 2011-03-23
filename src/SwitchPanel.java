@@ -103,6 +103,21 @@ public class SwitchPanel extends JPanel {
 		componentList.clear();
 	}
 	
+// IS COMPONENT IN
+	// check if component is alreadi in the list
+	public boolean isComponentIn(Component _comp){
+		boolean isIn = false;
+		
+		for (Component c : componentList){
+			if (_comp == c) {
+				isIn = true;
+				break;
+			}
+		}
+		
+		return isIn;
+	}
+	
 // RETURN
 	// return list
 	public ArrayList<Component> getList(){

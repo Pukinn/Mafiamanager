@@ -18,11 +18,10 @@
 
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
 
-public class ModuleMafia extends ModuleCharacter {
+public class SwitchedModuleMafia extends SwitchedModule {
 
 	// parent components
 	private SwitchPanel parent;
@@ -33,53 +32,61 @@ public class ModuleMafia extends ModuleCharacter {
 	private ModulePlayer markedPlayer;
 	private GameValues gamevalues;
 	
-	public ModuleMafia(Overview _overview,
+	public SwitchedModuleMafia(
+			Overview _overview,
+			GameValues _gamevalues,
 			SwitchPanel _parent,
 			JFrame _mainframe,
-			String _groupname,
-			GameValues _gamevalues){
+			int _groupSize,
+			String _groupName
+			){
 		
-		super(_overview,
-				Messages.getString("mod.mafia") + ": " + _groupname,
+		super(
+				_overview,
+				_gamevalues,
+				Messages.getString("mod.mafia") + ": " + _groupName,
 				"mafia",
-				_gamevalues);
+				_groupSize,
+				_groupName
+				);
 		
 		parent  = _parent;
 		mainframe = _mainframe;
 		overview = _overview;
 		gamevalues = _gamevalues;
 		
-		addCommand(Messages.getString("mod.mafia.awake"));
-		addNote(Messages.getString("mod.mafia.kill"));
+		this.addCommand(Messages.getString("mod.mafia.awake"));
+		this.addNote(Messages.getString("mod.mafia.kill"));
 	}
 	
 // ACTIONS
 	// calling
 	void calling(){
 		overview.resetRound();
-		buttonEnabled(false);
+		this.buttonEnabled(false);
 	}
 
 	// player pressed
 	void playerPressed(ArrayList<String> marked) {
 		if (marked.size() == 1){
-			buttonEnabled(true);
+			this.buttonEnabled(true);
 			markedPlayer = overview.getPlayer(marked.get(0));
 		}
 		else {
-			buttonEnabled(false);
+			this.buttonEnabled(false);
 			markedPlayer = null;
 		}
 	}
 	
 	// accept
 	void acceptAction() {
+		
 		// add player to killing list
-		gamevalues.dieingPlayer.add(new KillAt(markedPlayer.sName, gamevalues.round));
+		gamevalues.kill(markedPlayer.sName, gamevalues.round, "default");
 		
 		// switch to next component
 		parent.nextComponent();
-		((ModuleCharacter)parent.getActComponent()).call();
+		((SwitchedModule)parent.getActComponent()).call();
 		
 		mainframe.pack();
 	}

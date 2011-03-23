@@ -36,7 +36,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 
-public abstract class ModuleCharacter extends JPanel{
+public abstract class SwitchedModule extends JPanel{
 	
 	// interacting overview panel
 	private Overview overview;
@@ -51,16 +51,24 @@ public abstract class ModuleCharacter extends JPanel{
 	private JButton buttonAcc;
 	public JPanel panFlexButtons;
 	
-	// general
+	// group informations
+	public int groupSize;
 	public String groupType;
 	public String groupName;
 	
 
-	public ModuleCharacter(Overview _overview,
+	public SwitchedModule(
+							Overview _overview,
+							GameValues _gamevalues,
 							String _title,
-							String _grouptype,
-							GameValues _gamevalues){
+							String _groupType,
+							int _groupSize,
+							String _groupName
+							){
 		
+		groupSize = _groupSize;
+		groupType = _groupType;
+		groupName = _groupName;
 		gamevalues = _gamevalues;
 		
 		// get interacting overview panel

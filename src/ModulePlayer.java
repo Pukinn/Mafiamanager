@@ -38,7 +38,7 @@ public class ModulePlayer
 	public boolean bProtected;	// can not be killed this round
 	
 	// group values
-	public ModuleCharacter mcGroup; // dedicated character group 
+	public SwitchedModule smGroup; // dedicated character group 
 	
 	// GUI
 	private JButton buttonName;
@@ -72,7 +72,7 @@ public class ModulePlayer
 		panelAlive.setPreferredSize(new Dimension(50, 10));
 		
 	// LAYOUT
-		setLayout(new GridBagLayout());
+		this.setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
 		con.insets = new Insets(3, 3, 3, 3);
 		
@@ -80,28 +80,28 @@ public class ModulePlayer
 		con.gridy = 0;
 		con.gridwidth = 1;
 		con.gridheight = 1;
-		add(panelChar, con);
+		this.add(panelChar, con);
 		
 		con.gridx = 0;
 		con.gridy = 1;
 		con.gridwidth = 1;
 		con.gridheight = 1;
-		add(panelAlive, con);
+		this.add(panelAlive, con);
 		
 		con.gridx = 1;
 		con.gridy = 0;
 		con.gridwidth = 1;
 		con.gridheight = 2;
-		add(buttonName, con);
+		this.add(buttonName, con);
 		
-		refresh();
+		this.refresh();
 	}
 
 	// reset player to defaults
 	public void reset(){
 		iLifevalue = 1;			// player is alive
 		bProtected = false;		// player is not protected
-		mcGroup = null;
+		smGroup = null;
 		buttonName.setBackground(null);
 	}
 
@@ -127,7 +127,7 @@ public class ModulePlayer
 		if (iLifevalue > 0) { panelAlive.setBackground(Color.green); }
 		else { panelAlive.setBackground(Color.gray); }
 		
-		revalidate();
+		this.revalidate();
 	}
 
 	public void actionPerformed(ActionEvent e) {

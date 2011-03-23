@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -57,7 +58,7 @@ class Mafiamanager{
 	
 	// groups
 	private static JMenuItem menMafia;
-	private static ArrayList<String> mafiagroups;
+	private static ArrayList<SwitchedModule> groups;
 	
 	//game values
 	private static GameValues gamevalues;
@@ -76,9 +77,8 @@ class Mafiamanager{
 		gamevalues = new GameValues();
 		
 		// declare lists
-	//	playerModules = new ArrayList<ModulePlayer>();
 		playernames = new ArrayList<String>();
-		mafiagroups = new ArrayList<String>();
+		groups = new ArrayList<SwitchedModule>();
 		
 		// generate statistics
         stat = new Statistics();
@@ -96,7 +96,7 @@ class Mafiamanager{
 		actPlayerNameButton = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<String> marked = overview.getMarked();
-				((ModuleCharacter)switchpanel.getActComponent()).playerPressed(marked);
+				((SwitchedModule)switchpanel.getActComponent()).playerPressed(marked);
 			}
 		};
 		
@@ -158,8 +158,21 @@ class Mafiamanager{
 			public void actionPerformed(ActionEvent e) {
 				String comm = e.getActionCommand();
 				
+				DialogNewGroup newgroup = new DialogNewGroup(
+						mainframe,
+						groups,
+						overview.playerModules.size(),
+						comm);
+				
+				
 				if (comm.equals("mafia")){
-					DialogNewGroup newgroup = new DialogNewGroup(mainframe, mafiagroups);
+					groups.add(new SwitchedModuleMafia(
+							overview,
+							gamevalues,
+							switchpanel,
+							mainframe,
+							newgroup.groupSize,
+							newgroup.groupName));
 				}
 				
 				refreshMenu();
@@ -304,12 +317,14 @@ class Mafiamanager{
 // START GAME
 	private static void startGame(){
 		
+		// error message if not enough player
 		if (overview.getPlayerList().size() < 6){
 			JOptionPane.showMessageDialog(mainframe,
 					Messages.getString("err.noplayeringame"),
 					Messages.getString("err.noplayeringamettl"),
 					JOptionPane.ERROR_MESSAGE);
 		}
+		// start game
 		else {
 			
 			// MANAGE MENU ENTRIES
@@ -325,8 +340,9 @@ class Mafiamanager{
 			gamevalues.running = true;
 			overview.setAllEnabeled(true);
 			
+			// call first component
 			switchpanel.nextComponent();
-			((ModuleCharacter)switchpanel.getActComponent()).call();
+			((SwitchedModule)switchpanel.getActComponent()).call();
 			
 			mainframe.pack();
 			
@@ -335,19 +351,58 @@ class Mafiamanager{
 	
 // SET MODULE LIST
 	private static void setModuleList(){
-		// mafia
-		for (String s : mafiagroups){
-			ModuleMafia mm = new ModuleMafia(overview, switchpanel, mainframe, s, gamevalues);
-			switchpanel.addComponent(mm);
-		}
-		// day
-		ModuleDay md = new ModuleDay(overview, switchpanel, mainframe, gamevalues);
-		switchpanel.addComponent(md);
 		
-		// SET GROUPS IF AUTOMATIC SELECTION
-		if (gamevalues.selectionMode){
-			// TODO: automatic selection
+		// add modules to switchpanel in the order of the tasklist
+		for (String actType : gamevalues.TASKLIST){
+			
+			// search for modules with same grouptype as actual task
+			for (SwitchedModule actGroup : groups){
+				if (actGroup.groupType.equals(actType)){
+					
+					// add to switchpanel if not already in
+					if (!switchpanel.isComponentIn(actGroup)){
+						switchpanel.addComponent(actGroup);
+					}
+				}
+			}
 		}
+		
+		// get left player
+		int orderdPlayer = 0;
+		for (SwitchedModule sm : groups){
+			orderdPlayer += sm.groupSize;
+		}
+		int leftPlayer = overview.playerModules.size() - orderdPlayer;
+		
+		// add day module
+		switchpanel.addComponent(new SwitchedModuleDay(
+				overview,
+				gamevalues,
+				switchpanel,
+				mainframe,
+				leftPlayer,
+				Messages.getString("mod.name")));
+		
+		// SET GROUPS FOR PLAYER (AUTOMATIC SELECTION)
+		if (gamevalues.selectionMode){
+			
+			// copy player names into temporary list
+			ArrayList<String> playerToSort = new ArrayList<String>();
+			for (ModulePlayer mp : overview.playerModules){
+				playerToSort.add(mp.sName);
+			}
+			
+			// set random groups for the player
+			Random rnd = new Random();
+			for (SwitchedModule actGroup : groups){
+				
+				for (int i=0; i<actGroup.groupSize; ++i){
+					int rndIndex = rnd.nextInt(playerToSort.size());					// set random index
+					overview.getPlayer(playerToSort.get(rndIndex)).smGroup = actGroup;	// set group to random player module
+					playerToSort.remove(rndIndex);										// remove player from temporary list
+				}
+			}
+		} 
 	}
 	
 // END GAME
@@ -397,6 +452,9 @@ class GameValues{
 	public ArrayList<KillAt> dieingPlayer;		// dieing player
 	public ArrayList<String> protectedPlayer;	// can not die
 	
+	// statics
+	public static final String[] TASKLIST = {"mafia"};
+	
 	public GameValues(){
 		dieingPlayer = new ArrayList<KillAt>();
 		protectedPlayer = new ArrayList<String>();
@@ -407,11 +465,30 @@ class GameValues{
 		reset();
 	}
 	
+	// add player to killing list
+	public void kill(String _name, int _round, String _deathmanner){
+		
+		// add deathmanner to list if player will be killed again
+		boolean makeNew = true;
+		for (KillAt killed : dieingPlayer){
+			if (killed.name.equals(_name) && killed.round == _round){
+				killed.deathmanners.add(_deathmanner);
+				makeNew = false;
+				break;
+			}
+		}
+		
+		// add player to killing list if not in jet
+		if (makeNew){
+			dieingPlayer.add(new KillAt(_name, _round, _deathmanner));
+		}
+	}
+	
 	// reset game values for running game
 	public void reset(){
 		
 		// game rulesets
-		selectionMode = false;
+		selectionMode = true;
 		
 		// running game
 		round = 1;
@@ -425,9 +502,12 @@ class GameValues{
 class KillAt{
 	public String name;
 	public int round;
+	public ArrayList<String> deathmanners;
 	
-	public KillAt(String _name, int _round){
+	public KillAt(String _name, int _round, String _deathmanner){
 		name = _name;
 		round = _round;
+		deathmanners = new ArrayList<String>();
+		deathmanners.add(_deathmanner);
 	}
 }

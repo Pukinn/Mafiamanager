@@ -51,10 +51,10 @@ public class DialogSettings extends JDialog implements ActionListener {
 		// selection mode
 		JLabel lblMode = new JLabel(Messages.getString("dia.settings.mode"));
 		ButtonGroup selectionmode = new ButtonGroup();
-		rbAut = new JRadioButton(Messages.getString("dia.settings.mode.aut"), !gamevalues.selectionMode);
-		selectionmode.add(rbAut);
 		rbCard = new JRadioButton(Messages.getString("dia.settings.mode.cards"), gamevalues.selectionMode);
 		selectionmode.add(rbCard);
+		rbAut = new JRadioButton(Messages.getString("dia.settings.mode.aut"), !gamevalues.selectionMode);
+		selectionmode.add(rbAut);
 		
 		// accept button
 		JButton buttonAcc = new JButton(Messages.getString("dia.settings.acc"));
@@ -73,6 +73,7 @@ public class DialogSettings extends JDialog implements ActionListener {
 		con.gridwidth = 2;
 		con.gridheight = 1;
 		con.anchor = GridBagConstraints.LINE_START;
+		con.insets = new Insets(5, 5, 5, 5);
 		this.add(lblMode, con);
 		
 		con.gridx = 0;
@@ -80,6 +81,7 @@ public class DialogSettings extends JDialog implements ActionListener {
 		con.gridwidth = 1;
 		con.gridheight = 2;
 		con.anchor = GridBagConstraints.LINE_START;
+		con.insets = new Insets(0, 0, 0, 0);
 		this.add(spacerpanel, con);
 		
 		con.gridx = 1;
@@ -87,14 +89,16 @@ public class DialogSettings extends JDialog implements ActionListener {
 		con.gridwidth = 1;
 		con.gridheight = 1;
 		con.anchor = GridBagConstraints.LINE_START;
-		this.add(rbAut, con);
+		con.insets = new Insets(0, 5, 0, 5);
+		this.add(rbCard, con);
 		
 		con.gridx = 1;
 		con.gridy = 2;
 		con.gridwidth = 1;
 		con.gridheight = 1;
 		con.anchor = GridBagConstraints.LINE_START;
-		this.add(rbCard, con);
+		con.insets = new Insets(0, 5, 0, 5);
+		this.add(rbAut, con);
 		
 		con.gridx = 0;
 		con.gridy = 3;
